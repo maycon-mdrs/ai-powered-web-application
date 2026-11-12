@@ -1,0 +1,5 @@
+# Config compartilhada (Config Server)
+management:
+  endpoint:
+    health:
+      show-details: always

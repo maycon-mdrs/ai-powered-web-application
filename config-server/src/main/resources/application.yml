@@ -1,0 +1,21 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          # Em lab, native aponta para a pasta config-repo do monorepo.
+          # Em produção/Academy, trocar para Git (uri + clone).
+          search-locations: ${CONFIG_REPO:file:../config-repo}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

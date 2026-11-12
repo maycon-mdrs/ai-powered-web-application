@@ -1,0 +1,12 @@
+type Query {
+  health: String
+}
+
+type Mutation {
+  askBookAssistant(conversationId: String!, message: String!): BookAssistantReply!
+}
+
+type BookAssistantReply {
+  conversationId: String!
+  reply: String!
+}
