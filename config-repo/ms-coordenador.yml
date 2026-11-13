@@ -1,6 +1,10 @@
 lambda:
   base-url: ${LAMBDA_BASE_URL:http://localhost:9000}
 
+chaos:
+  monkey:
+    enabled: false
+
 resilience4j:
   circuitbreaker:
     instances:

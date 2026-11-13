@@ -1,7 +1,6 @@
-# Config específica do ms-ia (alterar e refresh na demo)
 ai:
   provider: gemini
+  stub: true
 
-# Exemplos (valores reais vêm do Vault / env):
-# spring.ai.openai.api-key: ${OPENAI_API_KEY}
-# spring.ai.google.genai.api-key: ${GEMINI_API_KEY}
+# Chaves LLM NÃO ficam aqui — só no HashiCorp Vault (secret/ms-ia).
+# Modo real: perfil Spring "vault" + AI_STUB=false (ver docs/vault.md).

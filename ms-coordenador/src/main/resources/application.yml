@@ -10,12 +10,83 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/,http://localhost:8762/eureka/}
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://127.0.0.1:8761/eureka/,http://127.0.0.1:8762/eureka/}
+  instance:
+    prefer-ip-address: true
+    ip-address: ${EUREKA_INSTANCE_IP:127.0.0.1}
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+
+lambda:
+  base-url: ${LAMBDA_BASE_URL:http://localhost:9000}
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus,circuitbreakers,circuitbreakerevents
+        include: health,info,metrics,prometheus,circuitbreakers,circuitbreakerevents,ratelimiters,retries,bulkheads
+  endpoint:
+    health:
+      show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
 
-# lambda.base-url vem do config-repo / env na implementação
+resilience4j:
+  circuitbreaker:
+    instances:
+      msIa:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        registerHealthIndicator: true
+      lambda:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        registerHealthIndicator: true
+  retry:
+    instances:
+      msIa:
+        maxAttempts: 3
+        waitDuration: 500ms
+      lambda:
+        maxAttempts: 2
+        waitDuration: 300ms
+  bulkhead:
+    instances:
+      msIa:
+        maxConcurrentCalls: 20
+      lambda:
+        maxConcurrentCalls: 10
+  ratelimiter:
+    instances:
+      msIa:
+        limitForPeriod: 30
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0
+      lambda:
+        limitForPeriod: 20
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0
+
+chaos:
+  monkey:
+    enabled: ${CHAOS_MONKEY_ENABLED:false}
+    assaults:
+      level: 5
+      latencyActive: true
+      exceptionsActive: true
+      latencyRangeStart: 1000
+      latencyRangeEnd: 3000
+    watcher:
+      restController: true
+      service: true
+
+management.endpoint.chaosmonkey.enabled: true
+management.endpoint.chaosmonkeyjmx.enabled: true

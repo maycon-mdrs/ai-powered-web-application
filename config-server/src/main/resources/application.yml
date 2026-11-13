@@ -5,17 +5,21 @@ spring:
   application:
     name: config-server
   profiles:
-    active: native
+    # native = pasta local; git = repositório (demo de refresh dinâmico)
+    active: ${CONFIG_PROFILE:native}
   cloud:
     config:
       server:
         native:
-          # Em lab, native aponta para a pasta config-repo do monorepo.
-          # Em produção/Academy, trocar para Git (uri + clone).
           search-locations: ${CONFIG_REPO:file:../config-repo}
+        git:
+          uri: ${CONFIG_GIT_URI:file:///${user.dir}/../config-repo}
+          default-label: main
+          clone-on-start: true
+          search-paths: .
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,prometheus
