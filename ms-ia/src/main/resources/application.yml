@@ -85,6 +85,8 @@ spring:
         enabled: true
         backend: secret
         backend-version: 2
+        # Só secret/ms-ia — não concatenar spring.profiles (ex.: docker → secret/ms-ia/docker)
+        profiles: []
         default-context: ms-ia
         application-name: ms-ia
 
