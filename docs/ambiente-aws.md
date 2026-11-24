@@ -45,7 +45,7 @@ PC (JMeter / Postman)
 | IP privado | `172.31.35.37` |
 | Instance ID | `______` |
 | Lambda name | `plano-leitura` |
-| Function URL | `______` |
+| Function URL | `https://lvedwgvp7nb2srqvltwos37y7u0vztzp.lambda-url.us-east-2.on.aws/` |
 | IAM role Lambda | `tp3-plano-leitura-role` |
 
 ---
@@ -228,30 +228,32 @@ aws lambda update-function-code --function-name plano-leitura `
 
 ---
 
-## 6. Subir a stack na EC2 (Compose)
+## 6. Subir a stack na EC2 (Compose) — modo deploy
 
-Edite `~/ai-powered-web-application/.env`:
-
-```bash
-# Produção AWS — Function URL (sem barra final)
-LAMBDA_BASE_URL=https://xxxxxxxx.lambda-url.us-east-1.on.aws
-AI_STUB=true
-MCP_ENABLED=false
-```
-
-Subir **sem** Lambda local (usa AWS):
+Sem stub: LLM real (Vault) + MCP Open Library + Lambda AWS.
 
 ```bash
 cd ~/ai-powered-web-application
-./scripts/docker-up.sh none
-# ou: docker compose up -d --build
+git pull
+cp .env.deploy.example .env
+# confira LAMBDA_BASE_URL da Function URL
+chmod +x scripts/*.sh
+./scripts/docker-up-deploy.sh
 ```
 
-Primeiro smoke **com** Lambda local (sem AWS ainda):
+Quando o script pedir, grave a chave **só no terminal** (não no chat/Git):
 
 ```bash
-# .env: LAMBDA_BASE_URL=http://ms-lambda:9000
-./scripts/docker-up.sh local-lambda
+docker exec -e VAULT_ADDR=http://127.0.0.1:8200 -e VAULT_TOKEN=root vault \
+  vault kv put secret/ms-ia GEMINI_API_KEY=SUA_CHAVE OPENAI_API_KEY=nao-usado
+```
+
+Smoke **só stub** (sem chave), se precisar:
+
+```bash
+cp .env.example .env
+# LAMBDA_BASE_URL=Function URL
+./scripts/docker-up.sh none
 ```
 
 Conferência:

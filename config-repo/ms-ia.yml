@@ -1,6 +1,7 @@
 ai:
   provider: gemini
-  stub: true
+  # Deploy/AWS: false (LLM real). Dev local sem chave: AI_STUB=true no ambiente.
+  stub: false
 
 # Chaves LLM NÃO ficam aqui — só no HashiCorp Vault (secret/ms-ia).
-# Modo real: perfil Spring "vault" + AI_STUB=false (ver docs/vault.md).
+# Ver docs/vault.md e .env.deploy.example.

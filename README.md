@@ -11,18 +11,28 @@ Microserviços Spring: conversa sobre livros com **Chat Memory**, **RAG de gêne
 3. [docs/vault.md](docs/vault.md) — HashiCorp Vault (chaves LLM)
 4. [docs/ambiente-aws.md](docs/ambiente-aws.md) — **passo a passo AWS** (conta pessoal, EC2, Compose, Lambda)
 
-## Subir com Docker Compose (recomendado / EC2)
+## Subir com Docker Compose
+
+### EC2 / deploy (LLM + MCP + Vault + Lambda AWS)
+
+```bash
+cp .env.deploy.example .env
+# LAMBDA_BASE_URL já aponta para a Function URL; ajuste se mudou
+chmod +x scripts/*.sh
+./scripts/docker-up-deploy.sh
+# quando pedir: grave GEMINI_API_KEY no Vault (só no terminal — ver docs/vault.md)
+```
+
+### Dev local (stub, sem chave)
 
 ```powershell
 cp .env.example .env
 .\scripts\docker-up.ps1                  # stub + ms-lambda local + obs
-# .\scripts\docker-up.ps1 none           # sem Lambda local (use Function URL no .env)
 ```
 
 ```bash
 cp .env.example .env
 ./scripts/docker-up.sh                   # default: profile local-lambda
-# ./scripts/docker-up.sh none            # Lambda = AWS via LAMBDA_BASE_URL
 ```
 
 Kill de réplica (demo Gateway/Eureka): `docker stop ms-coordenador-b` / `docker start ms-coordenador-b`.

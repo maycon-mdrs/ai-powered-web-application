@@ -48,6 +48,7 @@ buildNumber.properties
 .env
 .env.*
 !.env.example
+!.env.deploy.example
 *.pem
 
 # OS

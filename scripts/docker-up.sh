@@ -3,7 +3,8 @@
 # Uso:
 #   ./scripts/docker-up.sh                     # stub + ms-lambda local + obs
 #   ./scripts/docker-up.sh local-lambda,vault  # + Vault
-#   ./scripts/docker-up.sh none                # sem profiles (só stack + obs; Lambda = AWS via .env)
+#   ./scripts/docker-up.sh none                # sem profiles (Lambda = AWS via .env)
+# Deploy real (LLM+MCP+Vault+Lambda AWS): ./scripts/docker-up-deploy.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"

@@ -87,9 +87,10 @@ services:
       <<: *jvm_env
       SERVER_PORT: "8082"
       EUREKA_INSTANCE_HOSTNAME: ms-ia
-      AI_STUB: ${AI_STUB:-true}
+      # Defaults de deploy; .env.example (dev) sobrescreve com stub=true / MCP off
+      AI_STUB: ${AI_STUB:-false}
       AI_PROVIDER: ${AI_PROVIDER:-gemini}
-      MCP_ENABLED: ${MCP_ENABLED:-false}
+      MCP_ENABLED: ${MCP_ENABLED:-true}
       MCP_COMMAND: npx
       MCP_ARG_0: "-y"
       MCP_ARG_1: mcp-open-library
