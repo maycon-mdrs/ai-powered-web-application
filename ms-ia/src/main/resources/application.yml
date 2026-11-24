@@ -28,12 +28,14 @@ spring:
         stdio:
           connections:
             open-library:
+              # Windows default; Docker/Linux: MCP_COMMAND=npx e MCP_ARG_0=-y / MCP_ARG_1=mcp-open-library
+              # (ou perfil spring "docker" — ver application-docker.yml)
               command: ${MCP_COMMAND:cmd.exe}
               args:
-                - /c
-                - npx
-                - -y
-                - mcp-open-library
+                - ${MCP_ARG_0:/c}
+                - ${MCP_ARG_1:npx}
+                - ${MCP_ARG_2:-y}
+                - ${MCP_ARG_3:mcp-open-library}
   cloud:
     vault:
       enabled: false
@@ -47,8 +49,8 @@ eureka:
     service-url:
       defaultZone: ${EUREKA_DEFAULT_ZONE:http://127.0.0.1:8761/eureka/,http://127.0.0.1:8762/eureka/}
   instance:
-    prefer-ip-address: true
-    # Em EC2 o IP público quebra o LB local; sobrescreva com o IP privado na AWS.
+    prefer-ip-address: ${EUREKA_PREFER_IP:true}
+    # Em EC2 java -jar: use 127.0.0.1. No Docker Compose: hostname do serviço + prefer-ip=false.
     ip-address: ${EUREKA_INSTANCE_IP:127.0.0.1}
     hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
 
@@ -56,7 +58,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus
+        include: health,info,metrics,prometheus,refresh,env
   tracing:
     sampling:
       probability: 1.0

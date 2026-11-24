@@ -1,11 +1,14 @@
-# Stack da aula: Prometheus + Grafana + Zipkin
+# Stack de observabilidade isolada (Java no host).
+# Preferência AWS/demo: use o docker-compose.yml da raiz do repo.
 services:
   prometheus:
     image: prom/prometheus:v3.5.0
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus-host.yml:/etc/prometheus/prometheus.yml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   grafana:
     image: grafana/grafana:11.5.2

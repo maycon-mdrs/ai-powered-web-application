@@ -1,0 +1,12 @@
+**/target
+**/.git
+**/.idea
+**/.vscode
+**/node_modules
+jmeter/resultados
+**/*.md
+!docs/corpus/**
+logs
+**/.env
+**/*.pem
+agent-transcripts

@@ -11,10 +11,11 @@ spring:
     config:
       server:
         native:
+          # Compose monta em /config-repo; local: caminho relativo ao módulo ou CONFIG_REPO
           search-locations: ${CONFIG_REPO:file:../config-repo}
         git:
           uri: ${CONFIG_GIT_URI:file:///${user.dir}/../config-repo}
-          default-label: main
+          default-label: ${CONFIG_GIT_LABEL:main}
           clone-on-start: true
           search-paths: .
 

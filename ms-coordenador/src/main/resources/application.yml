@@ -12,7 +12,7 @@ eureka:
     service-url:
       defaultZone: ${EUREKA_DEFAULT_ZONE:http://127.0.0.1:8761/eureka/,http://127.0.0.1:8762/eureka/}
   instance:
-    prefer-ip-address: true
+    prefer-ip-address: ${EUREKA_PREFER_IP:true}
     ip-address: ${EUREKA_INSTANCE_IP:127.0.0.1}
     hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
     lease-renewal-interval-in-seconds: 5
@@ -25,10 +25,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus,circuitbreakers,circuitbreakerevents,ratelimiters,retries,bulkheads
+        include: health,info,metrics,prometheus,refresh,circuitbreakers,circuitbreakerevents,ratelimiters,retries,bulkheads,chaosmonkey
   endpoint:
     health:
       show-details: always
+    chaosmonkey:
+      enabled: true
   tracing:
     sampling:
       probability: 1.0
@@ -88,5 +90,4 @@ chaos:
       restController: true
       service: true
 
-management.endpoint.chaosmonkey.enabled: true
 management.endpoint.chaosmonkeyjmx.enabled: true

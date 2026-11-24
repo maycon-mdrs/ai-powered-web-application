@@ -1,0 +1,16 @@
+# Perfil Docker Compose / Linux — MCP via npx nativo (sem cmd.exe)
+spring:
+  ai:
+    mcp:
+      client:
+        stdio:
+          connections:
+            open-library:
+              command: ${MCP_COMMAND:npx}
+              args:
+                - ${MCP_ARG_0:-y}
+                - ${MCP_ARG_1:mcp-open-library}
+
+eureka:
+  instance:
+    prefer-ip-address: false

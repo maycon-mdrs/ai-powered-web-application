@@ -1,0 +1,242 @@
+# Stack completa TP3 — 1 host (PC ou EC2).
+# Uso:
+#   cp .env.example .env   # edite LAMBDA_BASE_URL
+#   docker compose up -d --build
+# Profiles:
+#   --profile local-lambda   sobe ms-lambda :9000 (dev sem AWS)
+#   --profile vault          sobe Vault + ms-ia com perfil vault
+#
+# Kill demo: docker stop ms-coordenador-b && docker start ms-coordenador-b
+
+name: tp3
+
+x-jvm-common: &jvm_common
+  environment: &jvm_env
+    EUREKA_DEFAULT_ZONE: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
+    CONFIG_SERVER_URL: http://config-server:8888
+    ZIPKIN_ENDPOINT: http://zipkin:9411/api/v2/spans
+    EUREKA_PREFER_IP: "false"
+    JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:--Xmx384m}
+  networks:
+    - tp3
+  restart: unless-stopped
+
+services:
+  eureka1:
+    <<: *jvm_common
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jvm
+      args:
+        MODULE: eureka-server
+    container_name: eureka1
+    hostname: eureka1
+    ports:
+      - "8761:8761"
+    command:
+      - --spring.profiles.active=peer1
+      - --eureka.instance.hostname=eureka1
+      - --eureka.client.service-url.defaultZone=http://eureka2:8762/eureka/
+
+  eureka2:
+    <<: *jvm_common
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jvm
+      args:
+        MODULE: eureka-server
+    container_name: eureka2
+    hostname: eureka2
+    ports:
+      - "8762:8762"
+    command:
+      - --spring.profiles.active=peer2
+      - --eureka.instance.hostname=eureka2
+      - --eureka.client.service-url.defaultZone=http://eureka1:8761/eureka/
+    depends_on:
+      - eureka1
+
+  config-server:
+    <<: *jvm_common
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jvm
+      args:
+        MODULE: config-server
+    container_name: config-server
+    hostname: config-server
+    environment:
+      <<: *jvm_env
+      CONFIG_PROFILE: native
+      CONFIG_REPO: file:/config-repo
+    volumes:
+      - ./config-repo:/config-repo:ro
+    ports:
+      - "8888:8888"
+    depends_on:
+      - eureka1
+
+  ms-ia:
+    <<: *jvm_common
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ms-ia
+    container_name: ms-ia
+    hostname: ms-ia
+    environment:
+      <<: *jvm_env
+      SERVER_PORT: "8082"
+      EUREKA_INSTANCE_HOSTNAME: ms-ia
+      AI_STUB: ${AI_STUB:-true}
+      AI_PROVIDER: ${AI_PROVIDER:-gemini}
+      MCP_ENABLED: ${MCP_ENABLED:-false}
+      MCP_COMMAND: npx
+      MCP_ARG_0: "-y"
+      MCP_ARG_1: mcp-open-library
+      SPRING_PROFILES_ACTIVE: ${MS_IA_PROFILES:-docker}
+      VAULT_URI: ${VAULT_URI:-http://vault:8200}
+      VAULT_TOKEN: ${VAULT_TOKEN:-root}
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS_MS_IA:--Xmx512m}
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka1
+      - eureka2
+      - config-server
+
+  ms-coordenador-a:
+    <<: *jvm_common
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jvm
+      args:
+        MODULE: ms-coordenador
+    container_name: ms-coordenador-a
+    hostname: ms-coordenador-a
+    environment:
+      <<: *jvm_env
+      SERVER_PORT: "8081"
+      EUREKA_INSTANCE_HOSTNAME: ms-coordenador-a
+      LAMBDA_BASE_URL: ${LAMBDA_BASE_URL:-http://ms-lambda:9000}
+      CHAOS_MONKEY_ENABLED: ${CHAOS_MONKEY_ENABLED:-false}
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka1
+      - eureka2
+      - config-server
+      - ms-ia
+
+  ms-coordenador-b:
+    <<: *jvm_common
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jvm
+      args:
+        MODULE: ms-coordenador
+    container_name: ms-coordenador-b
+    hostname: ms-coordenador-b
+    environment:
+      <<: *jvm_env
+      SERVER_PORT: "8083"
+      EUREKA_INSTANCE_HOSTNAME: ms-coordenador-b
+      LAMBDA_BASE_URL: ${LAMBDA_BASE_URL:-http://ms-lambda:9000}
+      CHAOS_MONKEY_ENABLED: ${CHAOS_MONKEY_ENABLED:-false}
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka1
+      - eureka2
+      - config-server
+      - ms-ia
+
+  api-gateway:
+    <<: *jvm_common
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jvm
+      args:
+        MODULE: api-gateway
+    container_name: api-gateway
+    hostname: api-gateway
+    environment:
+      <<: *jvm_env
+      EUREKA_INSTANCE_HOSTNAME: api-gateway
+      GATEWAY_RATE_PER_SECOND: ${GATEWAY_RATE_PER_SECOND:-40}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka1
+      - eureka2
+      - ms-coordenador-a
+      - ms-coordenador-b
+
+  # --- profile: local-lambda (dev sem AWS) ---
+  ms-lambda:
+    <<: *jvm_common
+    profiles: ["local-lambda"]
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.jvm
+      args:
+        MODULE: ms-lambda
+    container_name: ms-lambda
+    hostname: ms-lambda
+    ports:
+      - "9000:9000"
+
+  # --- profile: vault (LLM real) ---
+  vault:
+    profiles: ["vault"]
+    image: hashicorp/vault:1.17
+    container_name: vault
+    hostname: vault
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_TOKEN:-root}
+      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+    command: server -dev
+    ports:
+      - "8200:8200"
+    networks:
+      - tp3
+    cap_add:
+      - IPC_LOCK
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    container_name: prometheus
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - tp3
+    depends_on:
+      - api-gateway
+      - ms-coordenador-a
+      - ms-ia
+
+  grafana:
+    image: grafana/grafana:11.5.2
+    container_name: grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    ports:
+      - "3000:3000"
+    networks:
+      - tp3
+    depends_on:
+      - prometheus
+
+  zipkin:
+    image: openzipkin/zipkin:3.4
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - tp3
+
+networks:
+  tp3:
+    driver: bridge

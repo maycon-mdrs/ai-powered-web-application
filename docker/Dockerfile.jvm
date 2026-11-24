@@ -1,0 +1,33 @@
+# Build de um módulo Spring Boot do monorepo.
+# docker build -f docker/Dockerfile.jvm --build-arg MODULE=api-gateway -t tp3-api-gateway .
+ARG MODULE=api-gateway
+
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+WORKDIR /src
+COPY pom.xml .
+COPY eureka-server/pom.xml eureka-server/pom.xml
+COPY config-server/pom.xml config-server/pom.xml
+COPY api-gateway/pom.xml api-gateway/pom.xml
+COPY ms-coordenador/pom.xml ms-coordenador/pom.xml
+COPY ms-ia/pom.xml ms-ia/pom.xml
+COPY ms-lambda/pom.xml ms-lambda/pom.xml
+# Dependências em cache quando só o código muda
+RUN mvn -q -DskipTests dependency:go-offline || true
+COPY . .
+ARG MODULE
+RUN mvn -q -DskipTests package -pl ${MODULE} -am
+
+FROM eclipse-temurin:21-jre-jammy
+ARG MODULE
+ENV JAVA_TOOL_OPTIONS="-Xmx384m"
+WORKDIR /app
+# ms-lambda usa classifier "boot"; demais módulos usam o jar repackaged padrão
+COPY --from=build /src/${MODULE}/target/ /tmp/jars/
+RUN set -e; \
+    if [ -f /tmp/jars/${MODULE}-0.0.1-SNAPSHOT-boot.jar ]; then \
+      cp /tmp/jars/${MODULE}-0.0.1-SNAPSHOT-boot.jar /app/app.jar; \
+    else \
+      cp /tmp/jars/${MODULE}-0.0.1-SNAPSHOT.jar /app/app.jar; \
+    fi
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

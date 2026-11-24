@@ -1,0 +1,26 @@
+# ms-ia com Node.js para MCP Open Library (npx)
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+WORKDIR /src
+COPY pom.xml .
+COPY eureka-server/pom.xml eureka-server/pom.xml
+COPY config-server/pom.xml config-server/pom.xml
+COPY api-gateway/pom.xml api-gateway/pom.xml
+COPY ms-coordenador/pom.xml ms-coordenador/pom.xml
+COPY ms-ia/pom.xml ms-ia/pom.xml
+COPY ms-lambda/pom.xml ms-lambda/pom.xml
+RUN mvn -q -DskipTests dependency:go-offline || true
+COPY . .
+RUN mvn -q -DskipTests package -pl ms-ia -am
+
+FROM eclipse-temurin:21-jre-jammy
+ENV JAVA_TOOL_OPTIONS="-Xmx512m"
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/* \
+    && node -v && npx -v
+WORKDIR /app
+COPY --from=build /src/ms-ia/target/ms-ia-0.0.1-SNAPSHOT.jar /app/app.jar
+EXPOSE 8082
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

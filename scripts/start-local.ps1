@@ -2,6 +2,9 @@
 # Uso:
 #   .\scripts\start-local.ps1          # stub (sem Vault)
 #   .\scripts\start-local.ps1 vault    # LLM real (exige Vault + VAULT_URI/VAULT_TOKEN)
+# Env:
+#   SKIP_BUILD=1
+#   LAMBDA_BASE_URL (default http://127.0.0.1:9000; se não for localhost, não sobe ms-lambda)
 param(
   [ValidateSet("stub", "vault")]
   [string]$Mode = "stub"
@@ -11,12 +14,16 @@ $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
-Write-Host "== Build =="
-mvn -q -DskipTests package
+if ($env:SKIP_BUILD -ne "1") {
+  Write-Host "== Build =="
+  mvn -q -DskipTests package
+} else {
+  Write-Host "== SKIP_BUILD=1 — usando jars existentes =="
+}
 
 $env:EUREKA_DEFAULT_ZONE = "http://127.0.0.1:8761/eureka/,http://127.0.0.1:8762/eureka/"
 $env:CONFIG_SERVER_URL = "http://127.0.0.1:8888"
-$env:LAMBDA_BASE_URL = "http://127.0.0.1:9000"
+if (-not $env:LAMBDA_BASE_URL) { $env:LAMBDA_BASE_URL = "http://127.0.0.1:9000" }
 # Evita registrar o IP público da EC2 (LB local quebrava com timeout ~2min).
 if (-not $env:EUREKA_INSTANCE_IP) { $env:EUREKA_INSTANCE_IP = "127.0.0.1" }
 if (-not $env:EUREKA_INSTANCE_HOSTNAME) { $env:EUREKA_INSTANCE_HOSTNAME = "localhost" }
@@ -44,7 +51,14 @@ Start-Process java -ArgumentList "-jar","$Root\eureka-server\target\eureka-serve
 Start-Sleep -Seconds 5
 Start-Process java -ArgumentList "-jar","$Root\config-server\target\config-server-0.0.1-SNAPSHOT.jar" -WindowStyle Minimized
 Start-Sleep -Seconds 5
-Start-Process java -ArgumentList "-jar","$Root\ms-lambda\target\ms-lambda-0.0.1-SNAPSHOT.jar" -WindowStyle Minimized
+
+$lambdaLocal = $env:LAMBDA_BASE_URL -match '^https?://(127\.0\.0\.1|localhost)(:\d+)?(/.*)?$'
+if ($lambdaLocal) {
+  Start-Process java -ArgumentList "-jar","$Root\ms-lambda\target\ms-lambda-0.0.1-SNAPSHOT-boot.jar" -WindowStyle Minimized
+} else {
+  Write-Host "  (ms-lambda local omitido — LAMBDA_BASE_URL=$($env:LAMBDA_BASE_URL))"
+}
+
 Start-Process java -ArgumentList $MsIaArgs -WindowStyle Minimized
 Start-Sleep -Seconds 8
 Start-Process java -ArgumentList "-jar","$Root\ms-coordenador\target\ms-coordenador-0.0.1-SNAPSHOT.jar","--server.port=8081" -WindowStyle Minimized
@@ -57,7 +71,7 @@ OK (aprox.). Verifique:
   Eureka:  http://localhost:8761
   Gateway: http://localhost:8080/api/assistant/chat
   GraphiQL: http://localhost:8082/graphiql
-  Lambda:  http://localhost:9000/plano
-  Obs:     docker compose -f observability/docker-compose.yml up -d
+  Lambda:  $($env:LAMBDA_BASE_URL)
+  Obs:     docker compose up -d   (raiz)  ou  docker compose -f observability/docker-compose.yml up -d
   Modo:    $Mode
 "@

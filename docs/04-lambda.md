@@ -69,20 +69,23 @@ Fórmula simples (implementação):
 
 Módulo `ms-lambda/`:
 
-- Handler Java (ou função mínima) empacotável para AWS Lambda
-- Teste local: stub HTTP no MS1 apontando para um mock, ou SAM/LocalStack se disponível
-- Empacotamento: JAR shaded / zip conforme runtime Java da Academy
+- `PlanoController` — HTTP local `:9000/plano` (Compose profile `local-lambda` ou `java -jar`)
+- `PlanoLeituraHandler` — `RequestHandler` POJO (teste no console AWS)
+- `PlanoLeituraUrlHandler` — **Function URL** (`APIGatewayV2HTTPEvent` → JSON)
+- Artifact shaded: `ms-lambda-0.0.1-SNAPSHOT-aws.jar`
+
+Handler de produção: `br.imd.ufrn.lambda.PlanoLeituraUrlHandler::handleRequest`
 
 ---
 
 ## 4. Deploy (resumo)
 
-Ver detalhes em [06-deploy-aws.md](06-deploy-aws.md).
+Ver [ambiente-aws.md](ambiente-aws.md) e [06-deploy-aws.md](06-deploy-aws.md).
 
-1. Criar função na AWS Academy
-2. Expor **Function URL** (auth IAM ou none em lab) ou API Gateway HTTP
-3. Gravar `lambda.base-url` no Config Server / env do MS1
-4. MS1 chama via HTTP Interface
+1. Criar função na **conta AWS pessoal** (IAM role + Java 21)
+2. Expor **Function URL** (`auth-type NONE` no lab)
+3. Gravar URL em `LAMBDA_BASE_URL` (`.env` / Compose) — MS1 HTTP Interface
+4. Não usar Academy/`LabRole`
 
 ---
 

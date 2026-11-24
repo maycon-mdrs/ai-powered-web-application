@@ -33,6 +33,11 @@
             <artifactId>aws-lambda-java-events</artifactId>
             <version>3.14.0</version>
         </dependency>
+        <!-- Explícito no shade AWS (Function URL JSON), sem depender só do starter web -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
@@ -41,17 +46,7 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!-- Fat jar Lambda (classes na raiz). Roda ANTES do repackage Boot. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -67,6 +62,16 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>aws</shadedClassifierName>
+                            <outputFile>${project.build.directory}/${project.build.finalName}-aws.jar</outputFile>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.amazonaws:aws-lambda-java-core</include>
+                                    <include>com.amazonaws:aws-lambda-java-events</include>
+                                    <include>com.fasterxml.jackson.core:jackson-databind</include>
+                                    <include>com.fasterxml.jackson.core:jackson-core</include>
+                                    <include>com.fasterxml.jackson.core:jackson-annotations</include>
+                                </includes>
+                            </artifactSet>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -74,10 +79,27 @@
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>BOOT-INF/**</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- App Spring local (:9000) — classifier boot; não sobrescreve o jar usado pelo shade -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>boot</classifier>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

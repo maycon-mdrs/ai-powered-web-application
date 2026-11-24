@@ -9,15 +9,32 @@ Microserviços Spring: conversa sobre livros com **Chat Memory**, **RAG de gêne
 1. [docs/00-visao-geral.md](docs/00-visao-geral.md) … [06-deploy-aws.md](docs/06-deploy-aws.md)
 2. [docs/07-ensaio-apresentacao.md](docs/07-ensaio-apresentacao.md)
 3. [docs/vault.md](docs/vault.md) — HashiCorp Vault (chaves LLM)
+4. [docs/ambiente-aws.md](docs/ambiente-aws.md) — **passo a passo AWS** (conta pessoal, EC2, Compose, Lambda)
 
-## Subir local (modo stub — padrão)
+## Subir com Docker Compose (recomendado / EC2)
+
+```powershell
+cp .env.example .env
+.\scripts\docker-up.ps1                  # stub + ms-lambda local + obs
+# .\scripts\docker-up.ps1 none           # sem Lambda local (use Function URL no .env)
+```
+
+```bash
+cp .env.example .env
+./scripts/docker-up.sh                   # default: profile local-lambda
+# ./scripts/docker-up.sh none            # Lambda = AWS via LAMBDA_BASE_URL
+```
+
+Kill de réplica (demo Gateway/Eureka): `docker stop ms-coordenador-b` / `docker start ms-coordenador-b`.
+
+## Subir local sem Compose (modo stub)
 
 Não precisa de Vault nem de chaves de LLM:
 
 ```powershell
 mvn -DskipTests package
 .\scripts\start-local.ps1
-# Observabilidade:
+# Observabilidade só:
 docker compose -f observability/docker-compose.yml up -d
 ```
 

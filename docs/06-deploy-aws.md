@@ -1,6 +1,8 @@
-# E6 — Deploy AWS Academy
+# E6 — Deploy AWS (conta pessoal)
 
-Em uma frase: a stack Spring sobe em **EC2**; a função de plano de leitura sobe como **Lambda**; segredos e config seguem Twelve-Factor.
+Em uma frase: a stack Spring sobe em **1 EC2 com Docker Compose**; o plano de leitura sobe como **Lambda** (Function URL); segredos via Vault (profile) e config via Config Server.
+
+Detalhe operacional (EIP, SG, IAM, comandos): **[ambiente-aws.md](ambiente-aws.md)**.
 
 ---
 
@@ -8,87 +10,57 @@ Em uma frase: a stack Spring sobe em **EC2**; a função de plano de leitura sob
 
 ```mermaid
 flowchart TB
-  JMeter[JMeter_local_ou_EC2] --> GW[EC2_API_Gateway_app]
-  subgraph ec2 [EC2_ou_grupo]
+  JMeter[JMeter_PC] --> GW[EC2_api_gateway]
+  subgraph ec2 [EC2_Docker_Compose]
     Eureka[Eureka_peers]
     Config[Config_Server]
-    Vault[Vault]
-    MS1[ms-coordenador]
-    MS2[ms-ia]
-    MCP[npx_mcp-open-library]
+    Vault[Vault_opcional]
+    MS1a[ms_coordenador_a]
+    MS1b[ms_coordenador_b]
+    MS2[ms_ia]
     Obs[Prometheus_Grafana_Zipkin]
   end
-  GW --> MS1
-  MS1 --> MS2
-  MS1 --> Lambda[AWS_Lambda_plano_leitura]
-  MS2 --> MCP
-  MS2 --> Gemini[Gemini_API]
-  Config --> Git[config-repo]
+  GW --> MS1a
+  GW --> MS1b
+  MS1a --> MS2
+  MS1b --> MS2
+  MS1a --> Lambda[AWS_Lambda_FunctionURL]
+  MS1b --> Lambda
+  MS2 --> MCP[npx_mcp_open_library]
 ```
 
 ---
 
-## 2. O que vai em EC2
+## 2. O que vai onde
 
-Mínimo sugerido (pode ser 1 VM grande no lab ou 2):
-
-| Processo | Notas |
-|----------|-------|
-| Eureka peer A + B | Cluster |
-| Config Server | Clona/`file://` do `config-repo` |
-| Vault | Dev/lab com secrets LLM |
-| API Gateway app | Porta pública SG liberada para JMeter |
-| ms-coordenador (2+ instâncias) | Para demo de kill + Eureka |
-| ms-ia | Node.js disponível para `npx mcp-open-library` |
-| Prometheus + Grafana + Zipkin | Observabilidade |
-
-Security Group: liberar só portas necessárias (8080 Gateway, 8761 Eureka UI se demo, 3000 Grafana, etc.).
+| Onde | O quê |
+|------|--------|
+| EC2 + Compose | Eureka×2, Config, Gateway, MS1×2, MS2, obs, Vault (profile) |
+| AWS Lambda | `PlanoLeituraUrlHandler` + Function URL |
+| Fora | MCP próprio; 2ª EC2 (kill = `docker stop ms-coordenador-b`) |
 
 ---
 
 ## 3. Lambda
 
-1. Empacotar handler de `ms-lambda`
-2. Criar função Java na conta Academy
-3. Function URL (ou API Gateway HTTP)
-4. Colocar URL em `lambda.base-url` (Config/env do MS1)
-5. Testar com um POST JSON do contrato em [04-lambda.md](04-lambda.md)
+1. Build: `mvn -pl ms-lambda -am package` → `*-aws.jar`
+2. Role `tp3-plano-leitura-role` + `AWSLambdaBasicExecutionRole`
+3. Runtime Java 21; handler `br.imd.ufrn.lambda.PlanoLeituraUrlHandler::handleRequest`
+4. Function URL (`auth NONE` no lab) → `LAMBDA_BASE_URL` no `.env`
 
 ---
 
-## 4. Segredos e config
+## 4. Twelve-Factor (demo)
 
-| Dado | Onde |
-|------|------|
-| Gemini / OpenAI keys | Vault |
-| `ai.provider` | Config Server (`config-repo`) |
-| `lambda.base-url` | Config / env |
-| URLs Eureka | env / config |
-| Open Library | sem secret |
-
-Nunca commitar `.env` com chaves reais.
+| Fator | Onde |
+|-------|------|
+| Config | Config Server + `config-repo` + env/`.env` |
+| Segredos | Vault (`secret/ms-ia`) |
+| Processos / portas | containers Compose |
+| Backing services | Eureka, Vault, LLM, Lambda URL, MCP |
 
 ---
 
 ## 5. Checklist pré-apresentação
 
-- [ ] Eureka cluster com apps registrados
-- [ ] Gateway respondendo na EC2
-- [ ] MS2 responde GraphQL via MS1
-- [ ] Memory + RAG + MCP Open Library ok
-- [ ] Lambda retorna plano
-- [ ] Grafana mostra CB
-- [ ] JMeter salvo com carga &lt; knee e 0 erros
-- [ ] Chaos Monkey pronto para ligar/desligar
-- [ ] Troca `ai.provider` via Config demonstrável
-- [ ] Vault com chaves válidas para o dia
-
----
-
-## 6. O que a banca pede ver (deploy)
-
-| Item | Onde |
-|------|------|
-| App na AWS Academy | EC2 + Lambda |
-| 12 fatores | Config/env/secrets/processos/portas |
-| Lambda | Function URL funcionando |
+Ver [aws-checklist.md](aws-checklist.md) e [ambiente-aws.md](ambiente-aws.md).
