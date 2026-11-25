@@ -28,10 +28,15 @@ public class AssistantController {
         String message = body.message() == null ? "" : body.message();
 
         String reply = orchestrator.askIa(conversationId, message);
-        ChatResponse.PlanoLeituraDto plano = null;
-        if (body.gerarPlano() && body.livro() != null) {
-            plano = orchestrator.gerarPlano(body.livro());
+        return ResponseEntity.ok(new ChatResponse(conversationId, reply, "ms-ia", null));
+    }
+
+    /** Plano de leitura via Lambda (MS3) — separado do chat com MS-IA. */
+    @PostMapping("/plano")
+    public ResponseEntity<ChatResponse.PlanoLeituraDto> plano(@RequestBody ChatRequest.LivroSelecionado livro) {
+        if (livro == null || livro.titulo() == null || livro.titulo().isBlank()) {
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(new ChatResponse(conversationId, reply, "ms-ia", plano));
+        return ResponseEntity.ok(orchestrator.gerarPlano(livro));
     }
 }

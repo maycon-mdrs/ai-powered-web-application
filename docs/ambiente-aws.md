@@ -263,14 +263,14 @@ docker ps
 curl -s http://127.0.0.1:8761/ | head
 curl -s -X POST http://127.0.0.1:8080/api/assistant/chat \
   -H 'Content-Type: application/json' \
-  -d '{"conversationId":"demo-1","message":"Quero ficcao cientifica curta","gerarPlano":false}'
+  -d '{"conversationId":"demo-1","message":"Quero ficcao cientifica curta"}'
 ```
 
-Com plano (Lambda AWS ou local):
+Plano (Lambda AWS ou local) — endpoint separado:
 
 ```bash
-curl -s -X POST http://127.0.0.1:8080/api/assistant/chat -H 'Content-Type: application/json' \
-  -d '{"conversationId":"demo-1","message":"Quero Neuromancer","gerarPlano":true,"livro":{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}}'
+curl -s -X POST http://127.0.0.1:8080/api/assistant/plano -H 'Content-Type: application/json' \
+  -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 ```
 
 ---
@@ -378,7 +378,7 @@ docker compose --profile local-lambda --profile vault down
 - [ ] Role IAM + Lambda + Function URL testada com `curl`
 - [ ] `.env` com `LAMBDA_BASE_URL` da Function URL
 - [ ] `docker compose up` — Eureka com 2× `MS-COORDENADOR`, `MS-IA`, `API-GATEWAY`
-- [ ] Chat 200; chat com `gerarPlano=true` usa Lambda AWS
+- [ ] Chat 200 em `/api/assistant/chat`; plano 200 em `/api/assistant/plano` (Lambda AWS)
 - [ ] Kill `ms-coordenador-b` + Chaos on/off
 - [ ] Grafana/Zipkin + JMeter 0 erros (&lt; knee)
 - [ ] (Demo) Vault + refresh Config + MCP uma vez

@@ -19,15 +19,21 @@ Abra no browser do PC (Security Group precisa liberar a porta).
 | Gateway (API) | `http://<EIP>:8080` | Só HTTP; use `curl` ou Postman |
 | Chat demo (HTML) | `http://<EIP>:8080/demo/` | UI simples no próprio Gateway |
 
-Chat HTTP (sempre pelo Gateway):
+Chat e plano (sempre pelo Gateway) — endpoints separados:
 
 ```bash
+# Chat → coordenador → MS-IA (GraphQL)
 curl -s -X POST http://<EIP>:8080/api/assistant/chat \
   -H 'Content-Type: application/json' \
-  -d '{"conversationId":"demo-1","message":"Quero ficcao cientifica curta","gerarPlano":false}'
+  -d '{"conversationId":"demo-1","message":"Quero ficcao cientifica curta"}'
+
+# Plano → coordenador → Lambda
+curl -s -X POST http://<EIP>:8080/api/assistant/plano \
+  -H 'Content-Type: application/json' \
+  -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 ```
 
-Na EC2 use `127.0.0.1` no lugar do EIP.
+Na EC2 use `127.0.0.1` no lugar do EIP. Use a porta **8080** (`http://<EIP>:8080/demo/`).
 
 ---
 
@@ -49,9 +55,9 @@ mutation {
 ```
 
 ### 3. Zipkin — um request ponta a ponta
-1. Faça um chat pelo Gateway (`gerarPlano=true` se quiser plano).
+1. Faça um chat (`/api/assistant/chat`) e/ou um plano (`/api/assistant/plano`) pelo Gateway.
 2. Abra `:9411` → **Run Query**.
-3. Abra um trace e mostre spans de `api-gateway` → `ms-coordenador` → `ms-ia`.
+3. Abra um trace e mostre spans de `api-gateway` → `ms-coordenador` → `ms-ia` (e Lambda no plano).
 
 ### 4. Grafana / Prometheus — métricas
 1. `:3000` login `admin` / `admin`.
@@ -75,10 +81,10 @@ curl -X POST http://127.0.0.1:8082/actuator/refresh
 ### Memory + RAG (mesmo conversationId)
 ```bash
 curl -s -X POST http://127.0.0.1:8080/api/assistant/chat -H 'Content-Type: application/json' \
-  -d '{"conversationId":"mem-1","message":"Gosto de cyberpunk. Nao sugira Neuromancer.","gerarPlano":false}'
+  -d '{"conversationId":"mem-1","message":"Gosto de cyberpunk. Nao sugira Neuromancer."}'
 
 curl -s -X POST http://127.0.0.1:8080/api/assistant/chat -H 'Content-Type: application/json' \
-  -d '{"conversationId":"mem-1","message":"Indique so 1 titulo diferente e diga por que combina.","gerarPlano":false}'
+  -d '{"conversationId":"mem-1","message":"Indique so 1 titulo diferente e diga por que combina."}'
 ```
 
 Corpus RAG: `docs/corpus/`.

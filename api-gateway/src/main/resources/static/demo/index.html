@@ -265,26 +265,44 @@
     .msg-body {
       min-width: 0;
       padding-top: .15rem;
-      line-height: 1.5;
-      white-space: pre-wrap;
+      line-height: 1.55;
       word-break: break-word;
+    }
+    .msg-body.loading,
+    .msg-body.error {
+      white-space: pre-wrap;
     }
     .msg-body.loading {
       color: var(--muted);
       font-style: italic;
     }
     .msg-body.error { color: #9b1c1c; }
+    .msg-body p { margin: 0 0 .65rem; }
+    .msg-body p:last-child { margin-bottom: 0; }
+    .msg-body ul, .msg-body ol {
+      margin: .25rem 0 .7rem;
+      padding-left: 1.35rem;
+    }
+    .msg-body li { margin: .2rem 0; }
+    .msg-body strong { font-weight: 700; }
+    .msg-body em { font-style: italic; }
+    .msg-body hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: .85rem 0;
+    }
     .plano {
-      margin-top: .65rem;
-      padding: .65rem .75rem;
+      margin-top: .85rem;
+      padding: .7rem .8rem;
       border: 1px solid var(--line);
+      border-left: 3px solid var(--st-red);
       border-radius: var(--radius);
       background: var(--sidebar-bg);
       font-size: .9rem;
-      white-space: normal;
     }
     .plano ul { margin: .35rem 0 0; padding-left: 1.1rem; }
-    .plano-title { font-weight: 700; margin-bottom: .25rem; }
+    .plano-title { font-weight: 700; margin-bottom: .15rem; }
+    .plano-meta { color: var(--muted); font-size: .78rem; margin: 0 0 .45rem; }
 
     /* —— Bottom chat input —— */
     .st-bottom {
@@ -387,11 +405,8 @@
       <hr class="divider" />
 
       <h2 class="section-title">Plano de leitura</h2>
-      <label class="toggle">
-        <input type="checkbox" id="gerarPlano" />
-        <span>gerarPlano (Lambda)</span>
-      </label>
-      <div id="livroFields" hidden>
+      <p class="st-help">Endpoint separado: <code>POST /api/assistant/plano</code> → Lambda. Não mistura com o chat.</p>
+      <div id="livroFields">
         <div class="widget">
           <label class="st-label" for="titulo">Título</label>
           <input id="titulo" type="text" value="Neuromancer" />
@@ -409,14 +424,21 @@
           <input id="dias" type="number" value="14" min="1" />
         </div>
       </div>
+      <div class="btn-row" style="margin-top:.55rem">
+        <button type="button" class="btn btn-secondary" id="gerarPlanoBtn">Gerar plano (Lambda)</button>
+      </div>
 
       <hr class="divider" />
 
       <h2 class="section-title">API</h2>
       <div class="widget">
-        <label class="st-label" for="apiBase">Endpoint POST</label>
-        <input id="apiBase" type="text" value="/api/assistant/chat" />
-        <p class="st-help">Padrão: Gateway neste host.</p>
+        <label class="st-label" for="apiChat">POST chat</label>
+        <input id="apiChat" type="text" value="/api/assistant/chat" />
+      </div>
+      <div class="widget">
+        <label class="st-label" for="apiPlano">POST plano</label>
+        <input id="apiPlano" type="text" value="/api/assistant/plano" />
+        <p class="st-help">Rotas do Gateway → coordenador.</p>
       </div>
 
       <hr class="divider" />
@@ -472,9 +494,6 @@
     syncCaption();
 
     $("conversationId").addEventListener("input", syncCaption);
-    $("gerarPlano").addEventListener("change", (e) => {
-      $("livroFields").hidden = !e.target.checked;
-    });
 
     $("collapseBtn").addEventListener("click", () => {
       document.body.classList.add("sidebar-collapsed");
@@ -492,7 +511,7 @@
       threadInner.innerHTML = "";
       loadingEl = null;
       setDebug("Conversa limpa.");
-      setLoading(false);
+      setBusy(false);
     });
 
     function esc(s) {
@@ -502,15 +521,77 @@
         .replaceAll(">", "&gt;");
     }
 
+    /** Markdown leve (escape + bold/italic/listas/hr) para replies da IA. */
+    function mdToHtml(text) {
+      const lines = String(text).replace(/\r\n/g, "\n").split("\n");
+      const out = [];
+      let para = [];
+      let listType = null;
+      let listItems = [];
+
+      const flushPara = () => {
+        if (!para.length) return;
+        out.push("<p>" + inlineMd(para.join(" ")) + "</p>");
+        para = [];
+      };
+      const flushList = () => {
+        if (!listType) return;
+        const tag = listType;
+        out.push("<" + tag + ">" + listItems.map((i) => "<li>" + inlineMd(i) + "</li>").join("") + "</" + tag + ">");
+        listType = null;
+        listItems = [];
+      };
+      const inlineMd = (s) => esc(s)
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.+?)\*/g, "<em>$1</em>");
+
+      for (const raw of lines) {
+        const line = raw.trimEnd();
+        const trimmed = line.trim();
+        if (!trimmed) {
+          flushPara();
+          flushList();
+          continue;
+        }
+        if (/^---+$/.test(trimmed)) {
+          flushPara();
+          flushList();
+          out.push("<hr>");
+          continue;
+        }
+        const ol = trimmed.match(/^(\d+)\.\s+(.*)$/);
+        const ul = trimmed.match(/^[-*]\s+(.*)$/);
+        if (ol) {
+          flushPara();
+          if (listType && listType !== "ol") flushList();
+          listType = "ol";
+          listItems.push(ol[2]);
+          continue;
+        }
+        if (ul) {
+          flushPara();
+          if (listType && listType !== "ul") flushList();
+          listType = "ul";
+          listItems.push(ul[1]);
+          continue;
+        }
+        flushList();
+        para.push(trimmed);
+      }
+      flushPara();
+      flushList();
+      return out.join("") || "<p></p>";
+    }
+
     function setDebug(text) {
       $("debugOut").textContent = text;
     }
 
-    function setLoading(on) {
+    function setBusy(on) {
       const controls = [
-        $("send"), $("message"), $("conversationId"), $("apiBase"),
-        $("gerarPlano"), $("titulo"), $("autor"), $("paginas"), $("dias"),
-        $("newConv"), $("clear")
+        $("send"), $("message"), $("conversationId"), $("apiChat"), $("apiPlano"),
+        $("titulo"), $("autor"), $("paginas"), $("dias"),
+        $("newConv"), $("clear"), $("gerarPlanoBtn")
       ];
       controls.forEach((el) => { el.disabled = on; });
       $("message").placeholder = on ? "Aguardando resposta..." : "Digite sua mensagem...";
@@ -523,7 +604,7 @@
 
       const av = document.createElement("div");
       av.className = "avatar " + (role === "user" ? "user" : "assistant");
-      av.textContent = role === "user" ? "U" : "AI";
+      av.textContent = role === "user" ? "U" : (opts.lambda ? "λ" : "AI");
 
       const body = document.createElement("div");
       body.className = "msg-body" + (opts.loading ? " loading" : "") + (opts.error ? " error" : "");
@@ -536,6 +617,20 @@
       return row;
     }
 
+    function renderPlano(p) {
+      const items = (p.checklist || []).map((i) => `<li>${esc(i)}</li>`).join("");
+      return (
+        `<div class="plano">` +
+        `<div class="plano-title">Plano Lambda</div>` +
+        `<p class="plano-meta">POST /api/assistant/plano · ${esc(p.titulo || "")}` +
+        (p.autor ? ` · ${esc(p.autor)}` : "") +
+        `</p>` +
+        `<div>${esc(String(p.paginasPorDia))} pág/dia · ${esc(String(p.diasDisponiveis))} dias</div>` +
+        `<div>${esc(p.mensagem || "")}</div>` +
+        `<ul>${items}</ul></div>`
+      );
+    }
+
     function autoGrow() {
       const ta = $("message");
       ta.style.height = "auto";
@@ -543,31 +638,26 @@
     }
     $("message").addEventListener("input", autoGrow);
 
-    async function send() {
+    async function sendChat() {
       const message = $("message").value.trim();
       if (!message || $("send").disabled) return;
 
       const conversationId = $("conversationId").value.trim() || newChatId();
-      const gerarPlano = $("gerarPlano").checked;
-      const body = { conversationId, message, gerarPlano };
-      if (gerarPlano) {
-        body.livro = {
-          titulo: $("titulo").value.trim(),
-          autor: $("autor").value.trim(),
-          paginasEstimadas: Number($("paginas").value) || 200,
-          diasDisponiveis: Number($("dias").value) || 14
-        };
+      if (!$("conversationId").value.trim()) {
+        $("conversationId").value = conversationId;
+        syncCaption();
       }
+      const body = { conversationId, message };
 
       addMessage("user", esc(message));
       $("message").value = "";
       autoGrow();
-      setLoading(true);
-      loadingEl = addMessage("assistant", "_Aguardando resposta..._", { loading: true });
+      setBusy(true);
+      loadingEl = addMessage("assistant", "Aguardando resposta...", { loading: true });
       const t0 = performance.now();
 
       try {
-        const res = await fetch($("apiBase").value, {
+        const res = await fetch($("apiChat").value, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
@@ -583,7 +673,7 @@
         }
 
         setDebug(
-          "HTTP " + res.status + " · " + ms + "ms\n\n" +
+          "CHAT HTTP " + res.status + " · " + ms + "ms\n\n" +
           "— request —\n" + JSON.stringify(body, null, 2) + "\n\n" +
           "— response —\n" + (data ? JSON.stringify(data, null, 2) : raw.slice(0, 4000))
         );
@@ -593,32 +683,84 @@
           return;
         }
 
-        const reply = data?.reply ?? raw;
-        let html = esc(reply);
-        if (data?.plano) {
-          const p = data.plano;
-          const items = (p.checklist || []).map((i) => `<li>${esc(i)}</li>`).join("");
-          html += `<div class="plano"><div class="plano-title">Plano Lambda</div>${esc(p.titulo || "")} · ${esc(String(p.paginasPorDia))} pág/dia · ${esc(String(p.diasDisponiveis))} dias<br>${esc(p.mensagem || "")}<ul>${items}</ul></div>`;
-        }
-        addMessage("assistant", html);
+        addMessage("assistant", mdToHtml(String(data?.reply ?? raw)));
       } catch (e) {
         if (loadingEl) {
           loadingEl.remove();
           loadingEl = null;
         }
-        setDebug("Falha de rede: " + (e.message || e));
+        setDebug("Falha de rede (chat): " + (e.message || e));
         addMessage("assistant", esc(e.message || e), { error: true });
       } finally {
-        setLoading(false);
+        setBusy(false);
         $("message").focus();
       }
     }
 
-    $("send").addEventListener("click", send);
+    async function sendPlano() {
+      if ($("gerarPlanoBtn").disabled) return;
+      const titulo = $("titulo").value.trim();
+      if (!titulo) {
+        setDebug("Informe o título do livro para gerar o plano.");
+        return;
+      }
+      const body = {
+        titulo,
+        autor: $("autor").value.trim(),
+        paginasEstimadas: Number($("paginas").value) || 200,
+        diasDisponiveis: Number($("dias").value) || 14
+      };
+
+      setBusy(true);
+      loadingEl = addMessage("assistant", "Gerando plano na Lambda...", { loading: true, lambda: true });
+      const t0 = performance.now();
+
+      try {
+        const res = await fetch($("apiPlano").value, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        const raw = await res.text();
+        const ms = Math.round(performance.now() - t0);
+        let data = null;
+        try { data = JSON.parse(raw); } catch (_) {}
+
+        if (loadingEl) {
+          loadingEl.remove();
+          loadingEl = null;
+        }
+
+        setDebug(
+          "PLANO HTTP " + res.status + " · " + ms + "ms\n\n" +
+          "— request —\n" + JSON.stringify(body, null, 2) + "\n\n" +
+          "— response —\n" + (data ? JSON.stringify(data, null, 2) : raw.slice(0, 4000))
+        );
+
+        if (!res.ok) {
+          addMessage("assistant", esc(raw.slice(0, 2500) || "Falha ao gerar plano"), { error: true, lambda: true });
+          return;
+        }
+
+        addMessage("assistant", renderPlano(data), { lambda: true });
+      } catch (e) {
+        if (loadingEl) {
+          loadingEl.remove();
+          loadingEl = null;
+        }
+        setDebug("Falha de rede (plano): " + (e.message || e));
+        addMessage("assistant", esc(e.message || e), { error: true, lambda: true });
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    $("send").addEventListener("click", sendChat);
+    $("gerarPlanoBtn").addEventListener("click", sendPlano);
     $("message").addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        send();
+        sendChat();
       }
     });
 
