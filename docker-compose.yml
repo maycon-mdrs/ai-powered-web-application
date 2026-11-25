@@ -90,7 +90,7 @@ services:
       MCP_ENABLED: ${MCP_ENABLED:-true}
       MCP_COMMAND: mcp-open-library
       SPRING_PROFILES_ACTIVE: ${MS_IA_PROFILES:-docker}
-      AI_STUB: ${AI_STUB:-}
+      # ai.stub vem do Config Server (config-repo/ms-ia.yml) — não definir AI_STUB aqui
       VAULT_URI: ${VAULT_URI:-http://vault:8200}
       VAULT_TOKEN: ${VAULT_TOKEN:-root}
       JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS_MS_IA:--Xmx512m}
