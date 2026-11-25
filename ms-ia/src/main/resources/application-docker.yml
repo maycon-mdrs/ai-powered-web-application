@@ -1,4 +1,4 @@
-# Perfil Docker Compose / Linux — MCP via npx nativo (sem cmd.exe)
+# Perfil Docker Compose / Linux — binário global (ver Dockerfile.ms-ia)
 spring:
   ai:
     mcp:
@@ -6,10 +6,9 @@ spring:
         stdio:
           connections:
             open-library:
-              command: ${MCP_COMMAND:npx}
-              args:
-                - ${MCP_ARG_0:-y}
-                - ${MCP_ARG_1:mcp-open-library}
+              command: ${MCP_COMMAND:mcp-open-library}
+              args: []
+
 
 eureka:
   instance:

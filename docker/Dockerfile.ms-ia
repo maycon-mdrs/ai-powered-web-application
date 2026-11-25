@@ -19,7 +19,8 @@ RUN apt-get update \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/* \
-    && node -v && npx -v
+    && node -v && npx -v \
+    && npm install -g mcp-open-library
 WORKDIR /app
 COPY --from=build /src/ms-ia/target/ms-ia-0.0.1-SNAPSHOT.jar /app/app.jar
 EXPOSE 8082
