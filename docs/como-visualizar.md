@@ -17,6 +17,7 @@ Abra no browser do PC (Security Group precisa liberar a porta).
 | Prometheus | `http://<EIP>:9090` | Targets / graph |
 | Vault UI | `http://<EIP>:8200` | Token `root` (lab `-dev`) |
 | Gateway (API) | `http://<EIP>:8080` | Só HTTP; use `curl` ou Postman |
+| Chat demo (HTML) | `http://<EIP>:8080/demo/` | UI simples no próprio Gateway |
 
 Chat HTTP (sempre pelo Gateway):
 

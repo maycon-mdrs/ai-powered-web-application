@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TP3 — Chat demo</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --panel: #fffdf8;
+      --ink: #1c1917;
+      --muted: #57534e;
+      --line: #d6d3d1;
+      --accent: #0f766e;
+      --accent-ink: #ecfdf5;
+      --danger: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 1.25rem;
+      display: grid;
+      gap: 1rem;
+    }
+    h1 { font-size: 1.35rem; margin: 0 0 .25rem; }
+    p.lead { margin: 0; color: var(--muted); font-size: .95rem; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .row {
+      display: grid;
+      gap: .75rem;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 700px) {
+      .row { grid-template-columns: 1fr; }
+    }
+    label {
+      display: grid;
+      gap: .35rem;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+    input, textarea, button {
+      font: inherit;
+    }
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: .55rem .7rem;
+      background: #fff;
+      color: var(--ink);
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    .checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem 1.25rem;
+      align-items: center;
+      margin-top: .25rem;
+    }
+    .checks label {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      color: var(--ink);
+    }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: .65rem 1rem;
+      background: var(--accent);
+      color: var(--accent-ink);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+    button.secondary {
+      background: #44403c;
+      color: #fafaf9;
+    }
+    .actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+    #log {
+      display: grid;
+      gap: .75rem;
+      max-height: 55vh;
+      overflow: auto;
+    }
+    .msg {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: .75rem .9rem;
+      white-space: pre-wrap;
+      line-height: 1.45;
+    }
+    .msg.user { background: #e7e5e4; }
+    .msg.bot { background: #fff; }
+    .msg.err { border-color: #fecaca; color: var(--danger); }
+    .meta {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-bottom: .35rem;
+    }
+    .plano {
+      margin-top: .6rem;
+      padding-top: .6rem;
+      border-top: 1px dashed var(--line);
+      font-size: .9rem;
+    }
+    #livroBox[hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Assistente de livros — demo</h1>
+      <p class="lead">Chama <code>POST /api/assistant/chat</code> no mesmo host do Gateway (sem Streamlit).</p>
+    </header>
+
+    <section class="panel">
+      <div class="row">
+        <label>conversationId
+          <input id="conversationId" value="demo-ui-1" />
+        </label>
+        <label>API (relativo = este Gateway)
+          <input id="apiBase" value="/api/assistant/chat" />
+        </label>
+      </div>
+
+      <label style="margin-top:.75rem">Mensagem
+        <textarea id="message">Quero ficção científica curta</textarea>
+      </label>
+
+      <div class="checks">
+        <label><input type="checkbox" id="gerarPlano" /> gerarPlano (Lambda)</label>
+      </div>
+
+      <div id="livroBox" class="row" style="margin-top:.75rem" hidden>
+        <label>Título
+          <input id="titulo" value="Neuromancer" />
+        </label>
+        <label>Autor
+          <input id="autor" value="William Gibson" />
+        </label>
+        <label>Páginas
+          <input id="paginas" type="number" value="271" />
+        </label>
+        <label>Dias
+          <input id="dias" type="number" value="14" />
+        </label>
+      </div>
+
+      <div class="actions" style="margin-top:1rem">
+        <button id="send" type="button">Enviar</button>
+        <button id="clear" class="secondary" type="button">Limpar histórico</button>
+        <button id="newConv" class="secondary" type="button">Novo conversationId</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="meta">Respostas</div>
+      <div id="log"></div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const log = $("log");
+
+    $("gerarPlano").addEventListener("change", (e) => {
+      $("livroBox").hidden = !e.target.checked;
+    });
+
+    $("clear").addEventListener("click", () => { log.innerHTML = ""; });
+    $("newConv").addEventListener("click", () => {
+      $("conversationId").value = "demo-ui-" + Date.now().toString(36);
+    });
+
+    function addMsg(kind, title, bodyHtml) {
+      const el = document.createElement("div");
+      el.className = "msg " + kind;
+      el.innerHTML = `<div class="meta">${title}</div>${bodyHtml}`;
+      log.prepend(el);
+    }
+
+    function esc(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    async function send() {
+      const message = $("message").value.trim();
+      if (!message) return;
+
+      const conversationId = $("conversationId").value.trim() || "demo-ui";
+      const gerarPlano = $("gerarPlano").checked;
+      const body = { conversationId, message, gerarPlano };
+      if (gerarPlano) {
+        body.livro = {
+          titulo: $("titulo").value.trim(),
+          autor: $("autor").value.trim(),
+          paginasEstimadas: Number($("paginas").value) || 200,
+          diasDisponiveis: Number($("dias").value) || 14
+        };
+      }
+
+      addMsg("user", "você · " + conversationId, esc(message));
+      $("send").disabled = true;
+      const t0 = performance.now();
+      try {
+        const res = await fetch($("apiBase").value, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } catch { data = null; }
+        const ms = Math.round(performance.now() - t0);
+        if (!res.ok) {
+          addMsg("err", `HTTP ${res.status} · ${ms}ms`, esc(text.slice(0, 2000)));
+          return;
+        }
+        const reply = data?.reply ?? text;
+        let extra = "";
+        if (data?.plano) {
+          const p = data.plano;
+          const list = (p.checklist || []).map((i) => `<li>${esc(i)}</li>`).join("");
+          extra = `<div class="plano"><strong>Plano</strong> — ${esc(p.titulo || "")} / ${esc(String(p.paginasPorDia))} pág/dia<br>${esc(p.mensagem || "")}<ul>${list}</ul></div>`;
+        }
+        addMsg(
+          "bot",
+          `ms-ia · source=${esc(data?.source || "?")} · ${ms}ms`,
+          esc(reply) + extra
+        );
+      } catch (e) {
+        addMsg("err", "falha de rede", esc(e.message || e));
+      } finally {
+        $("send").disabled = false;
+      }
+    }
+
+    $("send").addEventListener("click", send);
+    $("message").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) send();
+    });
+  </script>
+</body>
+</html>
