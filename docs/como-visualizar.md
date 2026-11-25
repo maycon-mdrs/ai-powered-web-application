@@ -12,7 +12,7 @@ Abra no browser do PC (Security Group precisa liberar a porta).
 | Eureka (réplicas) | `http://<EIP>:8761` | Ver `MS-COORDENADOR` ×2, `MS-IA`, `API-GATEWAY` |
 | Eureka peer 2 | `http://<EIP>:8762` | Cluster |
 | GraphiQL (MS2) | `http://<EIP>:8082/graphiql` | Mutation `askBookAssistant` |
-| Grafana | `http://<EIP>:3000` | `admin` / `admin` → Prometheus `http://prometheus:9090` |
+| Grafana | `http://<EIP>:3000` | `admin` / `admin` → dashboard **TP3 — Overview** (pasta TP3) |
 | Zipkin (traces) | `http://<EIP>:9411` | Run Query após um chat |
 | Prometheus | `http://<EIP>:9090` | Targets / graph |
 | Vault UI | `http://<EIP>:8200` | Token `root` (lab `-dev`) |
@@ -61,8 +61,10 @@ mutation {
 
 ### 4. Grafana / Prometheus — métricas
 1. `:3000` login `admin` / `admin`.
-2. Explore queries Prometheus (`http_server_requests`, circuit breakers).
-3. `:9090/targets` — jobs `api-gateway`, `ms-coordenador`, `ms-ia` **up**.
+2. Abra **Dashboards → TP3 → TP3 — Overview** (Prometheus e dashboard já vêm provisionados).
+3. Gere tráfego (chat/plano) e mostre **rate**, **p95**, **status HTTP** e **circuit breaker** (`resilience4j_*`).
+4. Complemento: `http://<EIP>:8081/actuator/circuitbreakers` (estado JSON).
+5. `:9090/targets` — jobs `api-gateway`, `ms-coordenador`, `ms-ia` **up** (Lambda AWS não é scrapada; métricas do plano vêm do coordenador + Zipkin).
 
 ### 5. Vault — segredo LLM
 `:8200` → secret `ms-ia` → `GEMINI_API_KEY` (não mostre o valor na gravação).

@@ -14,7 +14,3 @@ scrape_configs:
     metrics_path: /actuator/prometheus
     static_configs:
       - targets: ["ms-ia:8082"]
-  - job_name: ms-lambda
-    metrics_path: /actuator/prometheus
-    static_configs:
-      - targets: ["ms-lambda:9000"]

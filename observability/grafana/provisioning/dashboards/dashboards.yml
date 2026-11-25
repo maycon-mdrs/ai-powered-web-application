@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+  - name: tp3
+    orgId: 1
+    folder: TP3
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false

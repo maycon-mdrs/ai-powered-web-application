@@ -13,7 +13,7 @@ Ordem sugerida (alinhada ao roteiro):
 9. **JMeter** — `jmeter/assistant-chat.jmx`, threads >5 e &lt; knee, 0 erros
 10. **Kill réplica** — `docker stop ms-coordenador-b` (ou kill do processo); Eureka atualiza; carga na outra
 11. **Chaos Monkey** — `POST .../actuator/chaosmonkey/enable` → erros sobem; disable → descem
-12. **CB / Retry / Fallback / Rate / Bulkhead** — Actuator + Grafana
+12. **CB / Retry / Fallback / Rate / Bulkhead** — Grafana **TP3 — Overview** (estado/calls do CB) + Actuator `:8081/actuator/circuitbreakers`; Chaos Monkey / kill MS-IA para abrir o CB e mostrar fallback
 13. **Spring AI** — Memory (2 turns) + RAG corpus; com `AI_STUB=false` + keys: LLM real
 14. **MCP Open Library** — `MCP_ENABLED=true` + Node/`npx` (sem MCP próprio)
 
