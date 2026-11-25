@@ -17,7 +17,6 @@ public class MsIaGraphQlClient {
     private final ObjectMapper objectMapper;
 
     public MsIaGraphQlClient(@LoadBalanced RestClient.Builder builder, ObjectMapper objectMapper) {
-        // ServiceId como no Eureka (MS-IA).
         this.restClient = builder.baseUrl("http://MS-IA").build();
         this.objectMapper = objectMapper;
     }

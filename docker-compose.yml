@@ -1,12 +1,7 @@
-# Stack completa TP3 — 1 host (PC ou EC2).
-# Uso:
-#   cp .env.example .env   # edite LAMBDA_BASE_URL
-#   docker compose up -d --build
-# Profiles:
-#   --profile local-lambda   sobe ms-lambda :9000 (dev sem AWS)
-#   --profile vault          sobe Vault + ms-ia com perfil vault
-#
-# Kill demo: docker stop ms-coordenador-b && docker start ms-coordenador-b
+# Stack TP3 (um host).
+#   cp .env.example .env && docker compose up -d --build
+# Profiles: local-lambda (ms-lambda :9000) | vault (LLM + Vault)
+# Failover de réplica: docker stop ms-coordenador-b
 
 name: tp3
 
@@ -67,8 +62,13 @@ services:
     hostname: config-server
     environment:
       <<: *jvm_env
-      CONFIG_PROFILE: native
+      # CONFIG_PROFILE=native|git — ver .env.deploy.example
+      CONFIG_PROFILE: ${CONFIG_PROFILE:-native}
       CONFIG_REPO: file:/config-repo
+      CONFIG_GIT_URI: ${CONFIG_GIT_URI:-https://github.com/maycon-mdrs/ai-powered-web-application.git}
+      CONFIG_GIT_LABEL: ${CONFIG_GIT_LABEL:-main}
+      CONFIG_GIT_SEARCH_PATHS: ${CONFIG_GIT_SEARCH_PATHS:-config-repo}
+      CONFIG_GIT_FORCE_PULL: ${CONFIG_GIT_FORCE_PULL:-true}
     volumes:
       - ./config-repo:/config-repo:ro
     ports:
@@ -167,7 +167,7 @@ services:
       - ms-coordenador-a
       - ms-coordenador-b
 
-  # --- profile: local-lambda (dev sem AWS) ---
+  # --- profile: local-lambda ---
   ms-lambda:
     <<: *jvm_common
     profiles: ["local-lambda"]
@@ -181,7 +181,7 @@ services:
     ports:
       - "9000:9000"
 
-  # --- profile: vault (LLM real) ---
+  # --- profile: vault ---
   vault:
     profiles: ["vault"]
     image: hashicorp/vault:1.17

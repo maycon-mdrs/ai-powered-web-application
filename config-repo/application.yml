@@ -1,4 +1,3 @@
-# Config compartilhada (Config Server)
 management:
   endpoint:
     health:

@@ -73,13 +73,13 @@ O script **não** define `GEMINI_API_KEY` / `OPENAI_API_KEY`; o Spring Cloud Vau
 2. **Config Server / Git** — `ai.provider`, `ai.stub` e demais não sensíveis
 3. **Env** — `VAULT_URI`, `VAULT_TOKEN`, portas, URLs
 
-## 5. AWS (ideia)
+## 5. AWS
 
-Em EC2/ECS, preferir AppRole, IAM ou outro mecanismo de identidade em vez de token root em arquivo.
+Em EC2/ECS, usar AppRole, IAM ou outro mecanismo de identidade em vez de token root em arquivo.
 O token de bootstrap continua fora do Vault e fora do Git.
 
 ## Segurança
 
 - Não commitar tokens, chaves reais ou `.env`.
-- Rotacione qualquer chave que tenha aparecido em chat, log ou histórico.
+- Rotacione qualquer chave que tenha vazado em log, ticket ou histórico de terminal.
 - Não logar valores de segredos.

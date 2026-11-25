@@ -1,7 +1,3 @@
 ai:
   provider: gemini
-  # Deploy/AWS: false (LLM real). Dev local sem chave: AI_STUB=true no ambiente.
   stub: false
-
-# Chaves LLM NÃO ficam aqui — só no HashiCorp Vault (secret/ms-ia).
-# Ver docs/vault.md e .env.deploy.example.

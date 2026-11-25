@@ -2,7 +2,7 @@
 
 Microserviços Spring: conversa sobre livros com **Chat Memory**, **RAG de gêneros** e **MCP Open Library** (terceiro), mais **Lambda** de plano de leitura.
 
-> MCP próprio **não** faz parte deste projeto (decisão de escopo).
+> MCP próprio está fora do escopo deste trabalho; usa-se o MCP Open Library de terceiros.
 
 ## Documentação
 
@@ -20,7 +20,7 @@ cp .env.deploy.example .env
 # LAMBDA_BASE_URL já aponta para a Function URL; ajuste se mudou
 chmod +x scripts/*.sh
 ./scripts/docker-up-deploy.sh
-# quando pedir: grave GEMINI_API_KEY no Vault (só no terminal — ver docs/vault.md)
+# em seguida: vault kv put secret/ms-ia GEMINI_API_KEY=... (docs/vault.md)
 ```
 
 ### Dev local (stub, sem chave)

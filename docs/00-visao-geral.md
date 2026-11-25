@@ -2,7 +2,7 @@
 
 Este arquivo existe para uma coisa só: **entender o projeto sem pirar**.
 
-Leia na ordem. Os diagramas abrem no preview do Markdown do Cursor/VS Code / GitHub.
+Leia na ordem. Os diagramas abrem no preview Markdown (VS Code / GitHub).
 
 ---
 

@@ -77,7 +77,7 @@ icacls.exe $k /inheritance:r
 | Porta | Uso | Origem |
 | ----- | --- | ------ |
 | 22/TCP | SSH | seu IP |
-| 8080/TCP | API Gateway | seu IP (ou `0.0.0.0/0` na banca) |
+| 8080/TCP | API Gateway | seu IP (ou `0.0.0.0/0` se necessário na apresentação) |
 | 8761/TCP | Eureka UI | seu IP |
 | 8762/TCP | Eureka peer 2 | seu IP |
 | 8082/TCP | GraphiQL | seu IP |
@@ -193,7 +193,7 @@ $ROLE_ARN = "arn:aws:iam::${ACCOUNT}:role/tp3-plano-leitura-role"
 No PC (com o JAR gerado):
 
 ```powershell
-cd c:\Users\mayco\OneDrive\Documentos\UF\ai-powered-web-application
+cd /caminho/do/ai-powered-web-application
 mvn -q -DskipTests package -pl ms-lambda -am
 
 aws lambda create-function `
@@ -241,7 +241,7 @@ chmod +x scripts/*.sh
 ./scripts/docker-up-deploy.sh
 ```
 
-Quando o script pedir, grave a chave **só no terminal** (não no chat/Git):
+Grave a chave no Vault (não versionar em Git):
 
 ```bash
 docker exec -e VAULT_ADDR=http://127.0.0.1:8200 -e VAULT_TOKEN=root vault \
@@ -299,17 +299,24 @@ Vault `-dev` perde dados ao reiniciar o container.
 
 ## 8. Config dinâmica (Git)
 
-```bash
-cp -r ~/ai-powered-web-application/config-repo ~/config-repo-git
-cd ~/config-repo-git && git init -b main && git add . && git commit -m "inicial"
+No `.env` do host (ver `.env.deploy.example`):
 
-# No Compose: altere config-server para CONFIG_PROFILE=git e
-# CONFIG_GIT_URI=file:///config-repo-git + volume correspondente,
-# ou edite config-repo montado (native) e:
-curl -X POST http://127.0.0.1:8082/actuator/refresh
+```env
+CONFIG_PROFILE=git
+CONFIG_GIT_URI=https://github.com/maycon-mdrs/ai-powered-web-application.git
+CONFIG_GIT_SEARCH_PATHS=config-repo
+CONFIG_GIT_FORCE_PULL=true
 ```
 
-No modo **native** (padrão do Compose), editar `./config-repo/ms-ia.yml` no host e dar refresh já demonstra mudança (sem commit). Para a banca, preferir commit Git + `CONFIG_PROFILE=git`.
+Recreate: `docker compose up -d --build --force-recreate config-server`
+
+Fluxo de alteração em runtime:
+
+1. Alterar `config-repo/ms-ia.yml` no repositório → `git commit` → `git push`
+2. `curl -X POST http://<EIP>:8082/actuator/refresh`
+3. Validar no GraphiQL ou no endpoint de chat
+
+Com `CONFIG_PROFILE=native`, o Config Server lê apenas o volume montado no host do Compose.
 
 ---
 

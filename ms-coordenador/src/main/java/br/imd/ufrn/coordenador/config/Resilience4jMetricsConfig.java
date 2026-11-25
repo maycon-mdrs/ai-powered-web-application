@@ -12,10 +12,7 @@ import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 import io.github.resilience4j.retry.RetryRegistry;
 import io.micrometer.core.instrument.MeterRegistry;
 
-/**
- * Bind Resilience4j registries to Micrometer explicitly.
- * Auto-config from resilience4j-spring-boot3 may not register binders on Spring Boot 4.
- */
+/** Registers Resilience4j metrics with Micrometer. */
 @Configuration
 public class Resilience4jMetricsConfig {
 

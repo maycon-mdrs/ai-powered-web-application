@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
-# Modo deploy (EC2): Lambda AWS + Vault + LLM real + MCP. Sem ms-lambda local, sem stub.
-# Uso:
-#   1) cp .env.deploy.example .env   # ajuste se preciso
-#   2) ./scripts/docker-up-deploy.sh
-#   3) Quando pedir, grave a chave no Vault (não cole no chat/Git)
+# Deploy: Lambda AWS + Vault + LLM + MCP (sem ms-lambda local).
+#   cp .env.deploy.example .env && ./scripts/docker-up-deploy.sh
+# Em seguida grave GEMINI_API_KEY no Vault (docs/vault.md).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"

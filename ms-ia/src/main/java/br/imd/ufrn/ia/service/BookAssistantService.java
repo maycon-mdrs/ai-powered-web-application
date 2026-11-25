@@ -41,12 +41,11 @@ public class BookAssistantService {
         if (aiProperties.isStub() || chatClient.getIfAvailable() == null) {
             String history = scratchpad.get(conversationId).toString();
             String reply = """
-                    [stub/%s] Preferências lembradas na conversa %s.
+                    [stub/%s] conversationId=%s
                     Histórico recente:
                     %s
                     Contexto RAG (gêneros):
                     %s
-                    Sugestão: use o MCP Open Library (quando ai.stub=false) para títulos reais.
                     Pedido: %s
                     """.formatted(
                     aiProperties.getProvider(),

@@ -19,6 +19,10 @@ RUN mvn -q -DskipTests package -pl ${MODULE} -am
 
 FROM eclipse-temurin:21-jre-jammy
 ARG MODULE
+# git client for spring.cloud.config.server.git
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git \
+    && rm -rf /var/lib/apt/lists/*
 ENV JAVA_TOOL_OPTIONS="-Xmx384m"
 WORKDIR /app
 # ms-lambda usa classifier "boot"; demais módulos usam o jar repackaged padrão

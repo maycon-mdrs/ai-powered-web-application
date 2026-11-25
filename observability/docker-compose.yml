@@ -1,5 +1,5 @@
-# Stack de observabilidade isolada (Java no host).
-# Preferência AWS/demo: use o docker-compose.yml da raiz do repo.
+# Observabilidade isolada (Prometheus/Grafana/Zipkin) quando a stack Java roda no host.
+# Em deploy unificado, preferir o docker-compose.yml da raiz.
 services:
   prometheus:
     image: prom/prometheus:v3.5.0

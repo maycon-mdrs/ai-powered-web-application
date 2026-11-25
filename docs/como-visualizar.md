@@ -1,4 +1,4 @@
-# Como visualizar a stack (demo / banca)
+# Como visualizar a stack
 
 Use o **Elastic IP** da EC2 (anotado em [ambiente-aws.md](ambiente-aws.md)).  
 Abra no browser do PC (Security Group precisa liberar a porta).
@@ -67,18 +67,23 @@ mutation {
 5. `:9090/targets` — jobs `api-gateway`, `ms-coordenador`, `ms-ia` **up** (Lambda AWS não é scrapada; métricas do plano vêm do coordenador + Zipkin).
 
 ### 5. Vault — segredo LLM
-`:8200` → secret `ms-ia` → `GEMINI_API_KEY` (não mostre o valor na gravação).
+`:8200` → secret `ms-ia` → `GEMINI_API_KEY` (não exibir o valor em captura de tela).
 
 ---
 
-## Demos Config / Memory+RAG
+## Config / Memory+RAG
 
-### Config refresh
-```bash
-# edite config-repo/ms-ia.yml (ex.: stub: true) e:
-curl -X POST http://127.0.0.1:8082/actuator/refresh
-# reverta o yml + refresh de novo ao terminar
+### Config refresh (`CONFIG_PROFILE=git`)
+
+1. Alterar `config-repo/ms-ia.yml` (ex.: `stub: true`)
+2. `git add config-repo/ms-ia.yml && git commit -m "chore: toggle ai.stub" && git push`
+3. Aplicar no MS-IA:
+```powershell
+curl -X POST http://<EIP>:8082/actuator/refresh
 ```
+4. Validar no GraphiQL ou no chat; reverter com novo push + refresh se necessário.
+
+Com `CONFIG_PROFILE=native`: alterar o YAML no host do Compose e chamar o refresh em `127.0.0.1:8082`.
 
 ### Memory + RAG (mesmo conversationId)
 ```bash

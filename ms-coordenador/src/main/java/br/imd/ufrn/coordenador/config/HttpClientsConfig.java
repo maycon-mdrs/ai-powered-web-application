@@ -17,16 +17,14 @@ import br.imd.ufrn.coordenador.client.PlanoLeituraClient;
 @Configuration
 public class HttpClientsConfig {
 
-    /**
-     * Builder padrão (sem LB) para Eureka/RestClient interno.
-     * Se só existir o @LoadBalanced, o cliente Eureka tenta resolver 127.0.0.1 como serviceId.
-     */
+    /** Builder sem load balancer (URLs absolutas / clientes internos). */
     @Bean
     @Primary
     RestClient.Builder restClientBuilder() {
         return RestClient.builder();
     }
 
+    /** Builder com load balancer (service discovery via Eureka). */
     @Bean
     @LoadBalanced
     RestClient.Builder loadBalancedRestClientBuilder() {
@@ -39,7 +37,6 @@ public class HttpClientsConfig {
     @Bean
     PlanoLeituraClient planoLeituraClient(
             @Value("${lambda.base-url:http://localhost:9000}") String baseUrl) {
-        // Builder sem @LoadBalanced: URL absoluta da Lambda / Function URL
         RestClient client = RestClient.builder().baseUrl(baseUrl).build();
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
                 .builderFor(RestClientAdapter.create(client))

@@ -7,14 +7,10 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @RefreshScope
 public class AiProperties {
 
-    /**
-     * gemini | openai
-     */
+    /** Provedor ativo: {@code gemini} ou {@code openai}. */
     private String provider = "gemini";
 
-    /**
-     * true = respostas determinísticas sem chamar LLM (JMeter / demos offline)
-     */
+    /** Quando {@code true}, não invoca o LLM (respostas determinísticas). */
     private boolean stub = true;
 
     public String getProvider() {

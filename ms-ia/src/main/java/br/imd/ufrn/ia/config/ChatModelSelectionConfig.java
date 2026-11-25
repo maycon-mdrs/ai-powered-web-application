@@ -5,10 +5,7 @@ import java.util.List;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.stereotype.Component;
 
-/**
- * Fábrica simples: escolhe Gemini (default) ou OpenAI via ai.provider.
- * Beans concretos vêm dos starters Spring AI.
- */
+/** Seleciona o {@link ChatModel} conforme {@code ai.provider}. */
 @Component
 public class ChatModelSelectionConfig {
 

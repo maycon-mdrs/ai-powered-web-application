@@ -24,9 +24,7 @@ public class AiConfig {
         return MessageWindowChatMemory.builder().maxMessages(20).build();
     }
 
-    /**
-     * Memória por conversationId (além do ChatMemory padrão do advisor).
-     */
+    /** Scratchpad auxiliar indexado por conversationId. */
     @Bean
     Map<String, StringBuilder> conversationScratchpad() {
         return new ConcurrentHashMap<>();
