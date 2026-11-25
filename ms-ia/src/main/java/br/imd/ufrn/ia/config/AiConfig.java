@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-@EnableConfigurationProperties(AiProperties.class)
+@EnableConfigurationProperties({AiProperties.class, LangSmithProperties.class})
 public class AiConfig {
 
     @Bean
@@ -35,7 +35,8 @@ public class AiConfig {
     ChatClient chatClient(
             ObjectProvider<ChatModel> chatModels,
             ChatModelSelectionConfig selection,
-            ObjectProvider<SyncMcpToolCallbackProvider> mcpTools) {
+            ObjectProvider<SyncMcpToolCallbackProvider> mcpTools,
+            ObjectProvider<br.imd.ufrn.ia.observability.LangSmithTracingAdvisor> langSmithAdvisor) {
         List<ChatModel> models = chatModels.orderedStream().toList();
         ChatModel chatModel = selection.select(models);
         ChatClient.Builder builder = ChatClient.builder(chatModel);
@@ -43,6 +44,7 @@ public class AiConfig {
         if (tools != null) {
             builder.defaultToolCallbacks(tools);
         }
+        langSmithAdvisor.ifAvailable(builder::defaultAdvisors);
         return builder.build();
     }
 }

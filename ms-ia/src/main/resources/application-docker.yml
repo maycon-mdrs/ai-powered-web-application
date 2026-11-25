@@ -9,7 +9,6 @@ spring:
               command: ${MCP_COMMAND:mcp-open-library}
               args: []
 
-
 eureka:
   instance:
     prefer-ip-address: false

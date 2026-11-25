@@ -15,6 +15,6 @@ Ordem sugerida (alinhada ao roteiro):
 11. **Chaos Monkey** — `POST .../actuator/chaosmonkey/enable` → erros sobem; disable → descem
 12. **CB / Retry / Fallback / Rate / Bulkhead** — Grafana **TP3 — Overview** (estado/calls do CB) + Actuator `:8081/actuator/circuitbreakers`; Chaos Monkey / kill MS-IA para abrir o CB e mostrar fallback
 13. **Spring AI** — Memory (2 turns) + RAG corpus; com `AI_STUB=false` + keys: LLM real
-14. **MCP Open Library** — `MCP_ENABLED=true` + Node/`npx` (sem MCP próprio)
+14. **MCP Open Library (terceiros)** — `MCP_ENABLED=true` + Node/`npx` (**sem** MCP próprio)
 
 Observabilidade: `docker compose -f observability/docker-compose.yml up -d`

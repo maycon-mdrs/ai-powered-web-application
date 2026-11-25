@@ -60,7 +60,7 @@ public class BookAssistantService {
         ChatClient client = chatClient.getObject();
         String system = """
                 Você é um assistente de livros. Use o contexto RAG de gêneros.
-                Quando útil, chame tools do MCP Open Library para buscar livros reais.
+                Quando útil, chame tools do MCP Open Library (terceiros) para buscar livros reais.
                 Responda em português, 2 a 5 sugestões, sem spoilers.
                 Provider ativo: %s
                 """.formatted(aiProperties.getProvider());

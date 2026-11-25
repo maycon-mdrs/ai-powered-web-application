@@ -1,8 +1,19 @@
 ﻿# HashiCorp Vault — segredos do ms-ia
 
-As chaves `GEMINI_API_KEY` e `OPENAI_API_KEY` **não** vão no Git, no Config Server nem no `application.yml`.
+As chaves `GEMINI_API_KEY`, `OPENAI_API_KEY` e `LANGSMITH_API_KEY` **não** vão no Git, no Config Server nem no `application.yml`.
 Elas ficam em `secret/ms-ia` no Vault e são carregadas só com o perfil Spring `vault`.
 Path do KV: `secret/ms-ia` (`spring.cloud.vault.kv.profiles` vazio).
+
+Para traces de LLM no LangSmith (opcional), no mesmo secret:
+
+```text
+LANGSMITH_TRACING=true
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+LANGSMITH_API_KEY=<sua-chave>
+LANGSMITH_PROJECT=tp3-assistente-livros
+```
+
+Nunca versionar a API key. Se vazou em chat/ticket, rotacionar no LangSmith.
 
 ## Modos
 
@@ -69,7 +80,7 @@ O script **não** define `GEMINI_API_KEY` / `OPENAI_API_KEY`; o Spring Cloud Vau
 
 ## 4. Precedência
 
-1. **Vault** — credenciais LLM (`GEMINI_API_KEY`, `OPENAI_API_KEY`)
+1. **Vault** — credenciais LLM e LangSmith (`GEMINI_API_KEY`, `OPENAI_API_KEY`, `LANGSMITH_*`)
 2. **Config Server / Git** — `ai.provider`, `ai.stub` e demais não sensíveis
 3. **Env** — `VAULT_URI`, `VAULT_TOKEN`, portas, URLs
 
