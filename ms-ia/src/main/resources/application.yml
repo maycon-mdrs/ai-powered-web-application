@@ -95,6 +95,3 @@ spring:
         default-context: ms-ia
         application-name: ms-ia
 
-ai:
-  stub: false
-

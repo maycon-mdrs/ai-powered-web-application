@@ -15,8 +15,8 @@
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST chat">
-          <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.domain">${__P(gatewayHost,localhost)}</stringProp>
+          <stringProp name="HTTPSampler.port">${__P(gatewayPort,8080)}</stringProp>
           <stringProp name="HTTPSampler.path">/api/assistant/chat</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
@@ -26,8 +26,7 @@
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
   "conversationId": "load-${__threadNum}",&#xd;
-  "message": "Quero ficcao cientifica curta",&#xd;
-  "gerarPlano": false&#xd;
+  "message": "Quero ficcao cientifica curta"&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
