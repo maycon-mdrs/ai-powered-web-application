@@ -346,6 +346,8 @@ Carga: `AI_STUB=true`, `MCP_ENABLED=false`, threads > 5 e &lt; knee, **0 erros**
 
 ## 10. Painéis
 
+Guia detalhado (o que abrir e o que mostrar): [como-visualizar.md](como-visualizar.md).
+
 | URL | Uso |
 | --- | --- |
 | `http://<EIP>:8080` | Gateway |

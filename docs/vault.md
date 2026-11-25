@@ -2,7 +2,7 @@
 
 As chaves `GEMINI_API_KEY` e `OPENAI_API_KEY` **não** vão no Git, no Config Server nem no `application.yml`.
 Elas ficam em `secret/ms-ia` no Vault e são carregadas só com o perfil Spring `vault`.
-O KV **não** usa paths por perfil Spring (`secret/ms-ia/docker` etc.): `spring.cloud.vault.kv.profiles` está vazio de propósito.
+Path do KV: `secret/ms-ia` (`spring.cloud.vault.kv.profiles` vazio).
 
 ## Modos
 

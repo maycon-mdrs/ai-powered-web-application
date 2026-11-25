@@ -26,7 +26,6 @@ export LAMBDA_BASE_URL="${LAMBDA_BASE_URL:-http://127.0.0.1:9000}"
 export EUREKA_INSTANCE_IP="${EUREKA_INSTANCE_IP:-127.0.0.1}"
 export EUREKA_INSTANCE_HOSTNAME="${EUREKA_INSTANCE_HOSTNAME:-localhost}"
 export MCP_ENABLED="${MCP_ENABLED:-false}"
-# Obrigatório nos apps (sem fallback no application.yml). Default = Zipkin local.
 export ZIPKIN_ENDPOINT="${ZIPKIN_ENDPOINT:-http://127.0.0.1:9411/api/v2/spans}"
 
 # Nunca definir GEMINI_API_KEY / OPENAI_API_KEY aqui — no modo vault vêm do KV.

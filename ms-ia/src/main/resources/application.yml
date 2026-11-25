@@ -41,8 +41,8 @@ spring:
       enabled: false
 
 ai:
-  provider: ${AI_PROVIDER:gemini}
-  stub: ${AI_STUB:true}
+  provider: gemini
+  stub: true
 
 eureka:
   client:
@@ -85,7 +85,6 @@ spring:
         enabled: true
         backend: secret
         backend-version: 2
-        # Só secret/ms-ia — não concatenar spring.profiles (ex.: docker → secret/ms-ia/docker)
         profiles: []
         default-context: ms-ia
         application-name: ms-ia
