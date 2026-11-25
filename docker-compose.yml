@@ -167,24 +167,6 @@ services:
       - ms-coordenador-a
       - ms-coordenador-b
 
-  chat-demo:
-    <<: *jvm_common
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.jvm
-      args:
-        MODULE: chat-demo
-    container_name: chat-demo
-    hostname: chat-demo
-    environment:
-      GATEWAY_BASE_URL: ${GATEWAY_BASE_URL:-http://api-gateway:8080}
-      JAVELIT_PORT: "8501"
-      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:--Xmx256m}
-    ports:
-      - "8501:8501"
-    depends_on:
-      - api-gateway
-
   # --- profile: local-lambda (dev sem AWS) ---
   ms-lambda:
     <<: *jvm_common

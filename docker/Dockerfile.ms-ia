@@ -8,7 +8,6 @@ COPY api-gateway/pom.xml api-gateway/pom.xml
 COPY ms-coordenador/pom.xml ms-coordenador/pom.xml
 COPY ms-ia/pom.xml ms-ia/pom.xml
 COPY ms-lambda/pom.xml ms-lambda/pom.xml
-COPY chat-demo/pom.xml chat-demo/pom.xml
 RUN mvn -q -DskipTests dependency:go-offline || true
 COPY . .
 RUN mvn -q -DskipTests package -pl ms-ia -am

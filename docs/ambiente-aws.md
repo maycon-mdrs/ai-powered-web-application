@@ -78,7 +78,6 @@ icacls.exe $k /inheritance:r
 | ----- | --- | ------ |
 | 22/TCP | SSH | seu IP |
 | 8080/TCP | API Gateway | seu IP (ou `0.0.0.0/0` na banca) |
-| 8501/TCP | Chat demo (Javelit) | seu IP |
 | 8761/TCP | Eureka UI | seu IP |
 | 8762/TCP | Eureka peer 2 | seu IP |
 | 8082/TCP | GraphiQL | seu IP |
@@ -92,7 +91,7 @@ icacls.exe $k /inheritance:r
 $MEU_IP = (Invoke-RestMethod https://checkip.amazonaws.com).Trim() + "/32"
 $VPC = aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query "Vpcs[0].VpcId" --output text
 $SG = aws ec2 create-security-group --group-name tp3-sg --description "TP3" --vpc-id $VPC --query GroupId --output text
-foreach ($p in 22,8080,8501,8761,8762,3000,9411,9090,8082,8888,8200) {
+foreach ($p in 22,8080,8761,8762,3000,9411,9090,8082,8888,8200) {
   aws ec2 authorize-security-group-ingress --group-id $SG --protocol tcp --port $p --cidr $MEU_IP
 }
 ```
@@ -352,7 +351,6 @@ Guia detalhado (o que abrir e o que mostrar): [como-visualizar.md](como-visualiz
 | URL | Uso |
 | --- | --- |
 | `http://<EIP>:8080` | Gateway |
-| `http://<EIP>:8501` | Chat demo (Javelit) |
 | `http://<EIP>:8761` | Eureka cluster |
 | `http://<EIP>:8082/graphiql` | GraphQL |
 | `http://<EIP>:3000` | Grafana (admin/admin) → Prometheus `http://prometheus:9090` |
