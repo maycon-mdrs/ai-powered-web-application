@@ -1,0 +1,3 @@
+gateway:
+  rate-limit:
+    per-second: 5

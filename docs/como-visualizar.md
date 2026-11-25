@@ -75,15 +75,16 @@ mutation {
 
 ### Config refresh (`CONFIG_PROFILE=git`)
 
-1. Alterar `config-repo/ms-ia.yml` (ex.: `stub: true`)
-2. `git add config-repo/ms-ia.yml && git commit -m "chore: toggle ai.stub" && git push`
-3. Aplicar no MS-IA:
+1. Alterar `config-repo/ms-ia.yml` (`ai.stub`) ou `config-repo/api-gateway.yml` (`gateway.rate-limit.per-second`)
+2. `git add config-repo && git commit && git push`
+3. Refresh no serviço alvo:
 ```powershell
-curl -X POST http://<EIP>:8082/actuator/refresh
+curl -X POST http://<EIP>:8082/actuator/refresh   # MS-IA (stub)
+curl -X POST http://<EIP>:8080/actuator/refresh   # API Gateway (rate limit)
 ```
-4. Validar no GraphiQL ou no chat; reverter com novo push + refresh se necessário.
+4. Validar no chat / GraphiQL / carga (429).
 
-Com `CONFIG_PROFILE=native`: alterar o YAML no host do Compose e chamar o refresh em `127.0.0.1:8082`.
+Com `CONFIG_PROFILE=native`: alterar o YAML no host do Compose e refresh em `127.0.0.1:8082` ou `:8080`.
 
 ### Memory + RAG (mesmo conversationId)
 ```bash

@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -12,22 +11,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
+import br.imd.ufrn.gateway.config.GatewayRateLimitProperties;
 import reactor.core.publisher.Mono;
 
-/**
- * Rate limiter lado servidor sem Redis (anti-lista).
- * Limite por IP em janela de 1 segundo.
- */
+/** Rate limit por IP em janela de 1 segundo ({@link GatewayRateLimitProperties}). */
 @Component
 public class InMemoryRateLimitFilter implements GlobalFilter, Ordered {
 
     private final Map<String, Window> windows = new ConcurrentHashMap<>();
+    private final GatewayRateLimitProperties rateLimitProperties;
 
-    @Value("${gateway.rate-limit.per-second:40}")
-    private int perSecond;
+    public InMemoryRateLimitFilter(GatewayRateLimitProperties rateLimitProperties) {
+        this.rateLimitProperties = rateLimitProperties;
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        int perSecond = rateLimitProperties.getPerSecond();
         String key = clientKey(exchange);
         long now = System.currentTimeMillis();
         Window window = windows.compute(key, (k, existing) -> {

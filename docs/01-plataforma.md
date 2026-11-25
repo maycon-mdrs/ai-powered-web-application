@@ -58,7 +58,7 @@ O que mostrar:
 
 - Repo local ou remoto: pasta `config-repo/` neste monorepo (ou Git separado)
 - Arquivos típicos: `application.yml`, `ms-coordenador.yml`, `ms-ia.yml`, `api-gateway.yml`
-- Propriedade de demo dinâmica: `ai.provider=gemini|openai` (lida pelo MS2)
+- Propriedades dinâmicas: `ai.stub` / `ai.provider` (MS-IA); `gateway.rate-limit.per-second` (API Gateway)
 - Fluxo de alteração dinâmica:
 
 ```mermaid

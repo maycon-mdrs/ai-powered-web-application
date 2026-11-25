@@ -11,8 +11,9 @@ if [[ ! -f .env ]]; then
   echo "Criado .env a partir de .env.deploy.example"
 fi
 
-# Garante flags de deploy mesmo se .env antigo tiver stub
-grep -q '^AI_STUB=' .env && sed -i 's/^AI_STUB=.*/AI_STUB=false/' .env || echo 'AI_STUB=false' >> .env
+# Flags de deploy (stub/rate limit vêm do Config Server — não forçar via .env)
+sed -i '/^AI_STUB=/d' .env
+sed -i '/^GATEWAY_RATE_PER_SECOND=/d' .env
 grep -q '^MCP_ENABLED=' .env && sed -i 's/^MCP_ENABLED=.*/MCP_ENABLED=true/' .env || echo 'MCP_ENABLED=true' >> .env
 grep -q '^MS_IA_PROFILES=' .env && sed -i 's/^MS_IA_PROFILES=.*/MS_IA_PROFILES=docker,vault/' .env || echo 'MS_IA_PROFILES=docker,vault' >> .env
 

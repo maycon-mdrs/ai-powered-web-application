@@ -33,13 +33,13 @@ eureka:
 
 gateway:
   rate-limit:
-    per-second: ${GATEWAY_RATE_PER_SECOND:40}
+    per-second: 5
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,gateway,prometheus
+        include: health,info,gateway,prometheus,refresh,env
   metrics:
     distribution:
       percentiles-histogram:

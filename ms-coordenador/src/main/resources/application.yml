@@ -69,17 +69,17 @@ resilience4j:
   bulkhead:
     instances:
       msIa:
-        maxConcurrentCalls: 20
+        maxConcurrentCalls: 8
       lambda:
-        maxConcurrentCalls: 10
+        maxConcurrentCalls: 4
   ratelimiter:
     instances:
       msIa:
-        limitForPeriod: 30
+        limitForPeriod: 15
         limitRefreshPeriod: 1s
         timeoutDuration: 0
       lambda:
-        limitForPeriod: 20
+        limitForPeriod: 10
         limitRefreshPeriod: 1s
         timeoutDuration: 0
 

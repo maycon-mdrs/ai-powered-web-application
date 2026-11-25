@@ -1,12 +1,17 @@
 # Roteiro da banca — respostas e evidências (TP3)
 
 Documento alinhado ao PDF *Descrição do Terceiro Trabalho Prático* (itens 1–14).  
-Complementa: [07-ensaio-apresentacao.md](07-ensaio-apresentacao.md), [08-resultados-testes.md](08-resultados-testes.md).
+Complementa: [07-ensaio-apresentacao.md](07-ensaio-apresentacao.md).
+
+**Resultados dos testes (como / o quê / números):** → [08-resultados-testes.md](08-resultados-testes.md)  
+**Artefatos brutos JMeter (`.jtl`):** → `jmeter/resultados/run-*.jtl`
+
+Este `09` é o **roteiro da fala** na banca. Os procedimentos, métricas e JTLs ficam no `08`.
 
 **Escopo MCP:** apenas **MCP de terceiros** (Open Library). **Não** há servidor MCP próprio neste projeto.
 
 **Ambiente:** EC2 + Docker Compose (ver `ambiente-aws.md`).  
-**Config dinâmica:** GitHub → Config Server (`CONFIG_PROFILE=git`) → `POST :8082/actuator/refresh`.  
+**Config dinâmica:** GitHub → Config Server (`CONFIG_PROFILE=git`) → refresh no serviço alvo (`ms-ia` `:8082` para stub; `api-gateway` `:8080` para rate limit).  
 **Segredos:** Vault `secret/ms-ia` (LLM + LangSmith). Nunca no Git.
 
 ---
@@ -18,8 +23,8 @@ Complementa: [07-ensaio-apresentacao.md](07-ensaio-apresentacao.md), [08-resulta
 | 1 | 12-Factor | §1 + `docs/00-visao-geral.md` |
 | 2 | Eureka cluster | `:8761` / `:8762` |
 | 3 | API Gateway | YAML + `:8080` |
-| 4 | Config Server + Git | `config-repo` + refresh |
-| 5 | GraphQL | `:8082/graphiql` |
+| 4 | Config Server + Git | `ms-ia.yml` (stub) + `api-gateway.yml` (rate) + refresh |
+| 5 | GraphQL | UI `:8082/graphiql` (API `:8082/graphql`) — **MS-IA** |
 | 6 | HTTP Interface + tracing | `PlanoLeituraClient` + Zipkin `:9411` |
 | 7 | Lambda | `POST /api/assistant/plano` |
 | 8 | Vault | `:8200` + `secret/ms-ia` |
@@ -34,20 +39,20 @@ Complementa: [07-ensaio-apresentacao.md](07-ensaio-apresentacao.md), [08-resulta
 
 ## 1. Twelve-Factor (0,5)
 
-| Fator | Como suportamos |
-|-------|-----------------|
-| I Codebase | Um repositório Git (monorepo Maven) |
-| II Dependencies | Maven; Node no `ms-ia` só para MCP Open Library |
-| III Config | Config Server (Git) + env; **segredos no Vault** |
-| IV Backing services | Eureka, Vault, LLM APIs, Lambda URL, MCP Open Library, Zipkin/Prometheus |
-| V Build/release/run | Build Maven/Compose ≠ run com `.env` |
-| VI Processes | Cada serviço = processo/container stateless |
-| VII Port binding | Portas explícitas por serviço |
-| VIII Concurrency | 2× `MS-COORDENADOR` no Eureka |
-| IX Disposability | `docker stop/start`; Chaos Monkey |
-| X Dev/prod parity | Compose local ≈ EC2 |
-| XI Logs | stdout; Prometheus/Grafana; Zipkin; opcional LangSmith |
-| XII Admin | Scripts Compose, refresh Actuator, Vault CLI |
+| Fator | O que é (em uma frase) | Como suportamos |
+|-------|------------------------|-----------------|
+| I Codebase | Uma app = um repositório versionado | Um repositório Git (monorepo Maven) |
+| II Dependencies | Dependências declaradas e isoladas (sem “instalado na máquina”) | Maven; Node no `ms-ia` só para MCP Open Library |
+| III Config | Config fora do código (env/serviço), não hardcoded | Config Server (Git) + env; **segredos no Vault** |
+| IV Backing services | BD, filas, APIs etc. como recursos anexáveis por URL/credencial | Eureka, Vault, LLM APIs, Lambda URL, MCP Open Library, Zipkin/Prometheus |
+| V Build/release/run | Build, release e execução são etapas separadas | Build Maven/Compose ≠ run com `.env` |
+| VI Processes | App como processo(s) stateless; estado em backing services | Cada serviço = processo/container stateless |
+| VII Port binding | App exporta HTTP (ou outro) bindando porta própria | Portas explícitas por serviço |
+| VIII Concurrency | Escala via mais processos/instâncias, não threads “mágicas” só | 2× `MS-COORDENADOR` no Eureka |
+| IX Disposability | Start/stop rápido; tolerante a kill | `docker stop/start`; Chaos Monkey |
+| X Dev/prod parity | Dev, staging e prod o mais parecidos possível | Compose local ≈ EC2 |
+| XI Logs | Logs como stream em stdout (agregar fora da app) | stdout; Prometheus/Grafana; Zipkin; opcional LangSmith |
+| XII Admin | Tarefas admin/one-off como processos separados | Scripts Compose, refresh Actuator, Vault CLI |
 
 ---
 
@@ -55,8 +60,8 @@ Complementa: [07-ensaio-apresentacao.md](07-ensaio-apresentacao.md), [08-resulta
 
 1. `http://<EIP>:8761` e `:8762` (peers).
 2. Apps: `EUREKA-SERVER`×2, `MS-COORDENADOR`×2, `MS-IA`, `API-GATEWAY`.
-3. Heartbeat: lease renewal **5s** / duration **15s**.
-4. `docker stop ms-coordenador-b` → some do registry → `docker start` → volta.
+3. Heartbeat: cada coordenador avisa o Eureka “estou vivo” a cada **~5s**; sem aviso por **~15s**, some da lista.
+4. `docker stop ms-coordenador-b` → para de avisar → some do Eureka → `docker start` → volta a avisar e reaparece.
 
 ---
 
@@ -66,25 +71,51 @@ Complementa: [07-ensaio-apresentacao.md](07-ensaio-apresentacao.md), [08-resulta
 |------|---------|
 | Estática | `Path=/api/**` → `lb://MS-COORDENADOR` + header `X-Gateway-Route` |
 | Dinâmica | `discovery.locator.enabled=true` |
-| Filtro | `InMemoryRateLimitFilter` (rate limit **servidor**, HTTP 429) |
+| Filtro | `InMemoryRateLimitFilter` (rate limit **servidor**, HTTP 429) — limite em `config-repo/api-gateway.yml`, refresh em `:8080` |
 
 ---
 
 ## 4. Config Server + Git + alteração dinâmica (1,0)
 
-1. Editar `config-repo/ms-ia.yml` (`ai.stub`) no GitHub.
-2. Commit/push.
-3. `curl -X POST http://<EIP>:8082/actuator/refresh`
-4. Chat muda stub ↔ LLM **sem rebuild**.
+Dois exemplos bons para a banca (mesmo fluxo: Git → Config → refresh):
 
-Não definir `AI_STUB` no `.env` (env sobrescreve o Config).
+### A) Stub LLM — `config-repo/ms-ia.yml`
+
+1. Editar `ai.stub: true|false` no GitHub → commit/push.
+2. Refresh no **MS-IA** (`:8082`):
+   ```bash
+   curl -X POST http://<EIP>:8082/actuator/refresh
+   ```
+3. Chat muda stub ↔ LLM **sem rebuild**.
+
+### B) Rate limit servidor — `config-repo/api-gateway.yml`
+
+1. Editar `gateway.rate-limit.per-second` (ex.: `5` → `2`) → commit/push.
+2. Refresh no **API Gateway** (`:8080`):
+   ```bash
+   curl -X POST http://<EIP>:8080/actuator/refresh
+   ```
+3. Carga passa a estourar **429** conforme o novo limite.
+
+### C) Rate limit cliente + Bulkhead — `config-repo/ms-coordenador.yml`
+
+1. Editar `resilience4j.ratelimiter` / `resilience4j.bulkhead` → commit/push.
+2. Refresh nos **dois** coordenadores (`:8081` e `:8083`):
+   ```bash
+   curl -X POST http://<EIP>:8081/actuator/refresh
+   curl -X POST http://<EIP>:8083/actuator/refresh
+   ```
+3. Conferir Actuator `ratelimiters` / `bulkheads`.
+
+Não definir `AI_STUB` nem `GATEWAY_RATE_PER_SECOND` no `.env`.
 
 ---
 
 ## 5. GraphQL (0,5)
 
-- GraphiQL `:8082/graphiql` — mutation `askBookAssistant`.
-- Fluxo real: Gateway → MS1 → GraphQL no MS2 (`MsIaGraphQlClient`).
+- **API** GraphQL: `POST :8082/graphql` (MS-IA).
+- **UI** GraphiQL: `:8082/graphiql` — IDE no browser para testar a mesma API (mutation `askBookAssistant`).
+- Fluxo real: Gateway → MS1 → GraphQL no MS2 (`MsIaGraphQlClient` → `/graphql`).
 
 ---
 
@@ -140,9 +171,9 @@ curl -X POST http://<EIP>:8081/actuator/chaosmonkey/disable
 
 | Camada | Onde | Evidência |
 |--------|------|-----------|
-| Servidor | Gateway `InMemoryRateLimitFilter` | JMeter 12u → **429** |
-| Cliente | `@RateLimiter` no MS1 | Actuator `ratelimiters` |
-| Bulkhead | `@Bulkhead` no MS1 | Actuator `bulkheads` |
+| Servidor | Gateway (`api-gateway.yml`, **5**/s) | refresh `:8080` + **429** |
+| Cliente | `@RateLimiter` MS1 (`ms-coordenador.yml`) | refresh `:8081`/`:8083` + Actuator |
+| Bulkhead | `@Bulkhead` MS1 (`ms-coordenador.yml`) | refresh + Actuator `bulkheads` |
 
 Usable ~5–8 usuários (0% erro); knee ~12 (429). Ver [08-resultados-testes.md](08-resultados-testes.md).
 

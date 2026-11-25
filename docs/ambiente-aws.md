@@ -312,9 +312,11 @@ Recreate: `docker compose up -d --build --force-recreate config-server`
 
 Fluxo de alteração em runtime:
 
-1. Alterar `config-repo/ms-ia.yml` no repositório → `git commit` → `git push`
-2. `curl -X POST http://<EIP>:8082/actuator/refresh`
-3. Validar no GraphiQL ou no endpoint de chat
+1. Alterar YAML em `config-repo/` → `git commit` → `git push`
+2. Refresh no serviço alvo:
+   - stub LLM: `POST http://<EIP>:8082/actuator/refresh` (MS-IA)
+   - rate limit: `POST http://<EIP>:8080/actuator/refresh` (API Gateway)
+3. Validar (chat / 429)
 
 Com `CONFIG_PROFILE=native`, o Config Server lê apenas o volume montado no host do Compose.
 
@@ -347,7 +349,7 @@ ssh -i C:\caminho\tp3-key.pem -L 18080:127.0.0.1:8080 -N ec2-user@<EIP>
 # gatewayHost=127.0.0.1 porta 18080
 ```
 
-Carga: `AI_STUB=true`, `MCP_ENABLED=false`, threads > 5 e &lt; knee, **0 erros**.
+Carga: `ai.stub: true` no Config, `MCP_ENABLED=false`, threads > 5 e &lt; knee, **0 erros**.
 
 ---
 

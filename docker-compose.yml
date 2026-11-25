@@ -90,7 +90,6 @@ services:
       MCP_ENABLED: ${MCP_ENABLED:-true}
       MCP_COMMAND: mcp-open-library
       SPRING_PROFILES_ACTIVE: ${MS_IA_PROFILES:-docker}
-      # ai.stub vem do Config Server (config-repo/ms-ia.yml) — não definir AI_STUB aqui
       VAULT_URI: ${VAULT_URI:-http://vault:8200}
       VAULT_TOKEN: ${VAULT_TOKEN:-root}
       JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS_MS_IA:--Xmx512m}
@@ -159,7 +158,6 @@ services:
     environment:
       <<: *jvm_env
       EUREKA_INSTANCE_HOSTNAME: api-gateway
-      GATEWAY_RATE_PER_SECOND: ${GATEWAY_RATE_PER_SECOND:-40}
     ports:
       - "8080:8080"
     depends_on:

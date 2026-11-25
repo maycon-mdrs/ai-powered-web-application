@@ -28,8 +28,8 @@ Validar ponta a ponta:
 
 1. `config-repo/ms-ia.yml` → `stub: true`
 2. `git commit` + `git push`
-3. Removido override local do perfil `vault` que forçava `ai.stub: false`
-4. Na EC2: `AI_STUB=true` no `.env` + recreate do `ms-ia`
+3. `POST :8082/actuator/refresh` no MS-IA
+4. Sem `AI_STUB` / `GATEWAY_RATE_PER_SECOND` no `.env` da EC2
 
 Resposta esperada do chat (trecho):
 
@@ -73,15 +73,21 @@ jmeter -n -t jmeter\assistant-chat.jmx `
 
 ## 4. Heartbeat (Eureka)
 
-Nas instâncias de `MS-COORDENADOR`:
+**Em português claro:** o Eureka é a “lista de quem está no ar”. Cada serviço (ex.: um coordenador) manda de tempos em tempos um sinal de “ainda estou vivo” — isso é o *heartbeat*. Se o sinal para, o Eureka tira o serviço da lista.
 
-| Campo | Valor |
-|-------|-------|
-| `renewalIntervalInSecs` | **5** |
-| `durationInSecs` | **15** |
+Nas instâncias de `MS-COORDENADOR` configuramos:
 
-Interpretação: a réplica renova lease a cada ~5s; se parar de renovar, o Eureka evicta em ~15s.  
-No teste de kill, logo após `docker stop` a instância ainda pode aparecer `UP` por alguns segundos (janela do lease); depois some do registro; ao `docker start`, volta a registrar e renovar.
+| Campo (nome técnico) | Valor | O que significa |
+|----------------------|-------|-----------------|
+| `renewalIntervalInSecs` | **5** | A cada **~5 segundos** o serviço avisa: “ainda estou vivo” |
+| `durationInSecs` | **15** | Se passar **~15 segundos** sem esse aviso, o Eureka considera morto e **remove** da lista |
+
+**O que vimos no teste de derrubar a réplica:**
+
+1. `docker stop ms-coordenador-b` → o container para e **para de avisar**.
+2. Por alguns segundos o Eureka ainda pode mostrar `b` como `UP` (ele espera até ~15s antes de apagar).
+3. Depois `b` some da lista; só `a` continua.
+4. `docker start ms-coordenador-b` → `b` volta a se cadastrar e a mandar o “estou vivo”; a lista fica de novo com `a` e `b`.
 
 ---
 
@@ -96,9 +102,17 @@ No teste de kill, logo após `docker stop` a instância ainda pode aparecer `UP`
 
 ## 6. Rate limit (Gateway)
 
-Implementação: `InMemoryRateLimitFilter` — limite por IP / janela de 1s (`GATEWAY_RATE_PER_SECOND`, padrão **40**).
+Implementação: `InMemoryRateLimitFilter` — limite por IP / janela de 1s.
 
-### Evidência principal (JMeter 12 usuários)
+**Config:** `config-repo/api-gateway.yml` → `gateway.rate-limit.per-second` (**5**).
+
+1. Editar no Git → commit/push  
+2. `curl -X POST http://<EIP>:8080/actuator/refresh` (**API Gateway**)  
+3. Limite atualizado em runtime (`@RefreshScope`)
+
+Evitar `GATEWAY_RATE_PER_SECOND` no `.env` (precedência de env sobre o Config).
+
+### Evidência (JMeter 12 usuários — medição com limite 40)
 
 | Métrica | Valor |
 |---------|-------|
@@ -106,9 +120,7 @@ Implementação: `InMemoryRateLimitFilter` — limite por IP / janela de 1s (`GA
 | Erros | 39 (**8,44%**) |
 | Códigos | `200=423`, **`429=39`** |
 
-Ou seja, sob carga acima do limite efetivo, o Gateway passa a responder **429 Too Many Requests**.
-
-Observação: rajadas lentas (jobs PowerShell espaçados) podem não concentrar >40 req/s na mesma janela e então todos retornam 200 — o JMeter com 12 threads é a evidência adequada.
+Gateway responde **429** acima do limite. Com **5**/s, a evidência aparece com carga menor.
 
 ---
 
@@ -151,6 +163,17 @@ Endpoint: `POST /api/assistant/chat`
 | 12 | 30s | 462 | **8,44%** | 945 | 4782 | ~10/s | Aparecem **429** (rate limit) |
 
 Arquivos: `run-baseline-5u.jtl`, `run-baseline-8u.jtl`, `run-baseline-12u.jtl`.
+
+### Revalidação (`run-reval-8u.jtl`)
+
+Rodada posterior (mesmo plano, 8u) após mudanças de Config/LangSmith.  
+Resultado: **747** amostras, **57,8%** erros (`200=315`, **`503=432`**).  
+Causa: stack ainda estabilizando (Eureka / instâncias) — **não** usar como baseline de capacidade; usar os `run-baseline-*` e `run-kill-b-8u.jtl`.
+
+### Gráficos JMeter
+
+Os `.jtl` abrem no JMeter GUI (Listeners → Aggregate / Response Time Graph) ou via relatório HTML (`jmeter -g arquivo.jtl -o pasta-relatorio`).  
+Nesta pasta há os **JTLs**; prints/HTML de gráfico **não** foram commitados — gerar na hora da banca a partir dos `.jtl` se precisar de tela.
 
 ### Knee / Usable (desta medição)
 
@@ -241,7 +264,24 @@ jmeter -n -t jmeter\assistant-chat.jmx -JgatewayHost=<EIP> -Jthreads=8 -Jduratio
 
 ---
 
-## 13. Conclusão
+## 13. Cobertura vs pedido original
+
+| Pedido | Feito? | Onde |
+|--------|--------|------|
+| Smoke / saúde stack | Sim | §3 |
+| Rate limit | Sim (429 no JMeter 12u) | §6 + `run-baseline-12u.jtl` |
+| Heartbeat Eureka 5s/15s | Sim | §4 |
+| Circuit breaker + fallback | Sim (kill `ms-ia`) | §7 |
+| Load balancer 2× coordenador | Sim | §5 + §9 |
+| Kill réplica + Eureka | Sim | §9 + `run-kill-b-8u.jtl` |
+| JMeter **stub** (mock LLM) | Sim | §8 + `run-baseline-*.jtl` |
+| JMeter **LLM real** | **Não** (só smoke pontual com stub off; carga foi só stub) | — |
+| Gráficos JMeter (PNG/HTML) | **Parcial** — só `.jtl`; gerar relatório na hora | `jmeter/resultados/` |
+| Grafana / Zipkin / Actuator | Procedimento documentado; prints não anexados | §10 |
+
+---
+
+## 14. Conclusão
 
 A stack na EC2 está operacional com stub. Foram demonstrados:
 
@@ -250,6 +290,6 @@ A stack na EC2 está operacional com stub. Foram demonstrados:
 - **Heartbeat/lease** Eureka (5s / 15s)  
 - **LB + failover** entre duas réplicas do coordenador  
 - **Circuit breaker OPEN** + fallback ao derrubar o MS-IA  
-- **JMeter**: usable ~5–8 usuários (0% erro); knee próximo de 12 usuários  
+- **JMeter (stub)**: usable ~5–8 usuários (0% erro); knee próximo de 12 usuários  
 
-Próximo passo opcional pós-demo: `stub: false` + push + refresh para voltar ao LLM real na apresentação de IA.
+**Falta para fechar 100% o pedido:** carga JMeter com **LLM real** (`stub: false`) + exportar relatório/gráficos HTML a partir dos `.jtl`.
