@@ -25,6 +25,7 @@
         <module>ms-coordenador</module>
         <module>ms-ia</module>
         <module>ms-lambda</module>
+        <module>chat-demo</module>
     </modules>
 
     <properties>

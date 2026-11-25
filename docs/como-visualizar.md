@@ -17,7 +17,7 @@ Abra no browser do PC (Security Group precisa liberar a porta).
 | Prometheus | `http://<EIP>:9090` | Targets / graph |
 | Vault UI | `http://<EIP>:8200` | Token `root` (lab `-dev`) |
 | Gateway (API) | `http://<EIP>:8080` | Só HTTP; use `curl` ou Postman |
-| Chat demo (HTML) | `http://<EIP>:8080/demo/` | UI simples no próprio Gateway |
+| Chat demo (Javelit) | `http://<EIP>:8501` | UI estilo Streamlit → Gateway |
 
 Chat HTTP (sempre pelo Gateway):
 
@@ -91,6 +91,7 @@ Túnel SSH no PC (troque a key e o host):
 
 ```powershell
 ssh -i C:\caminho\my-key.pem `
+  -L 8501:127.0.0.1:8501 `
   -L 3000:127.0.0.1:3000 `
   -L 9411:127.0.0.1:9411 `
   -L 8761:127.0.0.1:8761 `
@@ -98,4 +99,4 @@ ssh -i C:\caminho\my-key.pem `
   -N ec2-user@<EIP>
 ```
 
-Depois use `http://127.0.0.1:3000`, `:9411`, etc.
+Depois use `http://127.0.0.1:8501`, `:3000`, `:9411`, etc.
