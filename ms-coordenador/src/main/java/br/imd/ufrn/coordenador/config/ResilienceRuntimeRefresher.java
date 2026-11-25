@@ -2,7 +2,7 @@ package br.imd.ufrn.coordenador.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.context.scope.refresh.RefreshScopeRefreshedEvent;
+import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -31,8 +31,14 @@ public class ResilienceRuntimeRefresher {
         this.bulkheadRegistry = bulkheadRegistry;
     }
 
-    @EventListener(RefreshScopeRefreshedEvent.class)
-    public void onRefresh() {
+    @EventListener(EnvironmentChangeEvent.class)
+    public void onEnvironmentChange(EnvironmentChangeEvent event) {
+        boolean relevant = event.getKeys().stream()
+                .anyMatch(k -> k.startsWith("resilience4j.ratelimiter")
+                        || k.startsWith("resilience4j.bulkhead"));
+        if (!relevant && !event.getKeys().isEmpty()) {
+            return;
+        }
         applyRateLimiter("msIa");
         applyRateLimiter("lambda");
         applyBulkhead("msIa");

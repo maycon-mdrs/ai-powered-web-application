@@ -15,6 +15,8 @@ eureka:
     prefer-ip-address: ${EUREKA_PREFER_IP:true}
     ip-address: ${EUREKA_INSTANCE_IP:127.0.0.1}
     hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+    non-secure-port: ${server.port}
+    instance-id: ${EUREKA_INSTANCE_HOSTNAME:${spring.application.name}}:${server.port}
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
 
