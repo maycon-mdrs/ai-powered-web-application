@@ -100,7 +100,8 @@ ai-powered-web-application/
 | XI. Logs | stdout + stack de observabilidade |
 | XII. Admin processes | Jobs pontuais (ex.: ingestão RAG no boot do MS2) |
 
-Detalhes de demo na banca: cada doc de escopo tem a seção **“O que a banca pede ver”**.
+Detalhes de demo na banca: cada doc de escopo tem a seção **“O que a banca pede ver”**.  
+Resultados de testes na EC2: [08-resultados-testes.md](08-resultados-testes.md).
 
 ---
 
