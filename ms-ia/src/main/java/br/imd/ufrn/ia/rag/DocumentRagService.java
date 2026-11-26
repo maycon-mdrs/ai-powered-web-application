@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -21,6 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
+import br.imd.ufrn.ia.config.AiModelSelectionConfig;
 import br.imd.ufrn.ia.config.AiProperties;
 import jakarta.annotation.PostConstruct;
 
@@ -32,16 +30,19 @@ import jakarta.annotation.PostConstruct;
 public class DocumentRagService {
 
     private static final Logger log = LoggerFactory.getLogger(DocumentRagService.class);
-    private static final Pattern FRONTMATTER =
-            Pattern.compile("(?s)^---\\s*\\n.*?\\n---\\s*\\n(.*)$");
 
     private final AiProperties aiProperties;
+    private final AiModelSelectionConfig modelSelection;
     private final ObjectProvider<EmbeddingModel> embeddingModels;
     private final List<Document> documents = new ArrayList<>();
     private VectorStore vectorStore;
 
-    public DocumentRagService(AiProperties aiProperties, ObjectProvider<EmbeddingModel> embeddingModels) {
+    public DocumentRagService(
+            AiProperties aiProperties,
+            AiModelSelectionConfig modelSelection,
+            ObjectProvider<EmbeddingModel> embeddingModels) {
         this.aiProperties = aiProperties;
+        this.modelSelection = modelSelection;
         this.embeddingModels = embeddingModels;
     }
 
@@ -58,7 +59,7 @@ public class DocumentRagService {
                 continue;
             }
             String name = resource.getFilename() != null ? resource.getFilename() : "doc";
-            String body = stripFrontmatter(new String(resource.getContentAsByteArray(), StandardCharsets.UTF_8));
+            String body = new String(resource.getContentAsByteArray(), StandardCharsets.UTF_8).trim();
             documents.add(Document.builder().id(name).text(body).build());
         }
 
@@ -66,7 +67,7 @@ public class DocumentRagService {
             return;
         }
 
-        EmbeddingModel model = selectEmbeddingModel();
+        EmbeddingModel model = modelSelection.selectEmbedding(embeddingModels.orderedStream().toList());
         if (model == null) {
             return;
         }
@@ -88,32 +89,5 @@ public class DocumentRagService {
         return hits.stream()
                 .map(d -> "### " + d.getId() + "\n" + d.getText())
                 .collect(Collectors.joining("\n\n"));
-    }
-
-    private EmbeddingModel selectEmbeddingModel() {
-        List<EmbeddingModel> models = embeddingModels.orderedStream().toList();
-        if (models.isEmpty()) {
-            return null;
-        }
-        if (models.size() == 1) {
-            return models.getFirst();
-        }
-        String want = aiProperties.getProvider() == null ? "gemini" : aiProperties.getProvider().toLowerCase(Locale.ROOT);
-        for (EmbeddingModel model : models) {
-            String name = model.getClass().getSimpleName().toLowerCase(Locale.ROOT);
-            if ("openai".equals(want) && name.contains("openai")) {
-                return model;
-            }
-            if (("gemini".equals(want) || "google".equals(want))
-                    && (name.contains("google") || name.contains("gemini") || name.contains("genai"))) {
-                return model;
-            }
-        }
-        return models.getFirst();
-    }
-
-    private static String stripFrontmatter(String raw) {
-        Matcher m = FRONTMATTER.matcher(raw.trim());
-        return m.matches() ? m.group(1).trim() : raw.trim();
     }
 }

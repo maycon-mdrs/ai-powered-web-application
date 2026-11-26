@@ -72,6 +72,7 @@ Módulo `ms-lambda/`:
 - `PlanoController` — HTTP local `:9000/plano` (`java -jar` para debug; **não** sobe no Compose)
 - `PlanoLeituraHandler` — `RequestHandler` POJO (teste no console AWS)
 - `PlanoLeituraUrlHandler` — **Function URL** (`APIGatewayV2HTTPEvent` → JSON)
+- Tracing: env `ZIPKIN_ENDPOINT` (ex. `http://<EIP>:9411/api/v2/spans`) → span SERVER `ms-lambda` no Zipkin da EC2
 - Artifact shaded: `ms-lambda-0.0.1-SNAPSHOT-aws.jar`
 
 Handler de produção: `br.imd.ufrn.lambda.PlanoLeituraUrlHandler::handleRequest`

@@ -5,7 +5,7 @@ spring:
   application:
     name: ms-ia
   config:
-    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
+    import: configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   graphql:
     graphiql:
       enabled: true
@@ -24,13 +24,11 @@ spring:
     mcp:
       client:
         enabled: ${MCP_ENABLED:false}
-        # Tempo do cliente Spring → processo MCP (stdio). O axios interno do
-        # mcp-open-library é outro limite (patch 60s no Dockerfile.ms-ia).
+        # Timeout Spring AI MCP client → processo stdio (axios interno: patch no Dockerfile.ms-ia)
         request-timeout: 180s
         stdio:
           connections:
             open-library:
-              # Windows default; Docker: ver application-docker.yml
               command: ${MCP_COMMAND:cmd.exe}
               args:
                 - ${MCP_ARG_0:/c}
@@ -41,24 +39,12 @@ spring:
     vault:
       enabled: false
 
-ai:
-  provider: gemini
-  stub: true
-
-# Segredos LANGSMITH_* vêm do Vault (perfil vault). Nunca versionar a API key.
-langsmith:
-  tracing: ${LANGSMITH_TRACING:false}
-  api-key: ${LANGSMITH_API_KEY:}
-  endpoint: ${LANGSMITH_ENDPOINT:https://api.smith.langchain.com}
-  project: ${LANGSMITH_PROJECT:tp3-assistente-livros}
-
 eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_DEFAULT_ZONE:http://127.0.0.1:8761/eureka/,http://127.0.0.1:8762/eureka/}
   instance:
     prefer-ip-address: ${EUREKA_PREFER_IP:true}
-    # Compose: EUREKA_INSTANCE_HOSTNAME=<serviço> e EUREKA_PREFER_IP=false
     ip-address: ${EUREKA_INSTANCE_IP:127.0.0.1}
     hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
 
@@ -86,7 +72,7 @@ spring:
     activate:
       on-profile: vault
     import:
-      - optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
+      - configserver:${CONFIG_SERVER_URL:http://localhost:8888}
       - vault://
   cloud:
     vault:
@@ -102,4 +88,3 @@ spring:
         profiles: []
         default-context: ms-ia
         application-name: ms-ia
-

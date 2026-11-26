@@ -1,6 +1,3 @@
----
-tags: [fantasia, magia, epico, mitologia, romantasy, urbana, dark]
----
 # Fantasia
 
 A fantasia usa magia, mitologia ou mundos inventados como motor da história.

@@ -37,6 +37,17 @@ Na EC2 use `127.0.0.1` no lugar do EIP. UI: `/demo/` no Gateway, Postman (`postm
 
 ---
 
+## Onde editar config
+
+| Camada | Uso | Exemplos |
+| --- | --- | --- |
+| **`config-repo/`** | Comportamento (Git + refresh) | `ai.stub`, `gateway.rate-limit`, resilience/chaos |
+| **Compose / `.env`** | Topologia do host | `EUREKA_*`, `ZIPKIN_ENDPOINT`, `LAMBDA_BASE_URL`, `MCP_*` |
+| **JAR `application.yml`** | Bootstrap do serviço | nome, porta, Eureka, import do Config Server |
+| **Vault** | Segredos | `secret/ms-ia` |
+
+---
+
 ## O que mostrar em cada tela
 
 ### 1. Eureka — descoberta
@@ -62,7 +73,7 @@ mutation {
 3. Abra `:9411` → **Run Query** → abra o trace recente.
 4. O que mostrar:
    - **Chat:** spans `api-gateway` → `ms-coordenador` → CLIENT GraphQL → SERVER `ms-ia`.
-   - **Plano:** `api-gateway` → `ms-coordenador` → **CLIENT HTTP** para o host da Function URL (Lambda). A Lambda em si não envia span ao Zipkin (fica na AWS); o CLIENT no coordenador + JSON 200 do `/plano` comprovam a chamada.
+   - **Plano:** `api-gateway` → `ms-coordenador` → CLIENT Function URL → **SERVER `ms-lambda`** (a Lambda reporta span via `ZIPKIN_ENDPOINT` apontando para o Zipkin da EC2).
 
 ### 4. Grafana / Prometheus — métricas
 1. `:3000` login `admin` / `admin`.

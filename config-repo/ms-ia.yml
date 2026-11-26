@@ -1,3 +1,4 @@
 ai:
   provider: gemini
   stub: false
+  stub-message: "[STUB] LLM mockado via config — nenhuma chamada ao provedor."

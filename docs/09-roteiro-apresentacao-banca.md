@@ -13,7 +13,7 @@ Perguntas típicas do professor (stateless, RestClient, Gateway estático/dinâm
 
 **Ambiente:** EC2 + Docker Compose (ver `ambiente-aws.md`).  
 **Config dinâmica:** GitHub → Config Server (`CONFIG_PROFILE=git`) → refresh no serviço alvo (`ms-ia` `:8082` para stub; `api-gateway` `:8080` para rate limit).  
-**Segredos:** Vault `secret/ms-ia` (LLM + LangSmith). Nunca no Git.
+**Segredos:** Vault `secret/ms-ia` (chaves LLM). Nunca no Git.
 
 ---
 
@@ -33,7 +33,7 @@ Perguntas típicas do professor (stateless, RestClient, Gateway estático/dinâm
 | 10 | Retry / Fallback | MS1 + kill MS-IA |
 | 11 | Circuit Breaker | Actuator + Grafana |
 | 12 | Rate limit + Bulkhead | Gateway 429 + Resilience4j |
-| 13 | Spring AI Memory + RAG (+ LangSmith opcional) | Chat 2 turns + tool searchGenreDocuments |
+| 13 | Spring AI Memory + RAG | Chat 2 turns + tool searchGenreDocuments |
 | 14 | MCP | Open Library (terceiros); próprio fora do escopo |
 
 ---
@@ -52,7 +52,7 @@ Perguntas típicas do professor (stateless, RestClient, Gateway estático/dinâm
 | VIII Concurrency | Escala via mais processos/instâncias, não threads “mágicas” só | 2× `MS-COORDENADOR` no Eureka |
 | IX Disposability | Start/stop rápido; tolerante a kill | `docker stop/start`; Chaos Monkey |
 | X Dev/prod parity | Dev, staging e prod o mais parecidos possível | Compose local ≈ EC2 |
-| XI Logs | Logs como stream em stdout (agregar fora da app) | stdout; Prometheus/Grafana; Zipkin; opcional LangSmith |
+| XI Logs | Logs como stream em stdout (agregar fora da app) | stdout; Prometheus/Grafana; Zipkin |
 | XII Admin | Tarefas admin/one-off como processos separados | Scripts Compose, refresh Actuator, Vault CLI |
 
 ---
@@ -82,7 +82,7 @@ Dois exemplos bons para a banca (mesmo fluxo: Git → Config → refresh):
 
 ### A) Stub LLM — `config-repo/ms-ia.yml`
 
-1. Editar `ai.stub: true|false` no GitHub → commit/push.
+1. Editar `ai.stub: true|false` (e opcionalmente `ai.stub-message`) no GitHub → commit/push.
 2. Refresh no **MS-IA** (`:8082`):
    ```bash
    curl -X POST http://<EIP>:8082/actuator/refresh
@@ -140,7 +140,7 @@ curl -X POST http://<EIP>:8080/ms-coordenador/api/assistant/plano \
 ## 8. Vault (0,5)
 
 - UI `:8200` → `secret/ms-ia` (não exibir valores).
-- Perfil `vault` + fail-fast; chaves LLM/LangSmith **só** no Vault.
+- Perfil `vault` + fail-fast; chaves LLM **só** no Vault.
 
 ---
 
@@ -193,9 +193,9 @@ Usable ~5–8 usuários (0% erro); knee ~12 (429). Ver [08-resultados-testes.md]
 | Stub | `ai.stub` no Config (JMeter) |
 | Memory | `MessageChatMemoryAdvisor` + `conversationId` |
 | RAG | embeddings + tool `searchGenreDocuments` (`SimpleVectorStore`) |
-| Logs IA | Zipkin; **LangSmith** opcional via advisor Java + Vault (`LANGSMITH_*`) — não é auto-env como no Python |
+| Logs IA | Zipkin + Prometheus/Grafana |
 
-Demo: 2 turns no mesmo `conversationId`; stub mostra trecho RAG.
+Demo: 2 turns no mesmo `conversationId`; stub devolve `ai.stub-message` (texto óbvio via Config).
 
 ---
 
@@ -226,7 +226,6 @@ Se o professor exigir MCP próprio, isso seria um incremento futuro — **não**
 [ ] Kill réplica b + Eureka
 [ ] Chaos enable/disable
 [ ] MCP Open Library (MCP_ENABLED=true)
-[ ] (Opcional) LangSmith com stub=false
 ```
 
 ## Ordem sugerida na fala

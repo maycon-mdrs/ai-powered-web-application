@@ -5,7 +5,7 @@ spring:
   application:
     name: ms-coordenador
   config:
-    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
+    import: configserver:${CONFIG_SERVER_URL:http://localhost:8888}
 
 eureka:
   client:
@@ -19,19 +19,6 @@ eureka:
     instance-id: ${EUREKA_INSTANCE_HOSTNAME:${spring.application.name}}:${server.port}
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
-
-ms-ia:
-  # Service id Eureka (LoadBalanced). Trocar aqui / Config Server, não no Java.
-  base-url: ${MS_IA_BASE_URL:http://MS-IA}
-
-lambda:
-  base-url: ${LAMBDA_BASE_URL:http://localhost:9000}
-
-http:
-  client:
-    connect-timeout: 3s
-    read-timeout: 90s
-
 
 management:
   endpoints:
@@ -58,57 +45,3 @@ management:
     export:
       zipkin:
         endpoint: ${ZIPKIN_ENDPOINT}
-
-resilience4j:
-  circuitbreaker:
-    instances:
-      msIa:
-        slidingWindowSize: 10
-        failureRateThreshold: 50
-        waitDurationInOpenState: 5s
-        permittedNumberOfCallsInHalfOpenState: 3
-        registerHealthIndicator: true
-      lambda:
-        slidingWindowSize: 10
-        failureRateThreshold: 50
-        waitDurationInOpenState: 5s
-        registerHealthIndicator: true
-  retry:
-    instances:
-      msIa:
-        maxAttempts: 3
-        waitDuration: 500ms
-      lambda:
-        maxAttempts: 2
-        waitDuration: 300ms
-  bulkhead:
-    instances:
-      msIa:
-        maxConcurrentCalls: 8
-      lambda:
-        maxConcurrentCalls: 4
-  ratelimiter:
-    instances:
-      msIa:
-        limitForPeriod: 15
-        limitRefreshPeriod: 1s
-        timeoutDuration: 0
-      lambda:
-        limitForPeriod: 10
-        limitRefreshPeriod: 1s
-        timeoutDuration: 0
-
-# Assaults começam desligados; ligar na demo via POST /actuator/chaosmonkey/enable
-# (profile chaos-monkey ativa a auto-config — ver SPRING_PROFILES_ACTIVE no Compose)
-chaos:
-  monkey:
-    enabled: ${CHAOS_MONKEY_ENABLED:false}
-    assaults:
-      level: 5
-      latencyActive: true
-      exceptionsActive: true
-      latencyRangeStart: 1000
-      latencyRangeEnd: 3000
-    watcher:
-      restController: true
-      service: true

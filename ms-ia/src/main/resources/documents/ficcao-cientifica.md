@@ -1,6 +1,3 @@
----
-tags: [ficcao, cientifica, sci-fi, cyberpunk, espaco, distopia, tecnologia, ia]
----
 # Ficção científica
 
 A ficção científica explora ideias científicas, tecnológicas ou especulativas e o impacto delas nas pessoas e na sociedade.

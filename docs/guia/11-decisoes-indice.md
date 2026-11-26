@@ -21,7 +21,7 @@ Lista completa com texto: [docs/DECISOES.md](../DECISOES.md).
 | D15 | base-url e timeouts externalizados | 3 · 9.4 |
 | D16 | 2 réplicas coordenador | 2 · item 2 |
 | D17 | Chaos Monkey 4.x + access | item 9 |
-| D18 | Zipkin + Prometheus + LangSmith opcional | 2 · item 6 |
+| D18 | Zipkin + Prometheus/Grafana | 2 · item 6 |
 | D19 | EC2 Compose + Lambda AWS | 7.2 |
 | D20 | system-prompt.txt | 3 parada 7 |
 | D21 | Embeddings com fallback lexical | 3 parada 8 |

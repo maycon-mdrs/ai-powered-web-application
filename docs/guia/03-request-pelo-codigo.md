@@ -119,9 +119,8 @@ GraphiQL em `:8082/graphiql` fala com o mesmo resolver.
 
 Arquivo: `ia/service/BookAssistantService.java:47-76`
 
-1. Acrescenta a mensagem ao histórico textual (`conversationHistories`).
-2. Se `ai.stub=true` **ou** não há `ChatClient` → monta resposta determinística com histórico + `documentRagService.retrieve(message)` e devolve (bom para JMeter).
-3. Senão: `ChatClient.prompt().system(systemPrompt).advisors(MessageChatMemoryAdvisor…).user(message).call()` com retry local para 503/high demand.
+1. Se `ai.stub=true` **ou** não há `ChatClient` → devolve `ai.stub-message` (string via Config; bom para JMeter/demo).
+2. Senão: `ChatClient.prompt().system(systemPrompt).advisors(MessageChatMemoryAdvisor…).user(message).call()` com retry local para 503/high demand. Memória = `ChatMemory` por `conversationId`.
 
 System prompt carregado uma vez de `classpath:prompts/system-prompt.txt` (`@PostConstruct`).
 
@@ -135,8 +134,6 @@ O `ChatClient` primário recebe:
 
 - `defaultTools(ragTools)` → tool `searchGenreDocuments`
 - callbacks MCP (se `MCP_ENABLED=true`) → Open Library
-- advisor LangSmith opcional
-
 ```java
 // RagTools.java:20-25
 @Tool(name = "searchGenreDocuments", ...)

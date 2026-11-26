@@ -73,8 +73,9 @@ Tradução: as chaves `ai.*` deste YAML viram campos Java (`provider`, `stub`). 
 
 | Chave | O que controla | Se mudar para… |
 |-------|----------------|----------------|
-| `ai.provider` | Qual fábrica de modelo/embeddings o código prefere (`gemini` ou `openai`). Usado em `ChatModelSelectionConfig` e ao escolher `EmbeddingModel` no RAG. | `openai` → tenta beans OpenAI (precisa de key no Vault). |
-| `ai.stub` | Atalho de demo/carga. `true` = `BookAssistantService` **não chama** Gemini/OpenAI; monta uma resposta falsa com histórico + trecho RAG. `false` = chama a API de verdade (custa token e latência). | `false` + refresh/recreate → chat “inteligente”; JMeter costuma ficar em `true`. |
+| `ai.provider` | Qual fábrica de modelo/embeddings o código prefere (`gemini` ou `openai`). Usado em `AiModelSelectionConfig` (chat + embeddings RAG). | `openai` → tenta beans OpenAI (precisa de key no Vault). |
+| `ai.stub` | Atalho de demo/carga. `true` = `BookAssistantService` **não chama** Gemini/OpenAI; devolve `ai.stub-message`. `false` = chama a API de verdade (custa token e latência). | `false` + refresh/recreate → chat “inteligente”; JMeter costuma ficar em `true`. |
+| `ai.stub-message` | String do mock; a API devolve **exatamente** este texto. | Na banca, deixa óbvio que o LLM está desligado. |
 
 **Como ver o efeito:**
 
@@ -215,7 +216,6 @@ Arquivo **dentro da imagem**. Define o mínimo para o Gateway nascer mesmo sem C
 | `spring.ai.mcp.client` | Cliente MCP. `enabled` via `MCP_ENABLED`. `stdio.connections.open-library` = comando que sobe o processo `mcp-open-library` (`npx`…). |
 | `spring.cloud.vault.enabled: false` | No perfil **default**, Vault desligado (dev stub sem cofre). |
 | `ai.provider` / `ai.stub` | Defaults locais; o `config-repo/ms-ia.yml` costuma mandar na prática. |
-| `langsmith.*` | Tracing opcional para LangSmith; API key **não** vai no Git — vem do Vault no perfil `vault`. |
 | Bloco `---` + `on-profile: vault` | Segundo documento YAML no mesmo arquivo: só ativa com profile `vault`. Importa `vault://`, `fail-fast: true` (se o Vault estiver fora, o MS-IA **não sobe**), lê KV `secret/ms-ia`. |
 
 ---

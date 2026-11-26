@@ -166,7 +166,7 @@ Arquivos: `run-baseline-5u.jtl`, `run-baseline-8u.jtl`, `run-baseline-12u.jtl`.
 
 ### Revalidação (`run-reval-8u.jtl`)
 
-Rodada posterior (mesmo plano, 8u) após mudanças de Config/LangSmith.  
+Rodada posterior (mesmo plano, 8u) após mudanças de Config.  
 Resultado: **747** amostras, **57,8%** erros (`200=315`, **`503=432`**).  
 Causa: stack ainda estabilizando (Eureka / instâncias) — **não** usar como baseline de capacidade; usar os `run-baseline-*` e `run-kill-b-8u.jtl`.
 

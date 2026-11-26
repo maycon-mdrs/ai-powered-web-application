@@ -116,14 +116,14 @@ Refresh dos dois coordenadores ao mudar RL/BH no Config.
 
 | Peça | Código |
 |------|--------|
-| Seleção Gemini/OpenAI | `ChatModelSelectionConfig` + `AiProperties.provider` |
-| Stub | `AiProperties.stub` / `BookAssistantService` ramo stub |
+| Seleção Gemini/OpenAI | `AiModelSelectionConfig` + `AiProperties.provider` |
+| Stub | `AiProperties.stub` + `stubMessage` / `BookAssistantService` ramo stub |
 | Memory | `MessageChatMemoryAdvisor` + `ChatMemory` (janela 20) + `conversationId` |
 | RAG | `DocumentRagService` + `@Tool searchGenreDocuments` |
 | Prompt | `prompts/system-prompt.txt` |
-| Logs IA | Zipkin; LangSmith opcional (`LangSmithTracingAdvisor` + Vault) |
+| Logs IA | Zipkin + Prometheus/Grafana |
 
-**Demo.** Dois turns no mesmo `conversationId` (memória). Em stub, a resposta imprime trecho RAG. Em LLM real: `ai.stub=false` no Config + refresh/recreate; chave no Vault.
+**Demo.** Dois turns no mesmo `conversationId` (memória). Em stub, a resposta é `ai.stub-message` (Config). Em LLM real: `ai.stub=false` + refresh/recreate; chave no Vault.
 
 > **Por que assim?** · [D11](../DECISOES.md) · [D12](../DECISOES.md) · [D20](../DECISOES.md) · [D21](../DECISOES.md)
 

@@ -11,7 +11,7 @@ Formato: decisão · motivo · alternativa descartada · onde no código/config.
 | D04 | 2026-11 | Rate limit **no Gateway** em memória por IP (não Redis) |
 | D05 | 2026-11-26 | Limite servidor default **40 req/s** (`gateway.rate-limit.per-second`) |
 | D06 | 2026-11 | Config Server: `native` local + `git` no deploy EC2 |
-| D07 | 2026-11 | Segredos LLM/LangSmith **só** no Vault (`secret/ms-ia`); fail-fast no perfil `vault` |
+| D07 | 2026-11 | Segredos LLM **só** no Vault (`secret/ms-ia`); fail-fast no perfil `vault` |
 | D08 | 2026-11 | MS1↔MS2 via **GraphQL** (`askBookAssistant`); chat HTTP no MS1 |
 | D09 | 2026-11 | Lambda de plano via **HTTP Interface** (`@PostExchange`) + Function URL |
 | D10 | 2026-11 | Sem MCP servidor próprio; só cliente MCP **Open Library** (terceiros) |
@@ -22,7 +22,7 @@ Formato: decisão · motivo · alternativa descartada · onde no código/config.
 | D15 | 2026-11 | Timeouts HTTP e `ms-ia.base-url` / `lambda.base-url` externalizados |
 | D16 | 2026-11 | 2 réplicas de `MS-COORDENADOR` no Compose (LB via Eureka) |
 | D17 | 2026-11 | Chaos Monkey no coordenador (profile `chaos-monkey` + lib 4.x) |
-| D18 | 2026-11 | Observabilidade: Zipkin + Prometheus/Grafana; LangSmith opcional |
+| D18 | 2026-11 | Observabilidade: Zipkin + Prometheus/Grafana |
 | D19 | 2026-11 | Deploy único EC2 + Compose; Lambda na AWS (Function URL) |
 | D20 | 2026-11 | Prompt de sistema em arquivo (`prompts/system-prompt.txt`), sem provider no texto |
 | D21 | 2026-11-26 | Embeddings: selecionar modelo do provedor ativo; falha → lexical |
@@ -60,6 +60,17 @@ Formato: decisão · motivo · alternativa descartada · onde no código/config.
 **Decisão.** Profile `native` (filesystem) em dev; `git` no EC2 com `search-paths: config-repo`.  
 **Motivo.** Alterar stub/rate sem rebuild (push + `/actuator/refresh`).  
 **Onde.** `config-server/.../application.yml`; `config-repo/*.yml`.
+
+**Camadas de configuração:**
+
+| Camada | Papel | Exemplos |
+|--------|--------|----------|
+| JAR `application.yml` | Identidade + bootstrap | `name`, `config.import`, porta, Eureka, wiring Vault/MCP |
+| `config-repo/` | Comportamento (push + refresh) | `ai.stub*`, `gateway.rate-limit`, resilience/chaos/URLs |
+| Compose / `.env` | Topologia do host | `EUREKA_*`, `ZIPKIN_ENDPOINT`, `LAMBDA_BASE_URL`, `MCP_*` |
+| Vault | Segredos | `GEMINI_API_KEY`, `OPENAI_API_KEY` |
+
+Import do Config Server é obrigatório nos apps clientes (`configserver:…`). Eureka/portas/`config.import` permanecem no JAR.
 
 ### D07 — Vault
 **Decisão.** Perfil `vault` no `ms-ia` com `fail-fast: true`; KV `secret/ms-ia`.  
@@ -120,9 +131,9 @@ Formato: decisão · motivo · alternativa descartada · onde no código/config.
 **Onde.** `ms-coordenador` pom + `application.yml`; Compose profiles.
 
 ### D18 — Observabilidade
-**Decisão.** Micrometer → Prometheus/Grafana; tracing → Zipkin; LangSmith opcional via advisor.  
+**Decisão.** Micrometer → Prometheus/Grafana; tracing → Zipkin.  
 **Motivo.** Itens de carga e “ver o caminho” na banca.  
-**Onde.** `observability/`; `LangSmithTracingAdvisor`.
+**Onde.** `observability/`.
 
 ### D19 — EC2 + Lambda AWS
 **Decisão.** Stack de apps numa EC2; só o plano é serverless na AWS.  

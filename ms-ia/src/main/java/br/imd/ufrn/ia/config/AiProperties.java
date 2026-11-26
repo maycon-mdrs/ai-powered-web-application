@@ -13,6 +13,9 @@ public class AiProperties {
     /** Quando {@code true}, não invoca o LLM (respostas determinísticas). */
     private boolean stub = true;
 
+    /** Texto devolvido no modo stub — valor vem só do YAML/Config Server. */
+    private String stubMessage;
+
     public String getProvider() {
         return provider;
     }
@@ -27,5 +30,13 @@ public class AiProperties {
 
     public void setStub(boolean stub) {
         this.stub = stub;
+    }
+
+    public String getStubMessage() {
+        return stubMessage;
+    }
+
+    public void setStubMessage(String stubMessage) {
+        this.stubMessage = stubMessage;
     }
 }

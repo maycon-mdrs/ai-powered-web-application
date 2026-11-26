@@ -2,7 +2,6 @@ package br.imd.ufrn.ia.service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -12,29 +11,22 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import br.imd.ufrn.ia.config.AiProperties;
-import br.imd.ufrn.ia.rag.DocumentRagService;
 import jakarta.annotation.PostConstruct;
 
 @Service
 public class BookAssistantService {
 
     private final AiProperties aiProperties;
-    private final DocumentRagService documentRagService;
     private final ChatMemory chatMemory;
-    private final Map<String, StringBuilder> conversationHistories;
     private final ObjectProvider<ChatClient> chatClient;
     private String systemPrompt;
 
     public BookAssistantService(
             AiProperties aiProperties,
-            DocumentRagService documentRagService,
             ChatMemory chatMemory,
-            Map<String, StringBuilder> conversationHistories,
             ObjectProvider<ChatClient> chatClient) {
         this.aiProperties = aiProperties;
-        this.documentRagService = documentRagService;
         this.chatMemory = chatMemory;
-        this.conversationHistories = conversationHistories;
         this.chatClient = chatClient;
     }
 
@@ -45,33 +37,12 @@ public class BookAssistantService {
     }
 
     public String ask(String conversationId, String message) {
-        conversationHistories.computeIfAbsent(conversationId, id -> new StringBuilder())
-                .append("USER: ").append(message).append('\n');
-
         if (aiProperties.isStub() || chatClient.getIfAvailable() == null) {
-            String rag = documentRagService.retrieve(message);
-            String history = conversationHistories.get(conversationId).toString();
-            String response = """
-                    [stub/%s] conversationId=%s
-                    Histórico recente:
-                    %s
-                    Contexto RAG (tool searchGenreDocuments):
-                    %s
-                    Pedido: %s
-                    """.formatted(
-                    aiProperties.getProvider(),
-                    conversationId,
-                    history.length() > 500 ? history.substring(history.length() - 500) : history,
-                    rag.length() > 800 ? rag.substring(0, 800) + "..." : rag,
-                    message);
-            conversationHistories.get(conversationId).append("ASSISTANT: ").append(response).append('\n');
-            return response;
+            return aiProperties.getStubMessage();
         }
 
         ChatClient client = chatClient.getObject();
         String response = callWithTransientRetry(client, systemPrompt, conversationId, message);
-
-        conversationHistories.get(conversationId).append("ASSISTANT: ").append(response).append('\n');
         return response != null ? response : "";
     }
 

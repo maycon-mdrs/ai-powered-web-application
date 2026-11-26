@@ -1,6 +1,3 @@
----
-tags: [romance, amor, contemporaneo, historico, romantasy, ya, afetivo]
----
 # Romance
 
 O gênero romance foca em relacionamentos emocionais e no arco afetivo entre personagens.

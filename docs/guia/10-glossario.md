@@ -3,7 +3,7 @@
 | Termo | O que é neste projeto |
 |-------|------------------------|
 | **Actuator** | Endpoints de operação (`/actuator/health`, `/refresh`, `/circuitbreakers`, `/chaosmonkey`, `/prometheus`). |
-| **Advisor** | Interceptador do `ChatClient`: memória (`MessageChatMemoryAdvisor`), tracing LangSmith. |
+| **Advisor** | Interceptador do `ChatClient` (ex.: memória com `MessageChatMemoryAdvisor`). |
 | **AOP** | Programação orientada a aspectos: o proxy Resilience4j envolve o método anotado. |
 | **Bean** | Objeto gerenciado pelo Spring (criado via anotação ou `@Bean`). |
 | **Bulkhead** | Limite de chamadas **simultâneas** a um recurso (`maxConcurrentCalls`). |
@@ -24,7 +24,7 @@
 | **RefreshScope** | Bean recriado após `/actuator/refresh` com config nova. |
 | **Retry** | Repetir a chamada após falha transitória. |
 | **SimpleVectorStore** | Vector store em memória do Spring AI (embeddings no boot). |
-| **Stub** | Modo sem LLM (`ai.stub=true`): resposta determinística com RAG/histórico. |
+| **Stub** | Modo sem LLM (`ai.stub=true`): devolve exatamente `ai.stub-message` do YAML/Config. |
 | **Tool** | Função que o modelo pode invocar (`@Tool` / MCP callbacks). |
-| **Vault** | Cofre de segredos; KV `secret/ms-ia` para chaves LLM/LangSmith. |
+| **Vault** | Cofre de segredos; KV `secret/ms-ia` para chaves LLM. |
 | **Zipkin** | UI de traces distribuídos (`:9411`). |

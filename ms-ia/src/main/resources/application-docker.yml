@@ -1,4 +1,4 @@
-# Perfil Docker Compose / Linux — binário global (ver Dockerfile.ms-ia)
+# Profile docker: MCP via binário no PATH (Dockerfile.ms-ia)
 spring:
   ai:
     mcp:
@@ -8,7 +8,3 @@ spring:
             open-library:
               command: ${MCP_COMMAND:mcp-open-library}
               args: []
-
-eureka:
-  instance:
-    prefer-ip-address: false

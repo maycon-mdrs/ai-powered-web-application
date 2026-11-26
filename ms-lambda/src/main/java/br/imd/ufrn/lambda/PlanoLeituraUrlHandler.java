@@ -12,6 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Handler para AWS Lambda Function URL (evento HTTP API Gateway v2).
  * Handler class: {@code br.imd.ufrn.lambda.PlanoLeituraUrlHandler::handleRequest}
+ * <p>
+ * Com {@code ZIPKIN_ENDPOINT} (ex.: {@code http://EIP:9411/api/v2/spans}), reporta
+ * span SERVER {@code ms-lambda} encadeado ao trace do coordenador.
  */
 public class PlanoLeituraUrlHandler
         implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
@@ -21,19 +24,30 @@ public class PlanoLeituraUrlHandler
 
     @Override
     public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent event, Context context) {
+        Map<String, String> headers = event != null && event.getHeaders() != null
+                ? event.getHeaders()
+                : Map.of();
+        ZipkinSpanReporter.Scope span = ZipkinSpanReporter.start(headers, "post /plano");
+        int status = 500;
         try {
             String body = event != null ? event.getBody() : null;
             if (body == null || body.isBlank()) {
-                return jsonResponse(400, Map.of("error", "Body JSON obrigatório"));
+                status = 400;
+                return jsonResponse(status, Map.of("error", "Body JSON obrigatório"));
             }
             PlanoLeituraRequest request = mapper.readValue(body, PlanoLeituraRequest.class);
             PlanoLeituraResponse response = service.gerar(request);
-            return jsonResponse(200, response);
+            status = 200;
+            return jsonResponse(status, response);
         } catch (IllegalArgumentException e) {
-            return jsonResponse(400, Map.of("error", e.getMessage() != null ? e.getMessage() : "request inválido"));
+            status = 400;
+            return jsonResponse(status, Map.of("error", e.getMessage() != null ? e.getMessage() : "request inválido"));
         } catch (Exception e) {
+            status = 500;
             String msg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
-            return jsonResponse(500, Map.of("error", msg));
+            return jsonResponse(status, Map.of("error", msg));
+        } finally {
+            span.finish(status);
         }
     }
 

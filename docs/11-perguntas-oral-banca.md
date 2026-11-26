@@ -137,7 +137,7 @@ No `AssistantOrchestrator.askIa` / `gerarPlano`:
 
 | | Config Server | Vault |
 |--|---------------|-------|
-| O quê | comportamento (stub, rate, URLs) | **segredos** (GEMINI_API_KEY, LangSmith) |
+| O quê | comportamento (stub, rate, URLs) | **segredos** (GEMINI_API_KEY, OPENAI_API_KEY) |
 | Onde | Git `config-repo/` | `secret/ms-ia` |
 | Fail-fast | optional no import | perfil `vault` com `fail-fast: true` |
 
@@ -151,7 +151,7 @@ No `AssistantOrchestrator.askIa` / `gerarPlano`:
 | Prometheus/Grafana | `:9090` / `:3000` | Latência, CB, etc. |
 | Actuator | por serviço | health, refresh, circuitbreakers, chaosmonkey |
 
-**Zipkin / Lambda:** a Function URL **não** manda span SERVER para o nosso Zipkin. Prova da Lambda = span **CLIENT** no `ms-coordenador` (host `*.lambda-url…`) + resposta 200 do `/plano`. Chat deve encadear `api-gateway` → `ms-coordenador` → `ms-ia`.
+**Zipkin / Lambda:** a Function URL reporta span SERVER `ms-lambda` para o Zipkin da EC2 (`ZIPKIN_ENDPOINT=http://<EIP>:9411/api/v2/spans`). Trace do plano: `api-gateway` → `ms-coordenador` → CLIENT → **`ms-lambda`**. Chat: `…` → `ms-ia`. SG da EC2 precisa liberar **9411** para a Lambda alcançar o collector.
 
 ---
 

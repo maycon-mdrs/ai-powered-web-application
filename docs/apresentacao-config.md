@@ -209,7 +209,7 @@ Docker Compose é o **release/run**: imagens iguais, `.env` diferente. A Lambda 
 
 - UI `:8200` → KV `secret/ms-ia`
 - Perfil `vault` no ms-ia; fail-fast se o Vault cair com esse perfil
-- Chaves LLM / LangSmith **só** aqui
+- Chaves LLM **só** aqui
 
 Config Server guarda **comportamento**. Vault guarda **segredo**. Na demo: mostrar a UI sem revelar o valor.
 

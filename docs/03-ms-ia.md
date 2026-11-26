@@ -113,8 +113,6 @@ flowchart TD
 - Default: **gemini**
 - Troca: alterar `ai.provider` no `config-repo` + refresh (ver [01-plataforma.md](01-plataforma.md))
 - Chaves só no Vault
-- LangSmith (opcional): `LangSmithTracingAdvisor` + `LANGSMITH_*` no Vault — Java não tem auto-trace por env como o Python
-
 ---
 
 ## 8. O que a banca pede ver

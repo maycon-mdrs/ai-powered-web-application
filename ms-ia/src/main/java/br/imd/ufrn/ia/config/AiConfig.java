@@ -1,8 +1,6 @@
 package br.imd.ufrn.ia.config;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -18,7 +16,7 @@ import org.springframework.context.annotation.Primary;
 import br.imd.ufrn.ia.rag.RagTools;
 
 @Configuration
-@EnableConfigurationProperties({ AiProperties.class, LangSmithProperties.class })
+@EnableConfigurationProperties({ AiProperties.class })
 public class AiConfig {
 
     @Bean
@@ -26,29 +24,21 @@ public class AiConfig {
         return MessageWindowChatMemory.builder().maxMessages(20).build();
     }
 
-    /** Histórico textual por conversationId (modo stub). */
-    @Bean
-    Map<String, StringBuilder> conversationHistories() {
-        return new ConcurrentHashMap<>();
-    }
-
     @Bean
     @Primary
     ChatClient chatClient(
             ObjectProvider<ChatModel> chatModels,
-            ChatModelSelectionConfig selection,
+            AiModelSelectionConfig selection,
             RagTools ragTools,
-            ObjectProvider<SyncMcpToolCallbackProvider> mcpTools,
-            ObjectProvider<br.imd.ufrn.ia.observability.LangSmithTracingAdvisor> langSmithAdvisor) {
+            ObjectProvider<SyncMcpToolCallbackProvider> mcpTools) {
         List<ChatModel> models = chatModels.orderedStream().toList();
-        ChatModel chatModel = selection.select(models);
+        ChatModel chatModel = selection.selectChat(models);
         ChatClient.Builder builder = ChatClient.builder(chatModel);
         builder.defaultTools(ragTools);
         SyncMcpToolCallbackProvider tools = mcpTools.getIfAvailable();
         if (tools != null) {
-            builder.defaultToolCallbacks(tools);
+            builder.defaultTools(tools);
         }
-        langSmithAdvisor.ifAvailable(builder::defaultAdvisors);
         return builder.build();
     }
 }

@@ -104,7 +104,7 @@ Caminhos curtos: `gateway/…`, `coordenador/…`, `ia/…`, `lambda/…`.
 `ia/service/BookAssistantService.java` · `@Service`  
 **Papel.** Stub ou ChatClient + memory; carrega system prompt.  
 **Métodos.** `ask`, `loadSystemPrompt`, `callWithTransientRetry`, `isTransientLlmFailure`.  
-**O que ela usa.** `AiProperties`, `DocumentRagService`, `ChatMemory`, `ChatClient`, `conversationHistories`.  
+**O que ela usa.** `AiProperties`, `ChatMemory`, `ChatClient`.  
 **Código comentado:** cap. 3 parada 7; item 13.
 
 ---
@@ -113,7 +113,7 @@ Caminhos curtos: `gateway/…`, `coordenador/…`, `ia/…`, `lambda/…`.
 
 `ia/rag/DocumentRagService.java` · `@Service`  
 **Papel.** Carrega `documents/*.md`; embeddings → `SimpleVectorStore` ou lexical.  
-**Métodos.** `load`, `retrieve`, `selectEmbeddingModel`.  
+**Métodos.** `load`, `retrieve` (seleção de embedding via `AiModelSelectionConfig`).  
 **Código comentado:** cap. 3 parada 8; D12, D21.
 
 ---
@@ -130,7 +130,7 @@ Caminhos curtos: `gateway/…`, `coordenador/…`, `ia/…`, `lambda/…`.
 ## AiConfig
 
 `ia/config/AiConfig.java` · `@Configuration`  
-**Papel.** Beans `ChatMemory`, `conversationHistories`, `ChatClient` (+ tools RAG/MCP, advisor LangSmith).  
+**Papel.** Beans `ChatMemory`, `ChatClient` (+ tools RAG/MCP).  
 **Código comentado:** cap. 3 parada 8.
 
 ---
@@ -138,7 +138,7 @@ Caminhos curtos: `gateway/…`, `coordenador/…`, `ia/…`, `lambda/…`.
 ## AiProperties
 
 `ia/config/AiProperties.java` · `@ConfigurationProperties(prefix="ai")` · `@RefreshScope`  
-**Papel.** `provider`, `stub`.  
+**Papel.** `provider`, `stub`, `stubMessage`.  
 **Código comentado:** itens 4 e 13.
 
 ---

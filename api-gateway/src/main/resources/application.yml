@@ -5,7 +5,7 @@ spring:
   application:
     name: api-gateway
   config:
-    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
+    import: configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   cloud:
     gateway:
       server:
@@ -23,10 +23,6 @@ eureka:
     prefer-ip-address: ${EUREKA_PREFER_IP:true}
     ip-address: ${EUREKA_INSTANCE_IP:127.0.0.1}
     hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
-
-gateway:
-  rate-limit:
-    per-second: 40
 
 management:
   endpoints:

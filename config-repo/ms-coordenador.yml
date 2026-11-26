@@ -9,10 +9,18 @@ http:
     connect-timeout: 3s
     read-timeout: 90s
 
-# Assaults off por default; na demo: POST /actuator/chaosmonkey/enable
 chaos:
   monkey:
     enabled: ${CHAOS_MONKEY_ENABLED:false}
+    assaults:
+      level: 5
+      latencyActive: true
+      exceptionsActive: true
+      latencyRangeStart: 1000
+      latencyRangeEnd: 3000
+    watcher:
+      restController: true
+      service: true
 
 resilience4j:
   circuitbreaker:
@@ -21,10 +29,21 @@ resilience4j:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        registerHealthIndicator: true
       lambda:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 5s
+        registerHealthIndicator: true
+  retry:
+    instances:
+      msIa:
+        maxAttempts: 3
+        waitDuration: 500ms
+      lambda:
+        maxAttempts: 2
+        waitDuration: 300ms
   bulkhead:
     instances:
       msIa:
