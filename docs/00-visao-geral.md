@@ -101,7 +101,7 @@ ai-powered-web-application/
 | XII. Admin processes | Jobs pontuais (ex.: ingestão RAG no boot do MS2) |
 
 Detalhes de demo na banca: cada doc de escopo tem a seção **“O que a banca pede ver”**.  
-Resultados de testes na EC2: [08-resultados-testes.md](08-resultados-testes.md).  
+Resultados de testes na EC2: [08-resultados-testes.md](08-resultados-testes.md) · validação recente: [12-resultados-validacao-2026-11-26.md](12-resultados-validacao-2026-11-26.md).  
 Roteiro da banca (itens 1–14): [09-roteiro-apresentacao-banca.md](09-roteiro-apresentacao-banca.md).
 
 ---
