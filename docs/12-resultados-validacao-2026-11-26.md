@@ -99,15 +99,30 @@ Observação RAG: no boot, embeddings OpenAI falharam com key placeholder `nd` �
 
 ---
 
-## 9. Carga (substituto rápido de JMeter)
+## 9. JMeter (local → EC2) — stub + Chaos Monkey
 
-JMeter CLI **não** está instalado na EC2 nesta rodada. Foi executado smoke paralelo equivalente:
+Rodado **do notebook** (`C:\apache-jmeter-5.6.3`) contra o EIP, com:
 
-| Teste | Resultado |
-|-------|-----------|
-| 25× `POST /plano` em paralelo (lotes de 5) | **ok=25 err=0** |
+1. `AI_STUB=true` no `ms-ia` (Compose overlay) → resposta `[STUB] LLM mockado via config…`
+2. Chaos Monkey **enabled** em `:8081` e `:8083`
+3. Plano `jmeter/assistant-chat.jmx` → `POST /ms-coordenador/api/assistant/chat`
 
-Carga JMeter formal permanece nos JTLs históricos em `jmeter/resultados/` (ver `08` / `10`). Para rerodar na banca: máquina com JMeter + `jmeter/assistant-chat.jmx` apontando ao EIP (preferir stub/`ai.stub=true` no Config).
+```bat
+jmeter -n -t jmeter\assistant-chat.jmx -JgatewayHost=77.114.59.85 -JgatewayPort=8080 ^
+  -Jthreads=5 -Jramp=5 -Jduration=45 -l jmeter\resultados\run-2026-11-26-jmeter-5u-stub-chaos.jtl
+
+jmeter -n -t jmeter\assistant-chat.jmx -JgatewayHost=77.114.59.85 -JgatewayPort=8080 ^
+  -Jthreads=8 -Jramp=5 -Jduration=45 -l jmeter\resultados\run-2026-11-26-jmeter-8u-stub-chaos.jtl
+```
+
+| Run | Threads | Duração | Amostras | OK | Err | Taxa err | Avg | p95~ | HTTP |
+|-----|---------|---------|----------|----|-----|----------|-----|------|------|
+| `…-5u-stub-chaos.jtl` | 5 | ~45s | 358 | 322 | 36 | **10,1%** | 614 ms | ~2921 ms | 200×322, **500×36** |
+| `…-8u-stub-chaos.jtl` | 8 | ~45s | 538 | 484 | 54 | **10,0%** | 642 ms | ~3023 ms | 200×484, **500×54** |
+
+Throughput observado: ~7,6 req/s (5u) e ~11,5 req/s (8u). Os **~10% 500** batem com assaults do Chaos Monkey (latência/exceções ativas); não é falha de stub. Após os runs: chaos **disabled** e `ms-ia` recriado sem `AI_STUB` (volta LLM).
+
+Smoke paralelo de plano (sem JMeter): 25× `POST /plano` → **ok=25 err=0**.
 
 ---
 
@@ -123,12 +138,12 @@ Carga JMeter formal permanece nos JTLs históricos em `jmeter/resultados/` (ver 
 | Stub message | OK (via `AI_STUB`) |
 | Chaos enable/disable | OK |
 | CB + fallback | OK |
+| **JMeter 5u/8u (local→EC2, stub+chaos)** | OK (~10% 500 esperado com chaos) |
 | Load 25× plano | OK |
-| JMeter CLI na EC2 | Não instalado (smoke curl OK; JTLs antigos ok) |
 | RAG embeddings provider | Lexical (OpenAI key inválida `nd` no Vault) |
 
 ---
 
 ## 11. Conclusão
 
-A stack na EC2 no commit **`b8b83ce`** está operacional para a banca: Config Git centraliza knobs, observabilidade completa (incl. Lambda no Zipkin), LLM+MCP, stub configurável, Chaos e CB demonstráveis. Recomendações opcionais antes da oral: corrigir/remover `OPENAI_API_KEY=nd` no Vault se for usar embeddings OpenAI; instalar JMeter na EC2 ou rodar do notebook apontando ao EIP.
+A stack na EC2 no commit **`b8b83ce`** está operacional para a banca: Config Git centraliza knobs, observabilidade completa (incl. Lambda no Zipkin), LLM+MCP, stub configurável, Chaos e CB demonstráveis, e **JMeter local→EC2** com stub+chaos documentado nos JTLs `run-2026-11-26-jmeter-*-stub-chaos.jtl`. Recomendação opcional: corrigir/remover `OPENAI_API_KEY=nd` no Vault se for usar embeddings OpenAI.
