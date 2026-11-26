@@ -71,8 +71,8 @@ esac
 
 start_jar ms-ia "${MS_IA_ARGS[@]}"
 sleep 8
-start_jar ms1-a -jar ms-coordenador/target/ms-coordenador-0.0.1-SNAPSHOT.jar --server.port=8081
-start_jar ms1-b -jar ms-coordenador/target/ms-coordenador-0.0.1-SNAPSHOT.jar --server.port=8083
+start_jar ms1-a -jar ms-coordenador/target/ms-coordenador-0.0.1-SNAPSHOT.jar --spring.profiles.active=chaos-monkey --server.port=8081
+start_jar ms1-b -jar ms-coordenador/target/ms-coordenador-0.0.1-SNAPSHOT.jar --spring.profiles.active=chaos-monkey --server.port=8083
 sleep 5
 start_jar gateway -jar api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar
 

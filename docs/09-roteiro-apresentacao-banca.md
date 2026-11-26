@@ -145,10 +145,15 @@ curl -X POST http://<EIP>:8080/api/assistant/plano \
 
 ## 9. Chaos Monkey (0,5)
 
+Pré-requisito: coordenadores com profile `chaos-monkey` e lib 4.x (Compose já sobe assim).
+
 ```bash
+curl -s http://<EIP>:8081/actuator/chaosmonkey/status
 curl -X POST http://<EIP>:8081/actuator/chaosmonkey/enable
-# JMeter → erros sobem
+curl -X POST http://<EIP>:8083/actuator/chaosmonkey/enable
+# JMeter → erros/latência sobem
 curl -X POST http://<EIP>:8081/actuator/chaosmonkey/disable
+curl -X POST http://<EIP>:8083/actuator/chaosmonkey/disable
 ```
 
 ---

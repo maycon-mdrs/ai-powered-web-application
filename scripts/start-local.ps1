@@ -62,8 +62,8 @@ if ($lambdaLocal) {
 
 Start-Process java -ArgumentList $MsIaArgs -WindowStyle Minimized
 Start-Sleep -Seconds 8
-Start-Process java -ArgumentList "-jar","$Root\ms-coordenador\target\ms-coordenador-0.0.1-SNAPSHOT.jar","--server.port=8081" -WindowStyle Minimized
-Start-Process java -ArgumentList "-jar","$Root\ms-coordenador\target\ms-coordenador-0.0.1-SNAPSHOT.jar","--server.port=8083" -WindowStyle Minimized
+Start-Process java -ArgumentList "-jar","$Root\ms-coordenador\target\ms-coordenador-0.0.1-SNAPSHOT.jar","--spring.profiles.active=chaos-monkey","--server.port=8081" -WindowStyle Minimized
+Start-Process java -ArgumentList "-jar","$Root\ms-coordenador\target\ms-coordenador-0.0.1-SNAPSHOT.jar","--spring.profiles.active=chaos-monkey","--server.port=8083" -WindowStyle Minimized
 Start-Sleep -Seconds 5
 Start-Process java -ArgumentList "-jar","$Root\api-gateway\target\api-gateway-0.0.1-SNAPSHOT.jar" -WindowStyle Minimized
 

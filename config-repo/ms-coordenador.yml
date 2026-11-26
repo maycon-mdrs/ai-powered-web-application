@@ -9,9 +9,11 @@ http:
     connect-timeout: 3s
     read-timeout: 45s
 
+# Assaults off por default; na demo: POST /actuator/chaosmonkey/enable
+# (endpoint exige profile chaos-monkey + chaos-monkey-spring-boot 4.x)
 chaos:
   monkey:
-    enabled: false
+    enabled: ${CHAOS_MONKEY_ENABLED:false}
 
 resilience4j:
   circuitbreaker:

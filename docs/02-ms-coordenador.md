@@ -110,12 +110,15 @@ flowchart TD
 
 ## 5. Chaos Monkey
 
-- Ativado no MS1 (ou nas instâncias dele) na apresentação
-- Injeta latência/erros/kill de beans
-- Com Chaos **ligado**: erros no JMeter sobem
-- Chaos **desligado** + instâncias restauradas: erros caem
+Requisito: `chaos-monkey-spring-boot` **4.x** (Boot 4) + profile `chaos-monkey` (Compose já define `SPRING_PROFILES_ACTIVE=chaos-monkey`).
 
-Combinar com derrubar uma réplica registrada no Eureka.
+- Assaults começam **off** (`chaos.monkey.enabled=false`); na demo:
+  - `POST http://<host>:8081/actuator/chaosmonkey/enable`
+  - idem `:8083`
+- Com Chaos **ligado**: erros/latência no JMeter sobem
+- `POST …/chaosmonkey/disable` → erros caem
+
+Só mudar `CHAOS_MONKEY_ENABLED` no `.env` **não** registra o endpoint — precisa do profile + rebuild do jar (versão 4.0). Combinar com kill de réplica no Eureka.
 
 ---
 

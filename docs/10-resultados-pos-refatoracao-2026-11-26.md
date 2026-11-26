@@ -48,12 +48,14 @@ Volta a stub após o teste (`f037aae` / config atual `stub: true`).
 
 ## 4. Chaos Monkey
 
-| Item | Resultado |
+| Item | Resultado (na época) |
 |------|-----------|
 | `POST …/actuator/chaosmonkey/enable` | **404** (endpoint não exposto) |
 | `CHAOS_MONKEY_ENABLED=true` + recreate coords | Actuator ainda **sem** `/chaosmonkey` |
 
-**Conclusão:** Chaos Monkey Actuator **não** ficou utilizável nesta stack (Boot 4.1 + `chaos-monkey-spring-boot` 3.2.2). Para banca, usar **CB via `docker stop ms-ia`** (abaixo) e/ou kill de réplica.
+**Causa:** `chaos-monkey-spring-boot` **3.2.2** (Boot 3) + sem profile `chaos-monkey` + Boot 4 exige `management.endpoint.chaosmonkey.access=unrestricted`. Só `.env`/recreate não bastava.
+
+**Correção posterior:** bump para **4.0.0**, profile `chaos-monkey` no Compose/`start-local`, `access=unrestricted`. Rebuild dos coordenadores necessário. CB via `docker stop ms-ia` continua válido como complemento.
 
 ---
 
@@ -115,7 +117,7 @@ Com rate **40**, o joelho ainda aparece perto de **12** usuários (429). Em **5*
 
 ## 8. Pendências / riscos
 
-1. **Chaos Monkey Actuator** indisponível (404) — não revalidado nesta rodada.
+1. **Chaos Monkey** — corrigido depois (lib 4.0 + profile); revalidar `/actuator/chaosmonkey` após rebuild dos coordenadores.
 2. Embeddings Gemini/OpenAI: placeholder OpenAI no Vault impede ingest vetorial; fallback lexical + LLM ok.
 3. Após OPEN do CB, aguardar half-open/Eureka antes de novo smoke.
 

@@ -41,8 +41,11 @@ management:
   endpoint:
     health:
       show-details: always
+    # Boot 4: access (não só enabled) — senão /actuator/chaosmonkey fica 404
     chaosmonkey:
-      enabled: true
+      access: unrestricted
+    chaosmonkeyjmx:
+      access: unrestricted
   metrics:
     distribution:
       percentiles-histogram:
@@ -95,6 +98,8 @@ resilience4j:
         limitRefreshPeriod: 1s
         timeoutDuration: 0
 
+# Assaults começam desligados; ligar na demo via POST /actuator/chaosmonkey/enable
+# (profile chaos-monkey ativa a auto-config — ver SPRING_PROFILES_ACTIVE no Compose)
 chaos:
   monkey:
     enabled: ${CHAOS_MONKEY_ENABLED:false}
@@ -107,5 +112,3 @@ chaos:
     watcher:
       restController: true
       service: true
-
-management.endpoint.chaosmonkeyjmx.enabled: true

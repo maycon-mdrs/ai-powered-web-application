@@ -114,6 +114,8 @@ services:
       SERVER_PORT: "8081"
       EUREKA_INSTANCE_HOSTNAME: ms-coordenador-a
       LAMBDA_BASE_URL: ${LAMBDA_BASE_URL}
+      # Profile obrigatório para registrar beans/endpoint; assaults ficam off até /enable
+      SPRING_PROFILES_ACTIVE: chaos-monkey
       CHAOS_MONKEY_ENABLED: ${CHAOS_MONKEY_ENABLED:-false}
     ports:
       - "8081:8081"
@@ -137,6 +139,7 @@ services:
       SERVER_PORT: "8083"
       EUREKA_INSTANCE_HOSTNAME: ms-coordenador-b
       LAMBDA_BASE_URL: ${LAMBDA_BASE_URL}
+      SPRING_PROFILES_ACTIVE: chaos-monkey
       CHAOS_MONKEY_ENABLED: ${CHAOS_MONKEY_ENABLED:-false}
     ports:
       - "8083:8083"
