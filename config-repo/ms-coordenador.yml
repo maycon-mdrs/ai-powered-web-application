@@ -7,7 +7,6 @@ lambda:
 http:
   client:
     connect-timeout: 3s
-    # LLM + tools MCP podem passar de 45s; CB/fallback cobrem falha real
     read-timeout: 90s
 
 # Assaults off por default; na demo: POST /actuator/chaosmonkey/enable
