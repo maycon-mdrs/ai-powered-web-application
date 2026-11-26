@@ -55,9 +55,14 @@ mutation {
 ```
 
 ### 3. Zipkin — um request ponta a ponta
-1. Faça um chat (`/api/assistant/chat`) e/ou um plano (`/api/assistant/plano`) pelo Gateway.
-2. Abra `:9411` → **Run Query**.
-3. Abra um trace e mostre spans de `api-gateway` → `ms-coordenador` → `ms-ia` (e Lambda no plano).
+**Não use só a aba Dependencies** (ela agrupa pouco e a Lambda AWS não reporta span SERVER). Use **Traces**.
+
+1. Chat: `POST /ms-coordenador/api/assistant/chat` pelo Gateway.
+2. Plano: `POST /ms-coordenador/api/assistant/plano` (vai à Function URL).
+3. Abra `:9411` → **Run Query** → abra o trace recente.
+4. O que mostrar:
+   - **Chat:** spans `api-gateway` → `ms-coordenador` → CLIENT GraphQL → SERVER `ms-ia`.
+   - **Plano:** `api-gateway` → `ms-coordenador` → **CLIENT HTTP** para o host da Function URL (Lambda). A Lambda em si não envia span ao Zipkin (fica na AWS); o CLIENT no coordenador + JSON 200 do `/plano` comprovam a chamada.
 
 ### 4. Grafana / Prometheus — métricas
 1. `:3000` login `admin` / `admin`.

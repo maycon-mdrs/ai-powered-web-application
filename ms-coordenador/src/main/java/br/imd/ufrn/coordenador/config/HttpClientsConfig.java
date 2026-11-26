@@ -13,41 +13,57 @@ import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 import br.imd.ufrn.coordenador.client.PlanoLeituraClient;
+import io.micrometer.observation.ObservationRegistry;
 
 @Configuration
 public class HttpClientsConfig {
 
-    /** Builder sem load balancer (URLs absolutas / clientes internos). */
+    /**
+     * RestClient instrumentado: propaga W3C/B3 e cria spans CLIENT no Zipkin
+     * (MS-IA GraphQL e Lambda Function URL).
+     */
     @Bean
     @Primary
-    RestClient.Builder restClientBuilder() {
-        return RestClient.builder();
+    RestClient.Builder restClientBuilder(
+            ObservationRegistry observationRegistry,
+            @Value("${http.client.connect-timeout:3s}") Duration connectTimeout,
+            @Value("${http.client.read-timeout:90s}") Duration readTimeout) {
+        return instrumentedBuilder(observationRegistry, connectTimeout, readTimeout);
     }
 
-    /** Builder com load balancer (service discovery via Eureka). */
     @Bean
     @LoadBalanced
     RestClient.Builder loadBalancedRestClientBuilder(
+            ObservationRegistry observationRegistry,
             @Value("${http.client.connect-timeout:3s}") Duration connectTimeout,
-            @Value("${http.client.read-timeout:45s}") Duration readTimeout) {
-        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(connectTimeout);
-        requestFactory.setReadTimeout(readTimeout);
-        return RestClient.builder().requestFactory(requestFactory);
+            @Value("${http.client.read-timeout:90s}") Duration readTimeout) {
+        return instrumentedBuilder(observationRegistry, connectTimeout, readTimeout);
     }
 
     @Bean
     PlanoLeituraClient planoLeituraClient(
+            ObservationRegistry observationRegistry,
             @Value("${lambda.base-url:http://localhost:9000}") String baseUrl,
             @Value("${http.client.connect-timeout:3s}") Duration connectTimeout,
-            @Value("${http.client.read-timeout:45s}") Duration readTimeout) {
-        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(connectTimeout);
-        requestFactory.setReadTimeout(readTimeout);
-        RestClient client = RestClient.builder().baseUrl(baseUrl).requestFactory(requestFactory).build();
+            @Value("${http.client.read-timeout:90s}") Duration readTimeout) {
+        RestClient client = instrumentedBuilder(observationRegistry, connectTimeout, readTimeout)
+                .baseUrl(baseUrl)
+                .build();
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
                 .builderFor(RestClientAdapter.create(client))
                 .build();
         return factory.createClient(PlanoLeituraClient.class);
+    }
+
+    private static RestClient.Builder instrumentedBuilder(
+            ObservationRegistry observationRegistry,
+            Duration connectTimeout,
+            Duration readTimeout) {
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(connectTimeout);
+        requestFactory.setReadTimeout(readTimeout);
+        return RestClient.builder()
+                .requestFactory(requestFactory)
+                .observationRegistry(observationRegistry);
     }
 }

@@ -147,9 +147,11 @@ No `AssistantOrchestrator.askIa` / `gerarPlano`:
 
 | Ferramenta | Porta | O que mostra |
 |------------|-------|--------------|
-| Zipkin | `:9411` | Trace Gateway → MS1 → MS2/Lambda |
+| Zipkin | `:9411` | Trace (aba **Traces**, não só Dependencies) |
 | Prometheus/Grafana | `:9090` / `:3000` | Latência, CB, etc. |
 | Actuator | por serviço | health, refresh, circuitbreakers, chaosmonkey |
+
+**Zipkin / Lambda:** a Function URL **não** manda span SERVER para o nosso Zipkin. Prova da Lambda = span **CLIENT** no `ms-coordenador` (host `*.lambda-url…`) + resposta 200 do `/plano`. Chat deve encadear `api-gateway` → `ms-coordenador` → `ms-ia`.
 
 ---
 
