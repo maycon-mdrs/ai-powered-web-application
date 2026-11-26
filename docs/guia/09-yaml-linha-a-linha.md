@@ -178,9 +178,8 @@ Arquivo **dentro da imagem**. Define o mínimo para o Gateway nascer mesmo sem C
 | `server.port: 8080` | Porta HTTP | O processo escuta em 8080 (entrada da banca). |
 | `spring.application.name: api-gateway` | Nome lógico | Nome no Eureka **e** nome do arquivo que o Config procura (`api-gateway.yml`). |
 | `spring.config.import: …configserver:…` | Ligação ao Config | Ao subir, pergunta ao Config Server as configs remotas. `optional:` = se o Config estiver fora, sobe mesmo assim com o YAML local. |
-| `discovery.locator.enabled: true` | Rotas dinâmicas | Cria rotas automaticamente tipo `/ms-coordenador/**` a partir do Eureka (item “Gateway dinâmico”). |
-| `routes` + `Path=/api/**` → `lb://MS-COORDENADOR` | Rota **estática** | Tudo que começa com `/api/` vai para alguma instância do coordenador. `lb://` = load balance via Eureka. |
-| `AddRequestHeader=X-Gateway-Route,…` | Header de prova | Marca no request que passou pela rota estática (útil para mostrar na demo). |
+| `discovery.locator.enabled: true` | Rotas **só dinâmicas** | Cria `/ms-coordenador/**` a partir do Eureka; é o único mecanismo de rota de negócio neste projeto. |
+| `lower-case-service-id: true` | Path em minúsculas | Service id `MS-COORDENADOR` vira prefixo `/ms-coordenador`. |
 | `eureka.client.service-url.defaultZone` | Onde está o catálogo | Lista dos peers Eureka (8761 e 8762). |
 | `eureka.instance.*` | Como este Gateway se anuncia | IP/hostname que os outros usam para achá-lo. |
 | `gateway.rate-limit.per-second: 40` | Default local | Mesmo significado do config-repo; o remoto pode sobrescrever. |

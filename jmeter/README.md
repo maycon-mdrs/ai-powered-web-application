@@ -4,7 +4,7 @@ Planos de carga do assistente de livros.
 
 ## Alvo
 
-`POST http://<gateway-host>:8080/api/assistant/chat`
+`POST http://<gateway-host>:8080/ms-coordenador/api/assistant/chat`
 
 Body de exemplo:
 

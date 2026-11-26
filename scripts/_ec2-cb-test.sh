@@ -4,7 +4,7 @@ echo "=== CB: stop ms-ia ==="
 docker stop ms-ia
 sleep 2
 for i in 1 2 3 4 5 6 7 8; do
-  curl -sS -m 15 -X POST http://127.0.0.1:8080/api/assistant/chat \
+  curl -sS -m 15 -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
     -H 'Content-Type: application/json' \
     -d "{\"conversationId\":\"cb-$i\",\"message\":\"oi\"}" | head -c 160
   echo
@@ -18,7 +18,7 @@ for i in $(seq 1 30); do
   sleep 4
 done
 sleep 10
-curl -sS -m 20 -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -sS -m 20 -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"cb-restore","message":"oi de novo"}' | head -c 220
 echo

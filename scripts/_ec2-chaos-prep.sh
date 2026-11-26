@@ -10,7 +10,7 @@ for i in $(seq 1 40); do
   sleep 5
 done
 # ensure stub chat
-curl -sS -m 20 -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -sS -m 20 -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"pre-jmeter","message":"oi"}' | head -c 200
 echo

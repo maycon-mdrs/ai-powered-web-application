@@ -22,7 +22,7 @@ public final class ChatDemoApp {
         GatewayChatClient client = new GatewayChatClient(gateway);
 
         Jt.title("Book Assistant").use();
-        Jt.markdown("Demo **Javelit** → API Gateway → coordenador → MS-IA. Plano: `POST /api/assistant/plano`.").use();
+        Jt.markdown("Demo **Javelit** → API Gateway (dinâmico) → coordenador → MS-IA. Plano: `POST /ms-coordenador/api/assistant/plano`.").use();
 
         String conversationId = Jt.textInput("conversationId")
                 .value("demo-javelit-1")

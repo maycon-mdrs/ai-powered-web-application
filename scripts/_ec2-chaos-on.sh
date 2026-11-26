@@ -16,7 +16,7 @@ sleep 5
 curl -s -X POST http://127.0.0.1:8081/actuator/chaosmonkey/enable; echo
 curl -s -X POST http://127.0.0.1:8083/actuator/chaosmonkey/enable; echo
 curl -s http://127.0.0.1:8081/actuator/chaosmonkey; echo
-curl -sS -m 15 -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -sS -m 15 -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"chaos1","message":"oi"}' | head -c 200
 echo

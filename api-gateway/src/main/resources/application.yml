@@ -14,13 +14,6 @@ spring:
             locator:
               enabled: true
               lower-case-service-id: true
-          routes:
-            - id: ms-coordenador-static
-              uri: lb://MS-COORDENADOR
-              predicates:
-                - Path=/api/**
-              filters:
-                - AddRequestHeader=X-Gateway-Route,ms-coordenador-static
 
 eureka:
   client:

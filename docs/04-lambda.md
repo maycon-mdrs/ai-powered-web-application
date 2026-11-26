@@ -106,4 +106,4 @@ Quem protege a chamada é o **MS1** (retry, CB, fallback). A Lambda só:
 | Lambda Server | Invocar e mostrar JSON de plano |
 | HTTP Interface | Código da interface no MS1 + request real |
 
-Fluxo de demo sugerido: após a IA sugerir um livro, chamar `POST /api/assistant/plano` (endpoint separado do chat).
+Fluxo de demo sugerido: após a IA sugerir um livro, chamar `POST /ms-coordenador/api/assistant/plano` via Gateway (endpoint separado do chat).

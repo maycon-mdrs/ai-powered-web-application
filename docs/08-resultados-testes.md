@@ -244,7 +244,7 @@ Interpretação: durante a queda / re-registro, parte das requisições falha (5
 curl.exe -X POST http://<EIP>:8082/actuator/refresh
 
 # 2) Smoke
-curl.exe -X POST http://<EIP>:8080/api/assistant/chat `
+curl.exe -X POST http://<EIP>:8080/ms-coordenador/api/assistant/chat `
   -H "Content-Type: application/json" `
   --data-binary "@jmeter/resultados/chat.json"
 

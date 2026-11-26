@@ -23,12 +23,12 @@ Chat e plano (sempre pelo Gateway) — endpoints separados:
 
 ```bash
 # Chat → coordenador → MS-IA (GraphQL)
-curl -s -X POST http://<EIP>:8080/api/assistant/chat \
+curl -s -X POST http://<EIP>:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"demo-1","message":"Quero ficcao cientifica curta"}'
 
 # Plano → coordenador → Lambda
-curl -s -X POST http://<EIP>:8080/api/assistant/plano \
+curl -s -X POST http://<EIP>:8080/ms-coordenador/api/assistant/plano \
   -H 'Content-Type: application/json' \
   -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 ```
@@ -88,10 +88,10 @@ Com `CONFIG_PROFILE=native`: alterar o YAML no host do Compose e refresh em `127
 
 ### Memory + RAG (mesmo conversationId)
 ```bash
-curl -s -X POST http://127.0.0.1:8080/api/assistant/chat -H 'Content-Type: application/json' \
+curl -s -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat -H 'Content-Type: application/json' \
   -d '{"conversationId":"mem-1","message":"Gosto de cyberpunk. Nao sugira Neuromancer."}'
 
-curl -s -X POST http://127.0.0.1:8080/api/assistant/chat -H 'Content-Type: application/json' \
+curl -s -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat -H 'Content-Type: application/json' \
   -d '{"conversationId":"mem-1","message":"Indique so 1 titulo diferente e diga por que combina."}'
 ```
 

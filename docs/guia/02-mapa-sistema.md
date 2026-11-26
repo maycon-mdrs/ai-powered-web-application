@@ -40,7 +40,7 @@ flowchart TD
 
 Fluxo feliz do chat: usuário → Gateway (rate limit) → MS1 (resiliência) → MS2 (memory + RAG tool + LLM/MCP) → resposta JSON com campo `response`.
 
-Fluxo do plano (separado): usuário → Gateway → MS1 `POST /api/assistant/plano` → Lambda → `PlanoLeituraDto`.
+Fluxo do plano (separado): usuário → Gateway → MS1 `POST /ms-coordenador/api/assistant/plano` → Lambda → `PlanoLeituraDto`.
 
 > **Por que assim?** · [D08](../DECISOES.md) · [D09](../DECISOES.md) · [D13](../DECISOES.md)  
 > Chat e plano são UCs diferentes; GraphQL não carrega DTO da Lambda.

@@ -349,12 +349,12 @@ curl -X POST http://<EIP>:8083/actuator/refresh   # coordenador b
 
 ```bash
 # Chat
-curl -s -X POST http://<EIP>:8080/api/assistant/chat \
+curl -s -X POST http://<EIP>:8080/ms-coordenador/api/assistant/chat \
   -H "Content-Type: application/json" \
   -d "{\"conversationId\":\"banca-1\",\"message\":\"Quero ficcao cientifica curta\"}"
 
 # Plano (Lambda)
-curl -s -X POST http://<EIP>:8080/api/assistant/plano \
+curl -s -X POST http://<EIP>:8080/ms-coordenador/api/assistant/plano \
   -H "Content-Type: application/json" \
   -d "{\"titulo\":\"Neuromancer\",\"autor\":\"William Gibson\",\"paginasEstimadas\":271,\"diasDisponiveis\":14}"
 

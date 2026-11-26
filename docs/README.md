@@ -20,7 +20,7 @@ Para quem sabe Java básico e quer ler o sistema classe a classe (estilo “Guia
 
 Documentos RAG: [documents/](documents/).
 
-Roteiro da banca: [09-roteiro-apresentacao-banca.md](09-roteiro-apresentacao-banca.md).  
+Roteiro da banca: [09-roteiro-apresentacao-banca.md](09-roteiro-apresentacao-banca.md) · cola oral: [11-perguntas-oral-banca.md](11-perguntas-oral-banca.md).  
 Apresentação (foco config): [apresentacao-config.md](apresentacao-config.md).
 
 Resultados: [08-resultados-testes.md](08-resultados-testes.md) (baseline) · [10-resultados-pos-refatoracao-2026-11-26.md](10-resultados-pos-refatoracao-2026-11-26.md) (pós-refatoração).

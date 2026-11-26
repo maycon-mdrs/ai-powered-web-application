@@ -33,6 +33,6 @@ echo "=== chaos disable A/B ==="
 curl -s -o /dev/null -w "A-disable:%{http_code}\n" -X POST http://127.0.0.1:8081/actuator/chaosmonkey/disable || true
 curl -s -o /dev/null -w "B-disable:%{http_code}\n" -X POST http://127.0.0.1:8083/actuator/chaosmonkey/disable || true
 echo "=== chat smoke ==="
-curl -s -w "\nHTTP:%{http_code}\n" -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -s -w "\nHTTP:%{http_code}\n" -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"chaos-fix-1","message":"Oi"}' | head -c 400; echo

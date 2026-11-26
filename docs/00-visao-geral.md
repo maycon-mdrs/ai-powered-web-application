@@ -110,7 +110,7 @@ Roteiro da banca (itens 1–14): [09-roteiro-apresentacao-banca.md](09-roteiro-a
 
 ### Entrada do usuário (via Gateway → MS1)
 
-`POST /api/assistant/chat` (exemplo)
+`POST /ms-coordenador/api/assistant/chat` via Gateway (exemplo)
 
 ```json
 {

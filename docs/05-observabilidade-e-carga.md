@@ -40,7 +40,7 @@ Requisitos da banca:
 
 Thread group sugerido (ponto de partida):
 
-- Target: `http://<gateway>:8080/api/assistant/chat`
+- Target: `http://<gateway>:8080/ms-coordenador/api/assistant/chat`
 - Body com `conversationId` e `message` fixos leves (evitar estourar cota LLM na medição de infra — usar stub/perfil se necessário para teste de capacidade puro)
 
 ---

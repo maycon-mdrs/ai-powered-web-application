@@ -23,7 +23,7 @@ final class GatewayChatClient {
         String base = gatewayBaseUrl.endsWith("/")
                 ? gatewayBaseUrl.substring(0, gatewayBaseUrl.length() - 1)
                 : gatewayBaseUrl;
-        this.chatUrl = base + "/api/assistant/chat";
+        this.chatUrl = base + "/ms-coordenador/api/assistant/chat";
     }
 
     ChatResult chat(String conversationId, String message) throws Exception {

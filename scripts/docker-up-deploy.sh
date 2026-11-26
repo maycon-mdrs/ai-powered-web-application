@@ -44,7 +44,7 @@ docker compose --profile vault up -d --force-recreate ms-ia
 
 echo ""
 echo "Deploy up. Teste:"
-echo "  curl -s -X POST http://127.0.0.1:8080/api/assistant/chat -H 'Content-Type: application/json' \\"
+echo "  curl -s -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat -H 'Content-Type: application/json' \\"
 echo "    -d '{\"conversationId\":\"deploy-1\",\"message\":\"Quero ficcao cientifica curta\"}'"
 echo "Kill: docker stop ms-coordenador-b"
 echo "Pare a EC2 no console quando nao estiver usando."

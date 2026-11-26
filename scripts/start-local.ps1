@@ -1,4 +1,4 @@
-﻿# Sobe a stack local (Windows). Execute a partir da raiz do repo.
+# Sobe a stack local (Windows). Execute a partir da raiz do repo.
 # Uso:
 #   .\scripts\start-local.ps1          # stub (sem Vault)
 #   .\scripts\start-local.ps1 vault    # LLM real (exige Vault + VAULT_URI/VAULT_TOKEN)
@@ -70,7 +70,7 @@ Start-Process java -ArgumentList "-jar","$Root\api-gateway\target\api-gateway-0.
 Write-Host @"
 OK (aprox.). Verifique:
   Eureka:  http://localhost:8761
-  Gateway: http://localhost:8080/api/assistant/chat
+  Gateway: http://localhost:8080/ms-coordenador/api/assistant/chat
   GraphiQL: http://localhost:8082/graphiql
   Lambda:  $($env:LAMBDA_BASE_URL)
   Obs:     docker compose up -d   (raiz: Prometheus/Grafana/Zipkin)

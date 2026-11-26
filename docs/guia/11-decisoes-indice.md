@@ -6,7 +6,7 @@ Lista completa com texto: [docs/DECISOES.md](../DECISOES.md).
 |----|-----------------|-------------------|
 | D01 | Monorepo Maven | 2.2 · item 1 |
 | D02 | Eureka 2 peers | 2 · item 2 |
-| D03 | Gateway estático + locator | 2 · 3 · item 3 |
+| D03 | Gateway só dinâmico (locator) | 2 · 3 · item 3 |
 | D04 | Rate limit em memória no GW | 3.1 · 6.4 · item 12 |
 | D05 | Default 40 req/s | 6 · 7.3 · item 12 · docs/10 |
 | D06 | Config native/git | 1.5 · item 4 · cap. 9 |

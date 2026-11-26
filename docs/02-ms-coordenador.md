@@ -41,7 +41,8 @@ sequenceDiagram
 
 ### REST — chat
 
-`POST /api/assistant/chat`
+No serviço: `POST /api/assistant/chat`  
+Via Gateway (dinâmico): `POST /ms-coordenador/api/assistant/chat`
 
 ```json
 {
@@ -54,7 +55,8 @@ Resposta: `{ "conversationId", "response", "source" }` — **sem** campo `plano`
 
 ### REST — plano (Lambda)
 
-`POST /api/assistant/plano`
+No serviço: `POST /api/assistant/plano`  
+Via Gateway: `POST /ms-coordenador/api/assistant/plano`
 
 ```json
 {

@@ -33,7 +33,7 @@ curl -s -X POST http://127.0.0.1:8081/actuator/chaosmonkey/enable || true; echo
 curl -s -X POST http://127.0.0.1:8083/actuator/chaosmonkey/enable || true; echo
 curl -s http://127.0.0.1:8081/actuator/chaosmonkey || true; echo
 # smoke
-curl -sS -m 20 -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -sS -m 20 -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"ready","message":"oi"}' | head -c 220
 echo

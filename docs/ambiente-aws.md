@@ -261,7 +261,7 @@ Conferência:
 ```bash
 docker ps
 curl -s http://127.0.0.1:8761/ | head
-curl -s -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -s -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"demo-1","message":"Quero ficcao cientifica curta"}'
 ```
@@ -269,7 +269,7 @@ curl -s -X POST http://127.0.0.1:8080/api/assistant/chat \
 Plano (Lambda AWS ou local) — endpoint separado:
 
 ```bash
-curl -s -X POST http://127.0.0.1:8080/api/assistant/plano -H 'Content-Type: application/json' \
+curl -s -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/plano -H 'Content-Type: application/json' \
   -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 ```
 

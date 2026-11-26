@@ -6,7 +6,8 @@ Complementa: [07-ensaio-apresentacao.md](07-ensaio-apresentacao.md).
 **Resultados dos testes (como / o quê / números):** → [08-resultados-testes.md](08-resultados-testes.md)  
 **Artefatos brutos JMeter (`.jtl`):** → `jmeter/resultados/run-*.jtl`
 
-Este `09` é o **roteiro da fala** na banca. Os procedimentos, métricas e JTLs ficam no `08`.
+Este `09` é o **roteiro da fala** na banca. Os procedimentos, métricas e JTLs ficam no `08`.  
+Perguntas típicas do professor (stateless, RestClient, Gateway estático/dinâmico, Config…): [11-perguntas-oral-banca.md](11-perguntas-oral-banca.md).
 
 **Escopo MCP:** apenas **MCP de terceiros** (Open Library). **Não** há servidor MCP próprio neste projeto.
 
@@ -26,7 +27,7 @@ Este `09` é o **roteiro da fala** na banca. Os procedimentos, métricas e JTLs 
 | 4 | Config Server + Git | `ms-ia.yml` (stub) + `api-gateway.yml` (rate) + refresh |
 | 5 | GraphQL | UI `:8082/graphiql` (API `:8082/graphql`) — **MS-IA** |
 | 6 | HTTP Interface + tracing | `PlanoLeituraClient` + Zipkin `:9411` |
-| 7 | Lambda | `POST /api/assistant/plano` |
+| 7 | Lambda | `POST /ms-coordenador/api/assistant/plano` |
 | 8 | Vault | `:8200` + `secret/ms-ia` |
 | 9 | Chaos Monkey | Actuator + JMeter |
 | 10 | Retry / Fallback | MS1 + kill MS-IA |
@@ -65,12 +66,12 @@ Este `09` é o **roteiro da fala** na banca. Os procedimentos, métricas e JTLs 
 
 ---
 
-## 3. API Gateway — estático + dinâmico (0,5)
+## 3. API Gateway — só dinâmico (0,5)
 
 | Tipo | Detalhe |
 |------|---------|
-| Estática | `Path=/api/**` → `lb://MS-COORDENADOR` + header `X-Gateway-Route` |
-| Dinâmica | `discovery.locator.enabled=true` |
+| Dinâmica (única) | `discovery.locator.enabled=true` → `/ms-coordenador/**` |
+| Estática | **não usada** |
 | Filtro | `InMemoryRateLimitFilter` (rate limit **servidor**, HTTP 429) — limite em `config-repo/api-gateway.yml`, refresh em `:8080` |
 
 ---
@@ -129,7 +130,7 @@ Não definir `AI_STUB` nem `GATEWAY_RATE_PER_SECOND` no `.env`.
 ## 7. Lambda (1,0)
 
 ```bash
-curl -X POST http://<EIP>:8080/api/assistant/plano \
+curl -X POST http://<EIP>:8080/ms-coordenador/api/assistant/plano \
   -H "Content-Type: application/json" \
   -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 ```

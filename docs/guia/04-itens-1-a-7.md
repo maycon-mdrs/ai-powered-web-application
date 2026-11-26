@@ -46,16 +46,16 @@ eureka:
 
 ---
 
-## Item 3 · API Gateway (estático + dinâmico)
+## Item 3 · API Gateway (só dinâmico)
 
-**Estático** — `Path=/api/**` → `lb://MS-COORDENADOR` + header `X-Gateway-Route`  
-(`api-gateway/.../application.yml:17-23`).
+**Dinâmico** — `discovery.locator.enabled=true` + `lower-case-service-id: true`  
+→ path `/ms-coordenador/api/assistant/chat` (Gateway remove o prefixo do serviço ao encaminhar).
 
-**Dinâmico** — `discovery.locator.enabled=true` (`:10-16`).
+**Estático** — não usado (sem bloco `routes`).
 
 **Rate limit servidor** — `InMemoryRateLimitFilter` + `config-repo/api-gateway.yml` (`per-second: 40`).
 
-**Demo.** Curl em `/api/assistant/chat` via `:8080`; baixar rate no Git, refresh `:8080`, gerar **429**.
+**Demo.** Curl em `/ms-coordenador/api/assistant/chat` via `:8080`; baixar rate no Git, refresh `:8080`, gerar **429**.
 
 > **Por que assim?** · [D03](../DECISOES.md) · [D04](../DECISOES.md) · [D05](../DECISOES.md)
 
@@ -126,7 +126,7 @@ Bean criado em `HttpClientsConfig.planoLeituraClient` via `HttpServiceProxyFacto
 **Exposição na banca:**
 
 ```bash
-curl -X POST http://<EIP>:8080/api/assistant/plano \
+curl -X POST http://<EIP>:8080/ms-coordenador/api/assistant/plano \
   -H "Content-Type: application/json" \
   -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 ```

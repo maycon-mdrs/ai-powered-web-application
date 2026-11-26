@@ -7,7 +7,7 @@ Formato: decisão · motivo · alternativa descartada · onde no código/config.
 |----|------|---------|
 | D01 | 2026-11 | Monorepo Maven multi-módulo (não multi-repo) |
 | D02 | 2026-11 | Eureka em cluster de 2 peers (`peer1`/`peer2`) |
-| D03 | 2026-11 | Gateway: rota estática `/api/**` + discovery locator |
+| D03 | 2026-11-26 | Gateway: **só** discovery locator (`/ms-coordenador/**`) |
 | D04 | 2026-11 | Rate limit **no Gateway** em memória por IP (não Redis) |
 | D05 | 2026-11-26 | Limite servidor default **40 req/s** (`gateway.rate-limit.per-second`) |
 | D06 | 2026-11 | Config Server: `native` local + `git` no deploy EC2 |
@@ -44,10 +44,11 @@ Formato: decisão · motivo · alternativa descartada · onde no código/config.
 **Descartado.** Eureka single-node.  
 **Onde.** `eureka-server/src/main/resources/application-peer*.yml`; Compose `eureka-1`/`eureka-2`.
 
-### D03 — Gateway estático + dinâmico
-**Decisão.** Rota `Path=/api/**` → `lb://MS-COORDENADOR` e `discovery.locator.enabled=true`.  
-**Motivo.** Item 3: mostrar rota declarada e discovery.  
-**Onde.** `api-gateway/.../application.yml` linhas 10–23.
+### D03 — Gateway só dinâmico
+**Decisão.** Apenas `discovery.locator.enabled=true` (sem bloco `routes`). Path público: `/ms-coordenador/api/**`.  
+**Motivo.** Simplificar: um mecanismo só; o Eureka já define o roteamento.  
+**Descartado.** Rota estática `/api/**` + header `X-Gateway-Route` (ainda válida como alternativa didática).  
+**Onde.** `api-gateway/.../application.yml` (`discovery.locator`).
 
 ### D04 / D05 — Rate limit servidor
 **Decisão.** `InMemoryRateLimitFilter` por IP, janela 1s; default **40**/s no Config.  

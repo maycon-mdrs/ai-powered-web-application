@@ -32,6 +32,6 @@ echo "=== disable ==="
 curl -s -o /dev/null -w "A:%{http_code} B:" -X POST http://127.0.0.1:8081/actuator/chaosmonkey/disable
 curl -s -o /dev/null -w "%{http_code}\n" -X POST http://127.0.0.1:8083/actuator/chaosmonkey/disable
 echo "=== chat ==="
-curl -s -w "\nHTTP:%{http_code}\n" -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -s -w "\nHTTP:%{http_code}\n" -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"chaos-ok","message":"Oi"}' | head -c 300; echo

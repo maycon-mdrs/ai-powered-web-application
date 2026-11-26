@@ -3,7 +3,7 @@
 Este capítulo segue o chat do assistente — do JMeter/Postman até a resposta — parando em cada classe. A pergunta de exemplo é *“Quero ficção científica curta”*. No fim, o caminho curto do **plano de leitura** (Lambda).
 
 ```http
-POST http://<host>:8080/api/assistant/chat
+POST http://<host>:8080/ms-coordenador/api/assistant/chat
 Content-Type: application/json
 
 {
@@ -34,19 +34,18 @@ Propriedades: `GatewayRateLimitProperties` (`@RefreshScope`) — muda no Git + `
 
 > **Por que assim?** · [D04](../DECISOES.md) · [D05](../DECISOES.md)
 
-### Parada 2 — Gateway: rota para o MS1
+### Parada 2 — Gateway: rota dinâmica para o MS1
 
 Arquivo: `api-gateway/.../application.yml`
 
 ```yaml
-routes:
-  - id: ms-coordenador-static
-    uri: lb://MS-COORDENADOR
-    predicates:
-      - Path=/api/**
+discovery:
+  locator:
+    enabled: true
+    lower-case-service-id: true
 ```
 
-`lb://` consulta o Eureka e escolhe uma instância (há duas no Compose). Header `X-Gateway-Route=ms-coordenador-static` marca a rota estática. O discovery locator também está ligado (rotas dinâmicas por nome de serviço).
+Path `/ms-coordenador/**` → Eureka resolve `MS-COORDENADOR` → `lb://` escolhe uma das réplicas. O prefixo `/ms-coordenador` é removido ao encaminhar; o controller recebe `/api/assistant/chat`.
 
 > **Por que assim?** · [D03](../DECISOES.md) · [D16](../DECISOES.md)
 
@@ -169,7 +168,7 @@ Tracing: spans Zipkin Gateway → MS1 → MS2 (e Lambda no outro UC).
 ## 3.2 Plano de leitura (caminho curto)
 
 ```http
-POST /api/assistant/plano
+POST /ms-coordenador/api/assistant/plano
 {"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}
 ```
 
@@ -191,7 +190,7 @@ Fallback: `planoFallback` devolve checklist *“Plano indisponível agora…”*
 ## 3.3 O que ver no Actuator depois de uma falha
 
 1. `docker stop ms-ia`
-2. Vários `POST /api/assistant/chat`
+2. Vários `POST /ms-coordenador/api/assistant/chat`
 3. Resposta **200** com texto de fallback
 4. `GET :8081/actuator/circuitbreakers` → `msIa` **OPEN**
 5. `docker start ms-ia` → **HALF_OPEN** → **CLOSED**

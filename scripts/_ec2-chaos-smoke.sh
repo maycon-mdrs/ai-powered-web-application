@@ -3,7 +3,7 @@ set -euo pipefail
 sleep 15
 echo "=== chat retries ==="
 for i in 1 2 3 4 5 6; do
-  code=$(curl -s -o /tmp/chat.json -w "%{http_code}" -X POST http://127.0.0.1:8080/api/assistant/chat \
+  code=$(curl -s -o /tmp/chat.json -w "%{http_code}" -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
     -H "Content-Type: application/json" \
     -d "{\"conversationId\":\"ok$i\",\"message\":\"Oi\"}")
   echo "try$i HTTP:$code"

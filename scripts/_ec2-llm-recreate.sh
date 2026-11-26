@@ -11,7 +11,7 @@ for i in $(seq 1 40); do
 done
 sleep 5
 echo "=== chat live ==="
-curl -sS -m 180 -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -sS -m 180 -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"llm-live-2","message":"Indique 1 livro de ficcao cientifica curto."}'
 echo

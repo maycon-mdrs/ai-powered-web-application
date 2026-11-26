@@ -94,19 +94,17 @@ Apps leem via Spring Cloud Vault (Twelve-Factor: config/secrets fora do código)
 Responsabilidades:
 
 - Receber HTTP do JMeter na porta 8080
-- Rotear `/api/**` → `ms-coordenador` (lb://MS-COORDENADOR)
+- Discovery locator: `/ms-coordenador/**` → `lb://MS-COORDENADOR`
 - Filtros: logging, rate limiter **lado servidor**, correlacionar headers de tracing
-- Demo **estática vs dinâmica**:
-  - Estática: rotas declaradas em YAML
-  - Dinâmica: discovery locator + Eureka
+- Roteamento **só dinâmico**: discovery locator + Eureka (`/ms-coordenador/**`)
 
 **Boot 4 / Cloud 2025:** starter `spring-cloud-starter-gateway-server-webflux` e prefixo de config `spring.cloud.gateway.server.webflux.*` (não o antigo `spring.cloud.gateway.*`).
 
 ```mermaid
 flowchart LR
-  Client --> GW[Gateway_8080]
-  GW -->|"Predicate Path=/api/**"| MS1[lb_MS-COORDENADOR]
+  Client -->|"/ms-coordenador/api/**"| GW[Gateway_8080]
   GW -->|"discovery locator"| Eureka
+  Eureka --> MS1[lb_MS_COORDENADOR]
 ```
 
 ---
@@ -124,7 +122,7 @@ flowchart LR
 | Item PDF | Como mostrar |
 |----------|--------------|
 | Eureka cluster | Dois peers + dashboard |
-| Gateway estática/dinâmica + filtros/rotas | YAML + locator + request de exemplo |
+| Gateway dinâmico + rate limit | locator + request `/ms-coordenador/api/...` |
 | Config Server + Git + alteração dinâmica | Commit + refresh |
 | Vault | Secret lido em runtime (sem printar a chave na tela) |
 | 12 fatores (parcial) | Config/secrets/portas/processos |

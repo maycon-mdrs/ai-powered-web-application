@@ -405,7 +405,7 @@
       <hr class="divider" />
 
       <h2 class="section-title">Plano de leitura</h2>
-      <p class="st-help">Endpoint separado: <code>POST /api/assistant/plano</code> → Lambda. Não mistura com o chat.</p>
+      <p class="st-help">Endpoint separado: <code>POST /ms-coordenador/api/assistant/plano</code> → Lambda. Não mistura com o chat.</p>
       <div id="livroFields">
         <div class="widget">
           <label class="st-label" for="titulo">Título</label>
@@ -433,11 +433,11 @@
       <h2 class="section-title">API</h2>
       <div class="widget">
         <label class="st-label" for="apiChat">POST chat</label>
-        <input id="apiChat" type="text" value="/api/assistant/chat" />
+        <input id="apiChat" type="text" value="/ms-coordenador/api/assistant/chat" />
       </div>
       <div class="widget">
         <label class="st-label" for="apiPlano">POST plano</label>
-        <input id="apiPlano" type="text" value="/api/assistant/plano" />
+        <input id="apiPlano" type="text" value="/ms-coordenador/api/assistant/plano" />
         <p class="st-help">Rotas do Gateway → coordenador.</p>
       </div>
 
@@ -622,7 +622,7 @@
       return (
         `<div class="plano">` +
         `<div class="plano-title">Plano Lambda</div>` +
-        `<p class="plano-meta">POST /api/assistant/plano · ${esc(p.titulo || "")}` +
+        `<p class="plano-meta">POST /ms-coordenador/api/assistant/plano · ${esc(p.titulo || "")}` +
         (p.autor ? ` · ${esc(p.autor)}` : "") +
         `</p>` +
         `<div>${esc(String(p.paginasPorDia))} pág/dia · ${esc(String(p.diasDisponiveis))} dias</div>` +

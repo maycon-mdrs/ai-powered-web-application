@@ -2,7 +2,7 @@
 set -euo pipefail
 sleep 15
 echo "=== gateway live ==="
-curl -sS -m 180 -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -sS -m 180 -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"llm-gw-1","message":"Cite 1 livro curto de sci-fi em 1 frase."}'
 echo

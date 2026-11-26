@@ -6,12 +6,12 @@ for p in 8080 8081 8082 8083 8761; do
   echo "port $p -> $code"
 done
 echo "=== chat stub ==="
-curl -sS -m 20 -X POST http://127.0.0.1:8080/api/assistant/chat \
+curl -sS -m 20 -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/chat \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"report-stub","message":"Quero ficcao cientifica curta"}' | head -c 350
 echo
 echo "=== plano ==="
-curl -sS -m 30 -w "\nHTTP:%{http_code}\n" -X POST http://127.0.0.1:8080/api/assistant/plano \
+curl -sS -m 30 -w "\nHTTP:%{http_code}\n" -X POST http://127.0.0.1:8080/ms-coordenador/api/assistant/plano \
   -H 'Content-Type: application/json' \
   -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 echo "=== eureka ==="

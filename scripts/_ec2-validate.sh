@@ -12,7 +12,7 @@ for p in 8080 8081 8082 8083 8761; do
 done
 
 log "=== CHAT STUB ==="
-CHAT=$(curl -sS -X POST "http://$EIP:8080/api/assistant/chat" \
+CHAT=$(curl -sS -X POST "http://$EIP:8080/ms-coordenador/api/assistant/chat" \
   -H 'Content-Type: application/json' \
   -d '{"conversationId":"val-stub-1","message":"Quero ficcao cientifica curta"}')
 log "$CHAT" | head -c 500; log ""
@@ -21,7 +21,7 @@ echo "$CHAT" | grep -q '"response"' && log "OK response field" || log "FAIL resp
 echo "$CHAT" | grep -q '"plano"' && log "FAIL plano still present" || log "OK no plano field"
 
 log "=== PLANO LAMBDA ==="
-PLANO=$(curl -sS -w "\nHTTP:%{http_code}" -X POST "http://$EIP:8080/api/assistant/plano" \
+PLANO=$(curl -sS -w "\nHTTP:%{http_code}" -X POST "http://$EIP:8080/ms-coordenador/api/assistant/plano" \
   -H 'Content-Type: application/json' \
   -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}')
 log "$PLANO"

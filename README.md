@@ -80,13 +80,13 @@ Se o Vault estiver indisponível com o perfil `vault`, o `ms-ia` falha no startu
 ## Teste rápido
 
 ```powershell
-curl -X POST http://localhost:8080/api/assistant/chat -H "Content-Type: application/json" -d "{\"conversationId\":\"demo-1\",\"message\":\"Quero ficcao cientifica curta\"}"
+curl -X POST http://localhost:8080/ms-coordenador/api/assistant/chat -H "Content-Type: application/json" -d "{\"conversationId\":\"demo-1\",\"message\":\"Quero ficcao cientifica curta\"}"
 ```
 
 Plano de leitura (endpoint separado):
 
 ```powershell
-curl -X POST http://localhost:8080/api/assistant/plano -H "Content-Type: application/json" -d "{\"titulo\":\"Neuromancer\",\"autor\":\"William Gibson\",\"paginasEstimadas\":271,\"diasDisponiveis\":14}"
+curl -X POST http://localhost:8080/ms-coordenador/api/assistant/plano -H "Content-Type: application/json" -d "{\"titulo\":\"Neuromancer\",\"autor\":\"William Gibson\",\"paginasEstimadas\":271,\"diasDisponiveis\":14}"
 ```
 
 UI: Gateway [`/demo/`](http://localhost:8080/demo/), Postman (`postman/`) ou `chat-demo/` (Javelit).
