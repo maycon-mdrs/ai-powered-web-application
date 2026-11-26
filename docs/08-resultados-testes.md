@@ -104,7 +104,7 @@ Nas instâncias de `MS-COORDENADOR` configuramos:
 
 Implementação: `InMemoryRateLimitFilter` — limite por IP / janela de 1s.
 
-**Config:** `config-repo/api-gateway.yml` → `gateway.rate-limit.per-second` (**5**).
+**Config:** `config-repo/api-gateway.yml` → `gateway.rate-limit.per-second` (**40**).
 
 1. Editar no Git → commit/push  
 2. `curl -X POST http://<EIP>:8080/actuator/refresh` (**API Gateway**)  

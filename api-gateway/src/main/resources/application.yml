@@ -33,7 +33,7 @@ eureka:
 
 gateway:
   rate-limit:
-    per-second: 5
+    per-second: 40
 
 management:
   endpoints:
