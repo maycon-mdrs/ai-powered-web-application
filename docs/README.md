@@ -1,6 +1,14 @@
 # Documentação do TP3
 
-Ordem de leitura:
+## Guia do código (estudo)
+
+Para quem sabe Java básico e quer ler o sistema classe a classe (estilo “Guia do Código”):
+
+- **[guia/00-indice.md](guia/00-indice.md)** — Parte 1 estudo + Parte 2 consulta
+- [guia/ATALHOS.md](guia/ATALHOS.md) — arquivo + linha por item da banca
+- [DECISOES.md](DECISOES.md) — IDs das decisões (quadros “Por que assim?”)
+
+## Ordem de leitura (docs de produto)
 
 1. [00-visao-geral.md](00-visao-geral.md)
 2. [01-plataforma.md](01-plataforma.md)
@@ -11,5 +19,7 @@ Ordem de leitura:
 7. [06-deploy-aws.md](06-deploy-aws.md)
 
 Documentos RAG: [documents/](documents/).
+
+Roteiro da banca: [09-roteiro-apresentacao-banca.md](09-roteiro-apresentacao-banca.md).
 
 Resultados: [08-resultados-testes.md](08-resultados-testes.md) (baseline) · [10-resultados-pos-refatoracao-2026-11-26.md](10-resultados-pos-refatoracao-2026-11-26.md) (pós-refatoração).

@@ -221,10 +221,14 @@ services:
   zipkin:
     image: openzipkin/zipkin:3.4
     container_name: zipkin
+    environment:
+      JAVA_OPTS: -Xms32m -Xmx128m
+    mem_limit: 256m
     ports:
       - "9411:9411"
     networks:
       - tp3
+    restart: unless-stopped
 
 networks:
   tp3:

@@ -6,8 +6,9 @@ Microserviços Spring: conversa sobre livros com **Chat Memory**, **RAG de gêne
 
 ## Documentação
 
+0. **[Guia do código](docs/guia/00-indice.md)** — estudo classe a classe + [atalhos da banca](docs/guia/ATALHOS.md) + [decisões](docs/DECISOES.md)
 1. [docs/00-visao-geral.md](docs/00-visao-geral.md) … [06-deploy-aws.md](docs/06-deploy-aws.md)
-2. [docs/07-ensaio-apresentacao.md](docs/07-ensaio-apresentacao.md)
+2. [docs/07-ensaio-apresentacao.md](docs/07-ensaio-apresentacao.md) · [docs/09-roteiro-apresentacao-banca.md](docs/09-roteiro-apresentacao-banca.md)
 3. [docs/vault.md](docs/vault.md) — HashiCorp Vault (chaves LLM)
 4. [docs/ambiente-aws.md](docs/ambiente-aws.md) — **passo a passo AWS** (conta pessoal, EC2, Compose, Lambda)
 
