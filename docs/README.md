@@ -11,3 +11,5 @@ Ordem de leitura:
 7. [06-deploy-aws.md](06-deploy-aws.md)
 
 Documentos RAG: [documents/](documents/).
+
+Resultados: [08-resultados-testes.md](08-resultados-testes.md) (baseline) · [10-resultados-pos-refatoracao-2026-11-26.md](10-resultados-pos-refatoracao-2026-11-26.md) (pós-refatoração).
