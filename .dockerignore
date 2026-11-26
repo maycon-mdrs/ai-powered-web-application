@@ -6,6 +6,7 @@
 jmeter/resultados
 **/*.md
 !docs/documents/**
+!ms-ia/src/main/resources/documents/**
 logs
 **/.env
 **/*.pem

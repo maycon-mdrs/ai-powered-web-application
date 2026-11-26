@@ -43,15 +43,23 @@ public class DocumentRagService {
 
     @PostConstruct
     void load() throws IOException {
-        for (Resource resource : new PathMatchingResourcePatternResolver()
-                .getResources("classpath:documents/*.md")) {
+        Resource[] resources;
+        try {
+            resources = new PathMatchingResourcePatternResolver().getResources("classpath:documents/*.md");
+        } catch (IOException ex) {
+            resources = new Resource[0];
+        }
+        for (Resource resource : resources) {
+            if (!resource.exists()) {
+                continue;
+            }
             String name = resource.getFilename() != null ? resource.getFilename() : "doc";
             String body = stripFrontmatter(new String(resource.getContentAsByteArray(), StandardCharsets.UTF_8));
             documents.add(Document.builder().id(name).text(body).build());
         }
 
         EmbeddingModel model = embeddingModels.getIfAvailable();
-        if (model != null && !aiProperties.isStub()) {
+        if (model != null && !aiProperties.isStub() && !documents.isEmpty()) {
             SimpleVectorStore store = SimpleVectorStore.builder(model).build();
             store.add(documents);
             this.vectorStore = store;
