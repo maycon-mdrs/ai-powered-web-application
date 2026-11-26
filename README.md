@@ -89,7 +89,7 @@ Plano de leitura (endpoint separado):
 curl -X POST http://localhost:8080/api/assistant/plano -H "Content-Type: application/json" -d "{\"titulo\":\"Neuromancer\",\"autor\":\"William Gibson\",\"paginasEstimadas\":271,\"diasDisponiveis\":14}"
 ```
 
-UI: Postman (`postman/`) ou `chat-demo/` (Javelit).
+UI: Gateway [`/demo/`](http://localhost:8080/demo/), Postman (`postman/`) ou `chat-demo/` (Javelit).
 
 ## Portas
 

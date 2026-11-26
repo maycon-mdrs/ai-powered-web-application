@@ -25,6 +25,6 @@ Lista completa com texto: [docs/DECISOES.md](../DECISOES.md).
 | D19 | EC2 Compose + Lambda AWS | 7.2 |
 | D20 | system-prompt.txt | 3 parada 7 |
 | D21 | Embeddings com fallback lexical | 3 parada 8 |
-| D22 | Sem Demo UI / local-lambda | item 7 · limpeza pré-banca |
+| D22 | Sem local-lambda; Demo UI lê `response` | `/demo/` · D13 |
 
 Voltar ao [índice](00-indice.md).

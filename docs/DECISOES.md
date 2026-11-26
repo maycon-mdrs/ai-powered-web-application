@@ -26,7 +26,7 @@ Formato: decisão · motivo · alternativa descartada · onde no código/config.
 | D19 | 2026-11 | Deploy único EC2 + Compose; Lambda na AWS (Function URL) |
 | D20 | 2026-11 | Prompt de sistema em arquivo (`prompts/system-prompt.txt`), sem provider no texto |
 | D21 | 2026-11-26 | Embeddings: selecionar modelo do provedor ativo; falha → lexical |
-| D22 | 2026-11 | Remover Demo UI `/demo/` e profile `local-lambda` (pré-banca) |
+| D22 | 2026-11 | Remover profile `local-lambda`; Demo UI `/demo/` mantida (lê `response`) |
 
 ---
 
@@ -138,7 +138,7 @@ Formato: decisão · motivo · alternativa descartada · onde no código/config.
 **Motivo.** Vault com key OpenAI placeholder quebrava ingest; chat Gemini ainda útil.  
 **Onde.** `DocumentRagService.load` try/catch + `selectEmbeddingModel`.
 
-### D22 — Limpeza pré-banca
-**Decisão.** Remover Demo UI do Gateway e profile Compose `local-lambda`.  
-**Motivo.** Reduzir superfície; Postman/`chat-demo` bastam; Lambda = Function URL.  
-**Onde.** Histórico de commits pré-banca; Compose atual.
+### D22 — Limpeza pré-banca + Demo UI
+**Decisão.** Sem profile Compose `local-lambda` (Lambda = Function URL). Demo UI `/demo/` no Gateway **restauda** e lê `ChatResponse.response` (fallback legado `reply`).  
+**Motivo.** UI da banca; após renomear `reply`→`response`, `data?.reply ?? raw` exibia o JSON inteiro.  
+**Onde.** `DemoUiConfig.java`; `static/demo/index.html`; `chat-demo` já usava `response`.

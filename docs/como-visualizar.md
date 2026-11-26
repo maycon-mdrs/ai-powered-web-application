@@ -16,7 +16,8 @@ Abra no browser do PC (Security Group precisa liberar a porta).
 | Zipkin (traces) | `http://<EIP>:9411` | Run Query após um chat |
 | Prometheus | `http://<EIP>:9090` | Targets / graph |
 | Vault UI | `http://<EIP>:8200` | Token `root` (lab `-dev`) |
-| Gateway (API) | `http://<EIP>:8080` | Só HTTP; use Postman ou `chat-demo/` (Javelit) |
+| Gateway (API) | `http://<EIP>:8080` | API HTTP |
+| Demo UI (chat) | `http://<EIP>:8080/demo/` | Campo JSON `response` (não `reply`) |
 
 Chat e plano (sempre pelo Gateway) — endpoints separados:
 
@@ -32,7 +33,7 @@ curl -s -X POST http://<EIP>:8080/api/assistant/plano \
   -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 ```
 
-Na EC2 use `127.0.0.1` no lugar do EIP. UI: Postman (`postman/`) ou módulo `chat-demo/`.
+Na EC2 use `127.0.0.1` no lugar do EIP. UI: `/demo/` no Gateway, Postman (`postman/`) ou `chat-demo/` (Javelit).
 
 ---
 
