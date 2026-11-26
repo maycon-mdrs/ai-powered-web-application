@@ -30,7 +30,7 @@ lambda:
 http:
   client:
     connect-timeout: 3s
-    read-timeout: 45s
+    read-timeout: 90s
 
 
 management:

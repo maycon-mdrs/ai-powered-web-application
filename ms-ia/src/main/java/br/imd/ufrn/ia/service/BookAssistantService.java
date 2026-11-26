@@ -117,6 +117,9 @@ public class BookAssistantService {
                 || msg.contains("high demand")
                 || msg.contains("unavailable")
                 || msg.contains("resource_exhausted")
-                || msg.contains("try again");
+                || msg.contains("try again")
+                // Gemini + tool MCP: falha transitória de parse após timeout Open Library
+                || msg.contains("failed to parse json")
+                || msg.contains("timeout of");
     }
 }

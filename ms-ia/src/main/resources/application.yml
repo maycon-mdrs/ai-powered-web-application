@@ -24,7 +24,9 @@ spring:
     mcp:
       client:
         enabled: ${MCP_ENABLED:false}
-        request-timeout: 120s
+        # Tempo do cliente Spring → processo MCP (stdio). O axios interno do
+        # mcp-open-library é outro limite (patch 60s no Dockerfile.ms-ia).
+        request-timeout: 180s
         stdio:
           connections:
             open-library:

@@ -20,7 +20,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/* \
     && node -v && npx -v \
-    && npm install -g mcp-open-library
+    && npm install -g mcp-open-library \
+    # Pacote fixa axios timeout em 15s; sobe para 60s (Open Library às vezes demora)
+    && sed -i 's/REQUEST_TIMEOUT_MS = 15_000/REQUEST_TIMEOUT_MS = 60_000/' \
+         /usr/lib/node_modules/mcp-open-library/build/utils/http.js
 WORKDIR /app
 COPY --from=build /src/ms-ia/target/ms-ia-0.0.1-SNAPSHOT.jar /app/app.jar
 EXPOSE 8082
