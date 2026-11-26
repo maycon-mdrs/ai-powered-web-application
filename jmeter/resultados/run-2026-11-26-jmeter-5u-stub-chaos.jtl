@@ -1,0 +1,359 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1795720395950,360,POST chat,200,OK,Users 1-1,text,true,,266,281,1,1,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,358,0,133
+1795720396888,284,POST chat,500,Internal Server Error,Users 1-2,text,false,,279,281,2,2,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,281,0,114
+1795720397173,347,POST chat,200,OK,Users 1-2,text,true,,266,281,2,2,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,346,0,104
+1795720397520,263,POST chat,200,OK,Users 1-2,text,true,,266,281,2,2,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,262,0,105
+1795720397784,278,POST chat,200,OK,Users 1-2,text,true,,266,281,3,3,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,273,0,115
+1795720397889,253,POST chat,200,OK,Users 1-3,text,true,,266,281,3,3,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,253,0,106
+1795720398063,244,POST chat,200,OK,Users 1-2,text,true,,266,281,3,3,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,241,0,103
+1795720398307,270,POST chat,200,OK,Users 1-2,text,true,,266,281,3,3,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,270,0,116
+1795720398578,269,POST chat,200,OK,Users 1-2,text,true,,266,281,3,3,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,268,0,116
+1795720398847,238,POST chat,200,OK,Users 1-2,text,true,,266,281,4,4,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,237,0,102
+1795720398888,378,POST chat,200,OK,Users 1-4,text,true,,266,281,4,4,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,377,0,106
+1795720399085,279,POST chat,200,OK,Users 1-2,text,true,,266,281,4,4,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,278,0,117
+1795720399267,279,POST chat,200,OK,Users 1-4,text,true,,266,281,4,4,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,277,0,112
+1795720399364,725,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,721,0,117
+1795720399886,302,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,302,0,116
+1795720400090,282,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,279,0,102
+1795720398143,2311,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2302,0,103
+1795720400189,397,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,395,0,115
+1795720396312,4279,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,4271,0,116
+1795720400372,257,POST chat,500,Internal Server Error,Users 1-2,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,256,0,116
+1795720400591,293,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,291,0,114
+1795720400587,313,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,308,0,113
+1795720400900,273,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,273,0,114
+1795720401172,241,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,240,0,101
+1795720401414,239,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,237,0,101
+1795720399546,2119,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2118,0,101
+1795720401654,287,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,285,0,116
+1795720401941,279,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,277,0,107
+1795720400884,1463,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1462,0,103
+1795720402220,259,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,116
+1795720400629,1875,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1875,0,103
+1795720402504,257,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,256,0,115
+1795720401665,1292,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1291,0,101
+1795720402761,261,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,260,0,117
+1795720400454,3212,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,3209,0,116
+1795720403665,236,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,236,0,102
+1795720402346,1737,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1737,0,105
+1795720403902,261,POST chat,500,Internal Server Error,Users 1-3,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,261,0,116
+1795720404084,258,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,115
+1795720404163,248,POST chat,200,OK,Users 1-3,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,246,0,116
+1795720402480,1970,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1970,0,103
+1795720404342,262,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,262,0,116
+1795720404411,238,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,238,0,103
+1795720404450,288,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,287,0,117
+1795720403022,1732,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1731,0,103
+1795720404605,262,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,244,0,102
+1795720404650,282,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,281,0,116
+1795720404738,281,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,280,0,103
+1795720404754,298,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,298,0,115
+1795720404867,279,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,275,0,117
+1795720402957,2200,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2199,0,116
+1795720404932,238,POST chat,200,OK,Users 1-3,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,103
+1795720405020,277,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,276,0,116
+1795720405053,290,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,289,0,117
+1795720405146,229,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,229,0,103
+1795720405157,255,POST chat,500,Internal Server Error,Users 1-4,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,254,0,117
+1795720405171,264,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,263,0,113
+1795720405297,277,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,277,0,113
+1795720405343,263,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,261,0,114
+1795720405376,278,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,277,0,116
+1795720405412,254,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,252,0,104
+1795720405575,227,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,226,0,101
+1795720405606,232,POST chat,200,OK,Users 1-2,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,227,0,104
+1795720405655,240,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,240,0,102
+1795720405666,230,POST chat,200,OK,Users 1-4,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,229,0,105
+1795720405802,277,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,274,0,114
+1795720405897,250,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,250,0,104
+1795720405896,257,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,105
+1795720406079,231,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,230,0,103
+1795720406148,252,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,102
+1795720406310,224,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,224,0,105
+1795720406400,246,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,245,0,104
+1795720406535,259,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,115
+1795720405435,1382,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1382,0,102
+1795720406794,248,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,247,0,104
+1795720406818,254,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,254,0,114
+1795720407042,271,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,269,0,116
+1795720407073,273,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,272,0,116
+1795720407313,244,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,243,0,105
+1795720407347,272,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,272,0,116
+1795720407557,261,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,261,0,116
+1795720407619,239,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,239,0,103
+1795720406154,1869,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1869,0,103
+1795720407818,228,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,228,0,103
+1795720405838,2281,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2280,0,116
+1795720408024,224,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,223,0,102
+1795720408046,232,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,231,0,103
+1795720408119,256,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,256,0,112
+1795720408248,235,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,103
+1795720408278,250,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,250,0,114
+1795720408376,240,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,239,0,103
+1795720408483,234,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,104
+1795720408529,260,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,115
+1795720406646,2217,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2216,0,116
+1795720408616,281,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,281,0,117
+1795720408718,275,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,275,0,117
+1795720408864,403,POST chat,500,Internal Server Error,Users 1-4,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,396,0,115
+1795720408789,523,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,522,0,117
+1795720408898,419,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,418,0,112
+1795720409268,255,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,255,0,115
+1795720409317,234,POST chat,500,Internal Server Error,Users 1-2,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,104
+1795720409312,259,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,116
+1795720409523,290,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,285,0,115
+1795720409552,319,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,319,0,116
+1795720409813,260,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,260,0,116
+1795720409871,256,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,255,0,113
+1795720410075,293,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,293,0,115
+1795720410128,291,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,288,0,101
+1795720410368,254,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,254,0,114
+1795720410420,238,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,238,0,101
+1795720407859,2844,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2842,0,117
+1795720410623,249,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,248,0,111
+1795720410658,237,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,236,0,106
+1795720410704,229,POST chat,500,Internal Server Error,Users 1-3,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,228,0,102
+1795720410872,246,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,245,0,102
+1795720410933,288,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,288,0,116
+1795720410895,330,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,329,0,117
+1795720408994,5369,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,5367,0,102
+1795720409572,4791,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,4788,0,116
+1795720411119,3256,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,3254,0,114
+1795720411223,3165,POST chat,200,OK,Users 1-3,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,3165,0,116
+1795720411226,3183,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,3182,0,112
+1795720414375,248,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,247,0,103
+1795720414365,266,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,265,0,105
+1795720414364,279,POST chat,200,OK,Users 1-1,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,277,0,116
+1795720414389,279,POST chat,500,Internal Server Error,Users 1-3,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,279,0,105
+1795720414623,267,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,266,0,114
+1795720414643,334,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,333,0,114
+1795720414669,309,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,309,0,105
+1795720414890,235,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,235,0,101
+1795720414979,272,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,266,0,103
+1795720414978,284,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,278,0,102
+1795720415125,266,POST chat,200,OK,Users 1-4,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,261,0,115
+1795720415262,233,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,232,0,104
+1795720415391,234,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,105
+1795720415495,260,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,258,0,117
+1795720415625,280,POST chat,500,Internal Server Error,Users 1-4,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,280,0,114
+1795720415906,229,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,228,0,101
+1795720416134,234,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,233,0,101
+1795720416369,246,POST chat,500,Internal Server Error,Users 1-4,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,246,0,114
+1795720414409,2458,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2454,0,115
+1795720414631,2248,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2248,0,117
+1795720416616,278,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,277,0,116
+1795720416866,269,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,269,0,103
+1795720416879,281,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,278,0,102
+1795720415252,1924,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1922,0,102
+1795720416894,296,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,288,0,103
+1795720417136,235,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,235,0,104
+1795720417160,232,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,231,0,103
+1795720417191,226,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,226,0,98
+1795720417176,288,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,287,0,113
+1795720417372,295,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,295,0,114
+1795720417393,288,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,288,0,104
+1795720417418,279,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,274,0,116
+1795720417464,259,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,105
+1795720415755,2127,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2126,0,103
+1795720417668,253,POST chat,200,OK,Users 1-2,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,252,0,114
+1795720417681,284,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,283,0,117
+1795720417697,275,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,275,0,104
+1795720417881,255,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,255,0,114
+1795720417921,252,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,252,0,117
+1795720417972,243,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,243,0,103
+1795720417965,258,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,116
+1795720418136,256,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,256,0,117
+1795720418173,252,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,116
+1795720418223,218,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,218,0,104
+1795720418216,251,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,249,0,114
+1795720418393,264,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,262,0,116
+1795720418425,254,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,254,0,104
+1795720418442,276,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,275,0,116
+1795720418657,230,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,230,0,105
+1795720418680,231,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,231,0,102
+1795720418718,257,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,256,0,117
+1795720418887,228,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,228,0,103
+1795720418975,260,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,254,0,116
+1795720419115,239,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,239,0,103
+1795720419236,252,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,112
+1795720419355,259,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,258,0,115
+1795720418912,1914,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1912,0,115
+1795720420827,247,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,246,0,115
+1795720421075,246,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,245,0,113
+1795720418468,3032,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,3032,0,100
+1795720421501,235,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,103
+1795720417724,4061,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,4060,0,104
+1795720421736,225,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,224,0,101
+1795720419614,2397,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2397,0,103
+1795720421786,254,POST chat,500,Internal Server Error,Users 1-3,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,253,0,115
+1795720422013,260,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,260,0,116
+1795720422040,271,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,271,0,116
+1795720422273,247,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,247,0,117
+1795720422311,255,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,254,0,116
+1795720422521,238,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,237,0,105
+1795720422566,255,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,254,0,115
+1795720422760,220,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,219,0,101
+1795720422821,225,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,224,0,100
+1795720421321,2112,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2112,0,103
+1795720423434,226,POST chat,500,Internal Server Error,Users 1-2,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,225,0,104
+1795720423660,255,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,253,0,116
+1795720419488,4494,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,4493,0,103
+1795720423915,251,POST chat,500,Internal Server Error,Users 1-2,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,116
+1795720423983,263,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,263,0,117
+1795720421961,2300,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2300,0,115
+1795720424167,249,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,249,0,115
+1795720424246,237,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,236,0,103
+1795720424262,243,POST chat,500,Internal Server Error,Users 1-4,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,242,0,114
+1795720424416,221,POST chat,200,OK,Users 1-2,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,220,0,104
+1795720423046,1647,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1646,0,99
+1795720424484,276,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,274,0,116
+1795720424637,261,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,116
+1795720424693,244,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,243,0,104
+1795720424760,253,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,252,0,117
+1795720424937,231,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,231,0,103
+1795720422980,2269,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2267,0,115
+1795720425013,236,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,235,0,104
+1795720425168,251,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,250,0,117
+1795720425249,248,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,247,0,105
+1795720425249,267,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,264,0,117
+1795720425419,252,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,252,0,116
+1795720425497,262,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,260,0,115
+1795720425516,272,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,272,0,116
+1795720425672,228,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,227,0,102
+1795720425760,214,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,213,0,101
+1795720425788,261,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,260,0,116
+1795720425901,252,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,116
+1795720425974,233,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,233,0,105
+1795720426049,223,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,222,0,102
+1795720426153,236,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,103
+1795720426208,229,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,229,0,104
+1795720426272,260,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,114
+1795720426389,251,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,250,0,102
+1795720426437,231,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,230,0,101
+1795720426532,268,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,267,0,117
+1795720426640,252,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,116
+1795720426669,271,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,271,0,115
+1795720424505,2511,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2510,0,115
+1795720426893,259,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,113
+1795720426940,250,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,250,0,110
+1795720427016,264,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,264,0,115
+1795720427152,263,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,263,0,115
+1795720427191,298,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,297,0,116
+1795720427281,237,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,236,0,103
+1795720427416,262,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,262,0,116
+1795720427489,273,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,272,0,117
+1795720427518,257,POST chat,500,Internal Server Error,Users 1-4,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,117
+1795720424898,2921,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2921,0,104
+1795720427762,228,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,227,0,102
+1795720427776,256,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,256,0,117
+1795720427819,234,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,104
+1795720427990,224,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,224,0,101
+1795720428033,220,POST chat,200,OK,Users 1-4,text,true,,299,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,220,0,102
+1795720428054,225,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,225,0,103
+1795720428214,227,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,226,0,103
+1795720428253,220,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,220,0,101
+1795720428280,259,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,258,0,114
+1795720428441,256,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,255,0,115
+1795720428473,283,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,281,0,114
+1795720428539,253,POST chat,200,OK,Users 1-2,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,252,0,116
+1795720428697,222,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,222,0,101
+1795720428756,227,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,227,0,101
+1795720428792,270,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,270,0,116
+1795720428920,248,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,248,0,114
+1795720428983,229,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,229,0,105
+1795720427678,1601,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1597,0,115
+1795720429062,239,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,238,0,105
+1795720429168,278,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,277,0,114
+1795720429213,257,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,117
+1795720429279,259,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,116
+1795720429302,267,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,265,0,116
+1795720429446,236,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,236,0,103
+1795720429471,251,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,249,0,113
+1795720429569,250,POST chat,200,OK,Users 1-2,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,249,0,117
+1795720429683,239,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,238,0,105
+1795720429819,254,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,253,0,116
+1795720429922,213,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,212,0,101
+1795720430073,235,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,104
+1795720430135,230,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,230,0,103
+1795720430308,228,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,228,0,103
+1795720430365,243,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,242,0,116
+1795720430537,216,POST chat,500,Internal Server Error,Users 1-2,text,false,,284,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,215,0,99
+1795720430608,252,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,116
+1795720430860,218,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,218,0,103
+1795720426800,5740,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,5739,0,102
+1795720429538,3100,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,3096,0,103
+1795720429722,2936,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2936,0,116
+1795720432539,257,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,256,0,116
+1795720432637,260,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,117
+1795720432657,275,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,274,0,116
+1795720431077,1914,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1914,0,121
+1795720432796,219,POST chat,200,OK,Users 1-1,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,219,0,98
+1795720432897,283,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,282,0,116
+1795720432932,248,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,247,0,105
+1795720430753,2509,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2509,0,116
+1795720432991,281,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,280,0,106
+1795720433015,283,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,282,0,117
+1795720433181,224,POST chat,200,OK,Users 1-4,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,218,0,102
+1795720433272,255,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,248,0,105
+1795720433298,238,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,237,0,100
+1795720433405,257,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,114
+1795720433536,234,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,233,0,102
+1795720433528,255,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,252,0,116
+1795720433662,242,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,242,0,113
+1795720433770,254,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,252,0,106
+1795720433783,264,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,116
+1795720433905,264,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,264,0,102
+1795720434024,222,POST chat,500,Internal Server Error,Users 1-1,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,222,0,104
+1795720434047,251,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,105
+1795720434170,234,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,104
+1795720434246,285,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,285,0,117
+1795720434298,277,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,276,0,117
+1795720434404,231,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,231,0,105
+1795720434532,234,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,234,0,102
+1795720434575,255,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,254,0,116
+1795720434766,247,POST chat,200,OK,Users 1-1,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,247,0,116
+1795720434830,291,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,291,0,114
+1795720433262,1946,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1943,0,113
+1795720435013,280,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,280,0,116
+1795720435122,260,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,115
+1795720435293,228,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,227,0,104
+1795720435382,222,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,221,0,105
+1795720435522,257,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,257,0,115
+1795720435604,224,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,224,0,103
+1795720435780,228,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,228,0,101
+1795720435828,251,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,251,0,116
+1795720433180,2965,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2965,0,115
+1795720436080,267,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,267,0,117
+1795720436146,269,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,267,0,117
+1795720436416,236,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,235,0,104
+1795720436652,265,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,264,0,117
+1795720436917,225,POST chat,200,OK,Users 1-3,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,222,0,101
+1795720435209,1962,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1958,0,103
+1795720437142,254,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,249,0,114
+1795720437172,274,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,272,0,118
+1795720437396,260,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,259,0,113
+1795720437446,266,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,265,0,116
+1795720437656,233,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,232,0,105
+1795720437712,234,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,233,0,103
+1795720437889,237,POST chat,500,Internal Server Error,Users 1-3,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,236,0,104
+1795720437946,268,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,268,0,115
+1795720438126,235,POST chat,200,OK,Users 1-3,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,235,0,105
+1795720436009,2400,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2399,0,104
+1795720438409,243,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,240,0,103
+1795720438652,294,POST chat,200,OK,Users 1-1,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,284,0,102
+1795720436347,2730,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2728,0,103
+1795720434635,4748,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,4747,0,105
+1795720439077,344,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,340,0,117
+1795720439384,352,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,352,0,105
+1795720439422,347,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,346,0,120
+1795720439769,270,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,260,0,103
+1795720439736,370,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,365,0,117
+1795720438214,1909,POST chat,200,OK,Users 1-2,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,1908,0,105
+1795720440040,221,POST chat,200,OK,Users 1-5,text,true,,294,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,220,0,105
+1795720440107,336,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,332,0,115
+1795720440261,365,POST chat,200,OK,Users 1-5,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,364,0,116
+1795720440443,452,POST chat,200,OK,Users 1-4,text,true,,266,281,5,5,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,451,0,121
+1795720440626,328,POST chat,500,Internal Server Error,Users 1-5,text,false,,279,281,4,4,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,328,0,116
+1795720438946,3141,POST chat,200,OK,Users 1-1,text,true,,266,281,3,3,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,3140,0,103
+1795720440123,2640,POST chat,200,OK,Users 1-2,text,true,,266,281,2,2,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,2640,0,103
+1795720438361,4496,POST chat,200,OK,Users 1-3,text,true,,266,281,1,1,http://77.114.59.85:8080/ms-coordenador/api/assistant/chat,4496,0,105
