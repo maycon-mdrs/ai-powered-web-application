@@ -1,0 +1,290 @@
+{
+  "info": {
+    "_postman_id": "tp3-assistente-livros",
+    "name": "TP3 — Assistente de Livros",
+    "description": "Requisições principais para demo/banca.\n\n1. Importe esta collection.\n2. Importe o environment `TP3 — EC2` ou `TP3 — Local`.\n3. Selecione o environment no canto superior direito.\n\nVariável `baseHost`: EIP da EC2 ou `127.0.0.1`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseHost", "value": "77.114.59.85" },
+    { "key": "gatewayPort", "value": "8080" },
+    { "key": "coordAPort", "value": "8081" },
+    { "key": "coordBPort", "value": "8083" },
+    { "key": "msIaPort", "value": "8082" },
+    { "key": "configPort", "value": "8888" },
+    { "key": "eurekaPort", "value": "8761" },
+    { "key": "conversationId", "value": "postman-demo-1" }
+  ],
+  "item": [
+    {
+      "name": "0. Health / Eureka",
+      "item": [
+        {
+          "name": "Gateway health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{gatewayPort}}/actuator/health"
+          }
+        },
+        {
+          "name": "MS-IA health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{msIaPort}}/actuator/health"
+          }
+        },
+        {
+          "name": "Coordenador A health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordAPort}}/actuator/health"
+          }
+        },
+        {
+          "name": "Coordenador B health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordBPort}}/actuator/health"
+          }
+        },
+        {
+          "name": "Eureka apps (XML)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/xml" }],
+            "url": "http://{{baseHost}}:{{eurekaPort}}/eureka/apps",
+            "description": "Confirme MS-COORDENADOR ×2, MS-IA, API-GATEWAY, EUREKA-SERVER."
+          }
+        },
+        {
+          "name": "Config Server — api-gateway",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{configPort}}/api-gateway/default",
+            "description": "Deve mostrar gateway.rate-limit.per-second (ex.: 5)."
+          }
+        },
+        {
+          "name": "Config Server — ms-ia",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{configPort}}/ms-ia/default"
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Chat (Gateway → MS1 → MS-IA)",
+      "item": [
+        {
+          "name": "Chat — turn 1 (Memory)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversationId\": \"{{conversationId}}\",\n  \"message\": \"Gosto de cyberpunk. Nao sugira Neuromancer.\"\n}"
+            },
+            "url": "http://{{baseHost}}:{{gatewayPort}}/api/assistant/chat",
+            "description": "Resposta stub começa com [stub/gemini] se ai.stub=true."
+          }
+        },
+        {
+          "name": "Chat — turn 2 (mesmo conversationId)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversationId\": \"{{conversationId}}\",\n  \"message\": \"Indique so 1 titulo diferente e diga por que combina.\"\n}"
+            },
+            "url": "http://{{baseHost}}:{{gatewayPort}}/api/assistant/chat",
+            "description": "Mesmo conversationId → Memory + RAG."
+          }
+        },
+        {
+          "name": "Chat direto Coordenador A (bypass Gateway)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversationId\": \"direct-a\",\n  \"message\": \"Oi\"\n}"
+            },
+            "url": "http://{{baseHost}}:{{coordAPort}}/api/assistant/chat"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Plano / Lambda",
+      "item": [
+        {
+          "name": "Plano de leitura (via Gateway)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Neuromancer\",\n  \"autor\": \"William Gibson\",\n  \"paginasEstimadas\": 271,\n  \"diasDisponiveis\": 14\n}"
+            },
+            "url": "http://{{baseHost}}:{{gatewayPort}}/api/assistant/plano",
+            "description": "MS1 HTTP Interface → Lambda Function URL. Depois abra Zipkin :9411."
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. GraphQL (MS-IA)",
+      "item": [
+        {
+          "name": "GraphQL — askBookAssistant",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"mutation { askBookAssistant(conversationId: \\\"gql-demo\\\", message: \\\"Indique um livro de fantasia curto\\\") { conversationId reply } }\"\n}"
+            },
+            "url": "http://{{baseHost}}:{{msIaPort}}/graphql",
+            "description": "UI alternativa: http://{{baseHost}}:8082/graphiql"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Config refresh",
+      "item": [
+        {
+          "name": "Refresh — API Gateway (rate limit)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://{{baseHost}}:{{gatewayPort}}/actuator/refresh",
+            "description": "Após alterar config-repo/api-gateway.yml e push no Git."
+          }
+        },
+        {
+          "name": "Refresh — MS-IA (ai.stub)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://{{baseHost}}:{{msIaPort}}/actuator/refresh",
+            "description": "Após alterar config-repo/ms-ia.yml e push no Git."
+          }
+        },
+        {
+          "name": "Refresh — Coordenador A (rate/bulkhead)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordAPort}}/actuator/refresh",
+            "description": "Após alterar config-repo/ms-coordenador.yml. Refresh também no B."
+          }
+        },
+        {
+          "name": "Refresh — Coordenador B",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordBPort}}/actuator/refresh"
+          }
+        },
+        {
+          "name": "Ver rate limit no env do Gateway",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{gatewayPort}}/actuator/env/gateway.rate-limit.per-second"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Resiliência (Actuator)",
+      "item": [
+        {
+          "name": "Circuit Breakers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordAPort}}/actuator/circuitbreakers",
+            "description": "Demo CB: docker stop ms-ia → chat → state OPEN + fallback."
+          }
+        },
+        {
+          "name": "Rate Limiters (cliente)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordAPort}}/actuator/ratelimiters"
+          }
+        },
+        {
+          "name": "Bulkheads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordAPort}}/actuator/bulkheads"
+          }
+        },
+        {
+          "name": "Chaos Monkey — enable (A)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordAPort}}/actuator/chaosmonkey/enable"
+          }
+        },
+        {
+          "name": "Chaos Monkey — disable (A)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordAPort}}/actuator/chaosmonkey/disable"
+          }
+        },
+        {
+          "name": "Chaos Monkey — enable (B)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordBPort}}/actuator/chaosmonkey/enable"
+          }
+        },
+        {
+          "name": "Chaos Monkey — disable (B)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://{{baseHost}}:{{coordBPort}}/actuator/chaosmonkey/disable"
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Rate limit servidor (429)",
+      "item": [
+        {
+          "name": "Chat — uma chamada (baseline)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversationId\": \"rate-1\",\n  \"message\": \"Oi\"\n}"
+            },
+            "url": "http://{{baseHost}}:{{gatewayPort}}/api/assistant/chat",
+            "description": "Para ver 429: use Collection Runner com muitas iterações rápidas, ou JMeter. Limite atual ~5 req/s por IP."
+          }
+        }
+      ]
+    }
+  ]
+}
