@@ -73,7 +73,6 @@
             <artifactId>chaos-monkey-spring-boot</artifactId>
             <version>4.0.0</version>
         </dependency>
-        <!-- Chaos Monkey 4 RestTemplate watcher precisa desta classe (Boot 4 modularizou) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-restclient</artifactId>
