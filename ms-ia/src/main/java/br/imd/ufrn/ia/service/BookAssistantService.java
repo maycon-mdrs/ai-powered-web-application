@@ -1,50 +1,61 @@
 package br.imd.ufrn.ia.service;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import br.imd.ufrn.ia.config.AiProperties;
-import br.imd.ufrn.ia.rag.CorpusRagService;
+import br.imd.ufrn.ia.rag.DocumentRagService;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class BookAssistantService {
 
     private final AiProperties aiProperties;
-    private final CorpusRagService corpusRagService;
+    private final DocumentRagService documentRagService;
     private final ChatMemory chatMemory;
-    private final Map<String, StringBuilder> scratchpad;
+    private final Map<String, StringBuilder> conversationHistories;
     private final ObjectProvider<ChatClient> chatClient;
+    private String systemPrompt;
 
     public BookAssistantService(
             AiProperties aiProperties,
-            CorpusRagService corpusRagService,
+            DocumentRagService documentRagService,
             ChatMemory chatMemory,
-            Map<String, StringBuilder> scratchpad,
+            Map<String, StringBuilder> conversationHistories,
             ObjectProvider<ChatClient> chatClient) {
         this.aiProperties = aiProperties;
-        this.corpusRagService = corpusRagService;
+        this.documentRagService = documentRagService;
         this.chatMemory = chatMemory;
-        this.scratchpad = scratchpad;
+        this.conversationHistories = conversationHistories;
         this.chatClient = chatClient;
     }
 
+    @PostConstruct
+    void loadSystemPrompt() throws IOException {
+        ClassPathResource resource = new ClassPathResource("prompts/system-prompt.txt");
+        this.systemPrompt = new String(resource.getContentAsByteArray(), StandardCharsets.UTF_8).trim();
+    }
+
     public String ask(String conversationId, String message) {
-        String rag = corpusRagService.retrieve(message);
-        scratchpad.computeIfAbsent(conversationId, id -> new StringBuilder())
+        conversationHistories.computeIfAbsent(conversationId, id -> new StringBuilder())
                 .append("USER: ").append(message).append('\n');
 
         if (aiProperties.isStub() || chatClient.getIfAvailable() == null) {
-            String history = scratchpad.get(conversationId).toString();
-            String reply = """
+            String rag = documentRagService.retrieve(message);
+            String history = conversationHistories.get(conversationId).toString();
+            String response = """
                     [stub/%s] conversationId=%s
                     Histórico recente:
                     %s
-                    Contexto RAG (gêneros):
+                    Contexto RAG (tool searchGenreDocuments):
                     %s
                     Pedido: %s
                     """.formatted(
@@ -53,29 +64,21 @@ public class BookAssistantService {
                     history.length() > 500 ? history.substring(history.length() - 500) : history,
                     rag.length() > 800 ? rag.substring(0, 800) + "..." : rag,
                     message);
-            scratchpad.get(conversationId).append("ASSISTANT: ").append(reply).append('\n');
-            return reply;
+            conversationHistories.get(conversationId).append("ASSISTANT: ").append(response).append('\n');
+            return response;
         }
 
         ChatClient client = chatClient.getObject();
-        String system = """
-                Você é um assistente de livros. Use o contexto RAG de gêneros.
-                Quando útil, chame tools do MCP Open Library (terceiros) para buscar livros reais.
-                Responda em português, 2 a 5 sugestões, sem spoilers.
-                Provider ativo: %s
-                """.formatted(aiProperties.getProvider());
+        String response = callWithTransientRetry(client, systemPrompt, conversationId, message);
 
-        String reply = callWithTransientRetry(client, system, conversationId, rag, message);
-
-        scratchpad.get(conversationId).append("ASSISTANT: ").append(reply).append('\n');
-        return reply != null ? reply : "";
+        conversationHistories.get(conversationId).append("ASSISTANT: ").append(response).append('\n');
+        return response != null ? response : "";
     }
 
     private String callWithTransientRetry(
             ChatClient client,
             String system,
             String conversationId,
-            String rag,
             String message) {
         RuntimeException last = null;
         for (int attempt = 1; attempt <= 3; attempt++) {
@@ -84,7 +87,7 @@ public class BookAssistantService {
                         .system(system)
                         .advisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                         .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
-                        .user("Contexto RAG:\n" + rag + "\n\nPergunta do usuário:\n" + message)
+                        .user(message)
                         .call()
                         .content();
             } catch (RuntimeException ex) {

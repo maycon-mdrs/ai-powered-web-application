@@ -1,5 +1,13 @@
+ms-ia:
+  base-url: ${MS_IA_BASE_URL:http://MS-IA}
+
 lambda:
   base-url: ${LAMBDA_BASE_URL:http://localhost:9000}
+
+http:
+  client:
+    connect-timeout: 3s
+    read-timeout: 45s
 
 chaos:
   monkey:

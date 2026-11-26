@@ -2,6 +2,7 @@ package br.imd.ufrn.coordenador.client;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,11 @@ public class MsIaGraphQlClient {
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
-    public MsIaGraphQlClient(@LoadBalanced RestClient.Builder builder, ObjectMapper objectMapper) {
-        this.restClient = builder.baseUrl("http://MS-IA").build();
+    public MsIaGraphQlClient(
+            @LoadBalanced RestClient.Builder builder,
+            ObjectMapper objectMapper,
+            @Value("${ms-ia.base-url:http://MS-IA}") String baseUrl) {
+        this.restClient = builder.baseUrl(baseUrl).build();
         this.objectMapper = objectMapper;
     }
 
@@ -26,14 +30,13 @@ public class MsIaGraphQlClient {
                 mutation($c: String!, $m: String!) {
                   askBookAssistant(conversationId: $c, message: $m) {
                     conversationId
-                    reply
+                    response
                   }
                 }
                 """;
         Map<String, Object> body = Map.of(
                 "query", query,
-                "variables", Map.of("c", conversationId, "m", message)
-        );
+                "variables", Map.of("c", conversationId, "m", message));
         try {
             String raw = restClient.post()
                     .uri("/graphql")
@@ -46,7 +49,7 @@ public class MsIaGraphQlClient {
             if (response == null || (response.path("errors").isArray() && !response.path("errors").isEmpty())) {
                 throw new IllegalStateException("GraphQL error: " + raw);
             }
-            return response.path("data").path("askBookAssistant").path("reply").asText("sem resposta");
+            return response.path("data").path("askBookAssistant").path("response").asText("sem resposta");
         } catch (IllegalStateException ex) {
             throw ex;
         } catch (Exception ex) {

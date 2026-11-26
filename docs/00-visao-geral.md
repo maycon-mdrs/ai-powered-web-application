@@ -42,7 +42,7 @@ flowchart TD
 | Peça | Função |
 |------|--------|
 | **Chat Memory** | Lembra gênero, limite de páginas, já lidos nesta conversa |
-| **RAG** | Injeta texto dos arquivos em `docs/corpus/` (o que é cada gênero) |
+| **RAG** | Embeddings de `documents/` + tool `searchGenreDocuments` |
 | **MCP Open Library** | Busca livros/autores reais (sem API key) |
 | **Lambda** | Recebe livro escolhido e devolve plano de leitura |
 
@@ -62,8 +62,8 @@ ai-powered-web-application/
 ├── ms-ia/                  # MS2: Spring AI + GraphQL
 ├── ms-lambda/              # código da função serverless
 ├── config-repo/            # repo Git consumido pelo Config Server
-├── docs/                   # esta documentação + corpus RAG
-│   └── corpus/             # romance.md, ficcao-cientifica.md, ...
+├── docs/                   # esta documentação + documents RAG
+│   └── documents/          # romance.md, ficcao-cientifica.md, ...
 └── jmeter/                 # planos de carga
 ```
 
@@ -124,7 +124,7 @@ Roteiro da banca (itens 1–14): [09-roteiro-apresentacao-banca.md](09-roteiro-a
 ```graphql
 mutation {
   askBookAssistant(conversationId: "demo-1", message: "Quero ficção científica curta") {
-    reply
+    response
     conversationId
   }
 }

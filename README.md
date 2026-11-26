@@ -27,12 +27,13 @@ chmod +x scripts/*.sh
 
 ```powershell
 cp .env.example .env
-.\scripts\docker-up.ps1                  # stub + ms-lambda local + obs
+# edite LAMBDA_BASE_URL (Function URL AWS)
+.\scripts\docker-up.ps1
 ```
 
 ```bash
 cp .env.example .env
-./scripts/docker-up.sh                   # default: profile local-lambda
+./scripts/docker-up.sh
 ```
 
 Kill de réplica (demo Gateway/Eureka): `docker stop ms-coordenador-b` / `docker start ms-coordenador-b`.
@@ -44,8 +45,7 @@ Não precisa de Vault nem de chaves de LLM:
 ```powershell
 mvn -DskipTests package
 .\scripts\start-local.ps1
-# Observabilidade só:
-docker compose -f observability/docker-compose.yml up -d
+# Observabilidade: docker compose up -d  (Prometheus/Grafana/Zipkin no Compose raiz)
 ```
 
 ```bash
@@ -79,24 +79,16 @@ Se o Vault estiver indisponível com o perfil `vault`, o `ms-ia` falha no startu
 ## Teste rápido
 
 ```powershell
-curl -X POST http://localhost:8080/api/assistant/chat -H "Content-Type: application/json" -d "{\"conversationId\":\"demo-1\",\"message\":\"Quero ficcao cientifica curta\",\"gerarPlano\":false}"
+curl -X POST http://localhost:8080/api/assistant/chat -H "Content-Type: application/json" -d "{\"conversationId\":\"demo-1\",\"message\":\"Quero ficcao cientifica curta\"}"
 ```
 
-Com plano de leitura:
+Plano de leitura (endpoint separado):
 
-```json
-{
-  "conversationId": "demo-1",
-  "message": "Quero Neuromancer",
-  "gerarPlano": true,
-  "livro": {
-    "titulo": "Neuromancer",
-    "autor": "William Gibson",
-    "paginasEstimadas": 271,
-    "diasDisponiveis": 14
-  }
-}
+```powershell
+curl -X POST http://localhost:8080/api/assistant/plano -H "Content-Type: application/json" -d "{\"titulo\":\"Neuromancer\",\"autor\":\"William Gibson\",\"paginasEstimadas\":271,\"diasDisponiveis\":14}"
 ```
+
+UI: Postman (`postman/`) ou `chat-demo/` (Javelit).
 
 ## Portas
 
@@ -107,7 +99,6 @@ Com plano de leitura:
 | API Gateway | 8080 |
 | MS1 (2 instâncias) | 8081 / 8083 |
 | MS2 IA | 8082 |
-| Lambda local | 9000 |
 | Prometheus / Grafana / Zipkin | 9090 / 3000 / 9411 |
 
 ## Build

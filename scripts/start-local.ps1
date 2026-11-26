@@ -73,6 +73,6 @@ OK (aprox.). Verifique:
   Gateway: http://localhost:8080/api/assistant/chat
   GraphiQL: http://localhost:8082/graphiql
   Lambda:  $($env:LAMBDA_BASE_URL)
-  Obs:     docker compose up -d   (raiz)  ou  docker compose -f observability/docker-compose.yml up -d
+  Obs:     docker compose up -d   (raiz: Prometheus/Grafana/Zipkin)
   Modo:    $Mode
 "@

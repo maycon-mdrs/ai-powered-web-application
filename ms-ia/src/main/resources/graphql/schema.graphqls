@@ -8,5 +8,5 @@ type Mutation {
 
 type BookAssistantReply {
   conversationId: String!
-  reply: String!
+  response: String!
 }

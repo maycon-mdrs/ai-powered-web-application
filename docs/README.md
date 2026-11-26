@@ -10,4 +10,4 @@ Ordem de leitura:
 6. [05-observabilidade-e-carga.md](05-observabilidade-e-carga.md)
 7. [06-deploy-aws.md](06-deploy-aws.md)
 
-Corpus RAG: [corpus/](corpus/).
+Documentos RAG: [documents/](documents/).

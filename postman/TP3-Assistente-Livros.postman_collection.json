@@ -150,7 +150,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"query\": \"mutation { askBookAssistant(conversationId: \\\"gql-demo\\\", message: \\\"Indique um livro de fantasia curto\\\") { conversationId reply } }\"\n}"
+              "raw": "{\n  \"query\": \"mutation { askBookAssistant(conversationId: \\\"gql-demo\\\", message: \\\"Indique um livro de fantasia curto\\\") { conversationId response } }\"\n}"
             },
             "url": "http://{{baseHost}}:{{msIaPort}}/graphql",
             "description": "UI alternativa: http://{{baseHost}}:8082/graphiql"

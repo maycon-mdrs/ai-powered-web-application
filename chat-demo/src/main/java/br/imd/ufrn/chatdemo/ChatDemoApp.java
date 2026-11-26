@@ -22,31 +22,12 @@ public final class ChatDemoApp {
         GatewayChatClient client = new GatewayChatClient(gateway);
 
         Jt.title("Book Assistant").use();
-        Jt.markdown("Demo **Javelit** → API Gateway → coordenador → MS-IA / Lambda.").use();
+        Jt.markdown("Demo **Javelit** → API Gateway → coordenador → MS-IA. Plano: `POST /api/assistant/plano`.").use();
 
         String conversationId = Jt.textInput("conversationId")
                 .value("demo-javelit-1")
                 .help("Mesmo id = Chat Memory entre turnos")
                 .use(Jt.SIDEBAR);
-
-        boolean gerarPlano = Jt.checkbox("gerarPlano (Lambda)").use(Jt.SIDEBAR);
-
-        String titulo = "Neuromancer";
-        String autor = "William Gibson";
-        int paginas = 271;
-        int dias = 14;
-        if (gerarPlano) {
-            titulo = Jt.textInput("Título do livro").value(titulo).use(Jt.SIDEBAR);
-            autor = Jt.textInput("Autor").value(autor).use(Jt.SIDEBAR);
-            Number p = Jt.numberInput("Páginas", Integer.class).value(paginas).minValue(1).use(Jt.SIDEBAR);
-            Number d = Jt.numberInput("Dias", Integer.class).value(dias).minValue(1).use(Jt.SIDEBAR);
-            if (p != null) {
-                paginas = p.intValue();
-            }
-            if (d != null) {
-                dias = d.intValue();
-            }
-        }
 
         Jt.markdown("Gateway: `" + gateway + "`").use(Jt.SIDEBAR);
 
@@ -74,18 +55,10 @@ public final class ChatDemoApp {
                 try {
                     var result = client.chat(
                             conversationId == null || conversationId.isBlank() ? "demo-javelit-1" : conversationId.trim(),
-                            message.trim(),
-                            gerarPlano,
-                            titulo,
-                            autor,
-                            paginas,
-                            dias
+                            message.trim()
                     );
                     if (result.ok()) {
-                        history.add("**Assistente** (`" + result.source() + "`):\n\n" + result.reply());
-                        if (result.plano() != null) {
-                            history.add(result.plano());
-                        }
+                        history.add("**Assistente** (`" + result.source() + "`):\n\n" + result.response());
                     } else {
                         history.add("**Erro HTTP " + result.status() + "**\n\n```\n"
                                 + truncate(result.rawError(), 1500) + "\n```");

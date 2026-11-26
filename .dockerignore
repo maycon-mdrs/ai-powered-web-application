@@ -5,7 +5,7 @@
 **/node_modules
 jmeter/resultados
 **/*.md
-!docs/corpus/**
+!docs/documents/**
 logs
 **/.env
 **/*.pem

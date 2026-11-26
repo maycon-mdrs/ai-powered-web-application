@@ -35,7 +35,7 @@ echo "    vault kv put secret/ms-ia GEMINI_API_KEY=SUA_CHAVE OPENAI_API_KEY=nao-
 echo ""
 read -r -p "Depois de gravar a chave, Enter para subir o resto da stack... " _
 
-echo "== 2/3 Stack (sem local-lambda) =="
+echo "== 2/3 Stack (Lambda = Function URL AWS) =="
 docker stop ms-lambda 2>/dev/null || true
 docker compose --profile vault up -d --build
 
@@ -45,6 +45,6 @@ docker compose --profile vault up -d --force-recreate ms-ia
 echo ""
 echo "Deploy up. Teste:"
 echo "  curl -s -X POST http://127.0.0.1:8080/api/assistant/chat -H 'Content-Type: application/json' \\"
-echo "    -d '{\"conversationId\":\"deploy-1\",\"message\":\"Quero ficcao cientifica curta\",\"gerarPlano\":false}'"
+echo "    -d '{\"conversationId\":\"deploy-1\",\"message\":\"Quero ficcao cientifica curta\"}'"
 echo "Kill: docker stop ms-coordenador-b"
 echo "Pare a EC2 no console quando nao estiver usando."

@@ -20,8 +20,18 @@ eureka:
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
 
+ms-ia:
+  # Service id Eureka (LoadBalanced). Trocar aqui / Config Server, não no Java.
+  base-url: ${MS_IA_BASE_URL:http://MS-IA}
+
 lambda:
   base-url: ${LAMBDA_BASE_URL:http://localhost:9000}
+
+http:
+  client:
+    connect-timeout: 3s
+    read-timeout: 45s
+
 
 management:
   endpoints:

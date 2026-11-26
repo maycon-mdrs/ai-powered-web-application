@@ -11,8 +11,7 @@ Body de exemplo:
 ```json
 {
   "conversationId": "load-1",
-  "message": "Quero ficção científica curta",
-  "gerarPlano": false
+  "message": "Quero ficção científica curta"
 }
 ```
 

@@ -69,7 +69,7 @@ Fórmula simples (implementação):
 
 Módulo `ms-lambda/`:
 
-- `PlanoController` — HTTP local `:9000/plano` (Compose profile `local-lambda` ou `java -jar`)
+- `PlanoController` — HTTP local `:9000/plano` (`java -jar` para debug; **não** sobe no Compose)
 - `PlanoLeituraHandler` — `RequestHandler` POJO (teste no console AWS)
 - `PlanoLeituraUrlHandler` — **Function URL** (`APIGatewayV2HTTPEvent` → JSON)
 - Artifact shaded: `ms-lambda-0.0.1-SNAPSHOT-aws.jar`
@@ -106,4 +106,4 @@ Quem protege a chamada é o **MS1** (retry, CB, fallback). A Lambda só:
 | Lambda Server | Invocar e mostrar JSON de plano |
 | HTTP Interface | Código da interface no MS1 + request real |
 
-Fluxo de demo sugerido: após a IA sugerir um livro, MS1 chama a Lambda com título/páginas/dias e devolve o plano agregado na resposta HTTP.
+Fluxo de demo sugerido: após a IA sugerir um livro, chamar `POST /api/assistant/plano` (endpoint separado do chat).

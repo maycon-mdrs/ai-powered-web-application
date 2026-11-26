@@ -26,32 +26,44 @@ sequenceDiagram
   participant L as Lambda
   GW->>MS1: POST /api/assistant/chat
   MS1->>MS2: GraphQL askBookAssistant
-  MS2-->>MS1: reply + metadados
-  opt Usuario escolheu livro
-    MS1->>L: HTTP Interface gerarPlano
-    L-->>MS1: plano de leitura
-  end
-  MS1-->>GW: resposta agregada
+  MS2-->>MS1: response
+  MS1-->>GW: ChatResponse
+  Note over GW,L: Plano é endpoint separado
+  GW->>MS1: POST /api/assistant/plano
+  MS1->>L: HTTP Interface gerarPlano
+  L-->>MS1: plano de leitura
+  MS1-->>GW: PlanoLeituraDto
 ```
 
 ---
 
 ## 3. Contratos
 
-### REST (entrada)
+### REST — chat
 
 `POST /api/assistant/chat`
 
 ```json
 {
   "conversationId": "demo-1",
-  "message": "Quero ficção científica curta",
-  "gerarPlano": false,
-  "livro": null
+  "message": "Quero ficção científica curta"
 }
 ```
 
-Quando `gerarPlano=true`, enviar `livro` com título/autor/páginas/dias.
+Resposta: `{ "conversationId", "response", "source" }` — **sem** campo `plano`.
+
+### REST — plano (Lambda)
+
+`POST /api/assistant/plano`
+
+```json
+{
+  "titulo": "Neuromancer",
+  "autor": "William Gibson",
+  "paginasEstimadas": 271,
+  "diasDisponiveis": 14
+}
+```
 
 ### GraphQL (saída para MS2)
 
@@ -59,16 +71,15 @@ Ver [03-ms-ia.md](03-ms-ia.md). MS1 é **cliente**.
 
 ### HTTP Interface (saída para Lambda)
 
-Interface Java declarativa (Spring 6 HTTP Interface), exemplo de forma:
-
 ```java
 public interface PlanoLeituraClient {
-  @PostExchange("/")
+  @PostExchange("/plano")
   PlanoLeituraResponse gerar(PlanoLeituraRequest request);
 }
 ```
 
-URL base vem do Config/env (`lambda.base-url`) — Twelve-Factor.
+- MS-IA GraphQL: `ms-ia.base-url` / `MS_IA_BASE_URL` (default `http://MS-IA`, service id Eureka + LoadBalancer)
+- Lambda: `lambda.base-url` / `LAMBDA_BASE_URL` — Twelve-Factor
 
 ---
 

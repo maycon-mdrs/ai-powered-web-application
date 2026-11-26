@@ -1,6 +1,6 @@
 # E3 — MS2 IA (`ms-ia`)
 
-Em uma frase: este serviço é o **cérebro** — GraphQL + Spring AI com **Chat Memory**, **RAG de gêneros**, **fábrica Gemini/OpenAI** e **MCP Open Library** (terceiro).
+Em uma frase: este serviço é o **cérebro** — GraphQL + Spring AI com **Chat Memory**, **RAG de documentos**, **fábrica Gemini/OpenAI** e **MCP Open Library** (terceiro).
 
 ---
 
@@ -10,7 +10,7 @@ Em uma frase: este serviço é o **cérebro** — GraphQL + Spring AI com **Chat
 |-----|---------|
 | API GraphQL `askBookAssistant` | Orquestrar Lambda |
 | Chat Memory por `conversationId` | Expor porta pública (só via Gateway→MS1) |
-| RAG sobre `docs/corpus/` | MCP servidor próprio |
+| RAG embeddings + tool `searchGenreDocuments` | MCP servidor próprio |
 | Cliente MCP Open Library | Resilience4j completo (fica no MS1) |
 | Trocar LLM via `ai.provider` | — |
 
@@ -23,18 +23,20 @@ sequenceDiagram
   participant MS1 as ms-coordenador
   participant GQL as GraphQL_Controller
   participant Mem as ChatMemory
-  participant Rag as RagAdvisor
+  participant Rag as DocumentRagService
   participant Tools as MCP_OpenLibrary
   participant LLM as ChatModel_Gemini_ou_OpenAI
   MS1->>GQL: askBookAssistant
   GQL->>Mem: carrega historico conversationId
-  GQL->>Rag: recupera trechos do genero
-  GQL->>LLM: prompt + memoria + contexto RAG
+  GQL->>LLM: prompt + memoria + tools
+  LLM->>Rag: tool searchGenreDocuments(query)
+  Note over Rag: embed query + SimpleVectorStore
+  Rag-->>LLM: trechos de documents/
   LLM->>Tools: search_books / get_book_by_title
   Tools-->>LLM: livros reais
-  LLM-->>GQL: reply
+  LLM-->>GQL: response
   GQL->>Mem: grava turn
-  GQL-->>MS1: reply
+  GQL-->>MS1: response
 ```
 
 ---
@@ -52,7 +54,7 @@ type Mutation {
 
 type BookAssistantReply {
   conversationId: String!
-  reply: String!
+  response: String!
 }
 ```
 
@@ -66,21 +68,17 @@ type BookAssistantReply {
 
 ---
 
-## 5. RAG (corpus de gêneros)
+## 5. RAG (documentos + embeddings + tool)
 
-Arquivos em [`docs/corpus/`](corpus/):
+Arquivos em `ms-ia/src/main/resources/documents/` (cópia em [`docs/documents/`](documents/)): `romance.md`, `ficcao-cientifica.md`, `suspense.md`, `fantasia.md`.
 
-| Arquivo | Conteúdo |
-|---------|----------|
-| `romance.md` | Características e critérios do gênero |
-| `ficcao-cientifica.md` | Idem |
-| `suspense.md` | Idem |
-| `fantasia.md` | Idem |
-| `criterios-recomendacao.md` | Regras gerais (páginas, série, etc.) |
+| Momento | O que acontece |
+|---------|----------------|
+| Boot (`ai.stub=false`) | Cada `.md` → embedding via `EmbeddingModel` → `SimpleVectorStore` (memória) |
+| Consulta | LLM chama tool `searchGenreDocuments(query)` → embed da query → top-2 similarity |
+| Stub / sem embedding | Fallback lexical por tokens (JMeter sem chave) |
 
-No boot do MS2: ler Markdown → chunk → embeddings → `VectorStore` simples (memória ou SimpleVectorStore).
-
-RAG **não** substitui o catálogo de livros; só ensina o modelo sobre gêneros.
+Regras gerais ficam em `prompts/system-prompt.txt` (instrução para usar a tool). Frontmatter `tags:` é opcional e **não** entra no scoring.
 
 ---
 
@@ -115,6 +113,7 @@ flowchart TD
 - Default: **gemini**
 - Troca: alterar `ai.provider` no `config-repo` + refresh (ver [01-plataforma.md](01-plataforma.md))
 - Chaves só no Vault
+- LangSmith (opcional): `LangSmithTracingAdvisor` + `LANGSMITH_*` no Vault — Java não tem auto-trace por env como o Python
 
 ---
 
@@ -124,10 +123,10 @@ flowchart TD
 |------|------|
 | Spring AI + LLM | Pergunta real com resposta |
 | Chat Memory | Duas perguntas na mesma `conversationId` |
-| RAG | Mostrar trecho recuperado / corpus |
+| RAG | Tool `searchGenreDocuments` + `documents/` no SimpleVectorStore |
 | MCP terceiro | Tool call Open Library na resposta |
 | MCP próprio | **Não aplicável neste projeto** |
-| GraphQL | Mutation no playground ou log do MS1 |
+| GraphQL | Mutation no GraphiQL ou log do MS1 |
 
 ---
 

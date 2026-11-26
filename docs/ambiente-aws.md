@@ -286,7 +286,7 @@ export COMPOSE_PROFILES=vault
 # VAULT_TOKEN=root
 # VAULT_URI=http://vault:8200
 
-docker compose --profile vault --profile local-lambda up -d --build
+docker compose --profile vault up -d --build
 # ou reinicie só o ms-ia após gravar o secret:
 
 docker exec -it vault sh -c 'export VAULT_ADDR=http://127.0.0.1:8200 VAULT_TOKEN=root; vault kv put secret/ms-ia GEMINI_API_KEY=SUA_CHAVE'
@@ -372,7 +372,7 @@ Guia detalhado (o que abrir e o que mostrar): [como-visualizar.md](como-visualiz
 
 ```bash
 cd ~/ai-powered-web-application
-docker compose --profile local-lambda --profile vault down
+docker compose --profile vault down
 # Start da EC2 não sobe sozinho — rode de novo docker-up / compose up
 ```
 

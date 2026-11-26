@@ -32,7 +32,7 @@ Este `09` é o **roteiro da fala** na banca. Os procedimentos, métricas e JTLs 
 | 10 | Retry / Fallback | MS1 + kill MS-IA |
 | 11 | Circuit Breaker | Actuator + Grafana |
 | 12 | Rate limit + Bulkhead | Gateway 429 + Resilience4j |
-| 13 | Spring AI Memory + RAG (+ LangSmith opcional) | Chat 2 turns + corpus |
+| 13 | Spring AI Memory + RAG (+ LangSmith opcional) | Chat 2 turns + tool searchGenreDocuments |
 | 14 | MCP | Open Library (terceiros); próprio fora do escopo |
 
 ---
@@ -186,8 +186,8 @@ Usable ~5–8 usuários (0% erro); knee ~12 (429). Ver [08-resultados-testes.md]
 | LLM | Gemini/OpenAI (Vault) |
 | Stub | `ai.stub` no Config (JMeter) |
 | Memory | `MessageChatMemoryAdvisor` + `conversationId` |
-| RAG | `docs/corpus/` |
-| Logs IA | Zipkin; **LangSmith** opcional (`LANGSMITH_*` no Vault) |
+| RAG | embeddings + tool `searchGenreDocuments` (`SimpleVectorStore`) |
+| Logs IA | Zipkin; **LangSmith** opcional via advisor Java + Vault (`LANGSMITH_*`) — não é auto-env como no Python |
 
 Demo: 2 turns no mesmo `conversationId`; stub mostra trecho RAG.
 

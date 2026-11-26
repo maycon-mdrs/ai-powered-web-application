@@ -5,7 +5,7 @@
 3. No PC: IAM role `tp3-plano-leitura-role` + Lambda `plano-leitura`
 4. Handler: `br.imd.ufrn.lambda.PlanoLeituraUrlHandler::handleRequest` (`*-aws.jar`)
 5. Function URL → `LAMBDA_BASE_URL` no `.env` da EC2
-6. `./scripts/docker-up.sh none` (ou `local-lambda` só no smoke sem AWS)
-7. Smoke: `POST /api/assistant/chat` + `gerarPlano=true`
+6. `./scripts/docker-up.sh none` (ou `vault` se for LLM real)
+7. Smoke: `POST /api/assistant/chat` + `POST /api/assistant/plano`
 8. Ensaio: [07-ensaio-apresentacao.md](07-ensaio-apresentacao.md)
 9. Guia completo: [ambiente-aws.md](ambiente-aws.md)

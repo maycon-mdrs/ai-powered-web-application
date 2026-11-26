@@ -13,6 +13,8 @@ LANGSMITH_API_KEY=<sua-chave>
 LANGSMITH_PROJECT=tp3-assistente-livros
 ```
 
+**Python vs Java:** no LangChain/Python basta `LANGCHAIN_TRACING_V2` + API key. No Spring AI **não** há esse auto-hook por env — o `ms-ia` envia runs via `LangSmithTracingAdvisor` (ChatClient) quando `langsmith.tracing=true` e a key vem do Vault.
+
 Nunca versionar a API key. Se vazou em chat/ticket, rotacionar no LangSmith.
 
 ## Modos

@@ -4,9 +4,8 @@ import java.util.List;
 
 public record ChatResponse(
         String conversationId,
-        String reply,
-        String source,
-        PlanoLeituraDto plano
+        String response,
+        String source
 ) {
     public record PlanoLeituraDto(
             String titulo,

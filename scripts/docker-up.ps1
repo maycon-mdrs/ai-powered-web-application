@@ -1,12 +1,11 @@
 ﻿# Sobe a stack Docker Compose (raiz do repo).
 # Uso:
 #   .\scripts\docker-up.ps1
-#   .\scripts\docker-up.ps1 local-lambda
 #   .\scripts\docker-up.ps1 vault
-#   .\scripts\docker-up.ps1 local-lambda,vault
+#   .\scripts\docker-up.ps1 none
 param(
-  # Default sobe ms-lambda local. Use "none" se LAMBDA_BASE_URL for a Function URL AWS.
-  [string]$Profiles = "local-lambda"
+  # Default sem profiles. Use "vault" para LLM + Vault. Lambda = LAMBDA_BASE_URL no .env.
+  [string]$Profiles = "none"
 )
 
 $ErrorActionPreference = "Stop"
@@ -15,7 +14,7 @@ Set-Location $Root
 
 if (-not (Test-Path .env)) {
   Copy-Item .env.example .env
-  Write-Host "Criado .env a partir de .env.example — edite LAMBDA_BASE_URL se for AWS."
+  Write-Host "Criado .env a partir de .env.example — edite LAMBDA_BASE_URL (Function URL AWS)."
 }
 
 $cmd = @("compose")

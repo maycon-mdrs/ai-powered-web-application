@@ -27,17 +27,24 @@ public class HttpClientsConfig {
     /** Builder com load balancer (service discovery via Eureka). */
     @Bean
     @LoadBalanced
-    RestClient.Builder loadBalancedRestClientBuilder() {
+    RestClient.Builder loadBalancedRestClientBuilder(
+            @Value("${http.client.connect-timeout:3s}") Duration connectTimeout,
+            @Value("${http.client.read-timeout:45s}") Duration readTimeout) {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(Duration.ofSeconds(3));
-        requestFactory.setReadTimeout(Duration.ofSeconds(45));
+        requestFactory.setConnectTimeout(connectTimeout);
+        requestFactory.setReadTimeout(readTimeout);
         return RestClient.builder().requestFactory(requestFactory);
     }
 
     @Bean
     PlanoLeituraClient planoLeituraClient(
-            @Value("${lambda.base-url:http://localhost:9000}") String baseUrl) {
-        RestClient client = RestClient.builder().baseUrl(baseUrl).build();
+            @Value("${lambda.base-url:http://localhost:9000}") String baseUrl,
+            @Value("${http.client.connect-timeout:3s}") Duration connectTimeout,
+            @Value("${http.client.read-timeout:45s}") Duration readTimeout) {
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(connectTimeout);
+        requestFactory.setReadTimeout(readTimeout);
+        RestClient client = RestClient.builder().baseUrl(baseUrl).requestFactory(requestFactory).build();
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
                 .builderFor(RestClientAdapter.create(client))
                 .build();

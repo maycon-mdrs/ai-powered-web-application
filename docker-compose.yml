@@ -1,6 +1,6 @@
 # Stack TP3 (um host).
 #   cp .env.example .env && docker compose up -d --build
-# Profiles: local-lambda (ms-lambda :9000) | vault (LLM + Vault)
+# Profiles: vault (LLM + Vault). Plano de leitura = Lambda AWS (LAMBDA_BASE_URL).
 # Failover de réplica: docker stop ms-coordenador-b
 
 name: tp3
@@ -113,7 +113,7 @@ services:
       <<: *jvm_env
       SERVER_PORT: "8081"
       EUREKA_INSTANCE_HOSTNAME: ms-coordenador-a
-      LAMBDA_BASE_URL: ${LAMBDA_BASE_URL:-http://ms-lambda:9000}
+      LAMBDA_BASE_URL: ${LAMBDA_BASE_URL}
       CHAOS_MONKEY_ENABLED: ${CHAOS_MONKEY_ENABLED:-false}
     ports:
       - "8081:8081"
@@ -136,7 +136,7 @@ services:
       <<: *jvm_env
       SERVER_PORT: "8083"
       EUREKA_INSTANCE_HOSTNAME: ms-coordenador-b
-      LAMBDA_BASE_URL: ${LAMBDA_BASE_URL:-http://ms-lambda:9000}
+      LAMBDA_BASE_URL: ${LAMBDA_BASE_URL}
       CHAOS_MONKEY_ENABLED: ${CHAOS_MONKEY_ENABLED:-false}
     ports:
       - "8083:8083"
@@ -165,20 +165,6 @@ services:
       - eureka2
       - ms-coordenador-a
       - ms-coordenador-b
-
-  # --- profile: local-lambda ---
-  ms-lambda:
-    <<: *jvm_common
-    profiles: ["local-lambda"]
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.jvm
-      args:
-        MODULE: ms-lambda
-    container_name: ms-lambda
-    hostname: ms-lambda
-    ports:
-      - "9000:9000"
 
   # --- profile: vault ---
   vault:

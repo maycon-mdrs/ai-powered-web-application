@@ -1,3 +1,6 @@
+---
+tags: [suspense, thriller, misterio, policial, noir, investigacao, tensao]
+---
 # Suspense / thriller
 
 O suspense mantém tensão por mistério, perigo ou corrida contra o tempo.

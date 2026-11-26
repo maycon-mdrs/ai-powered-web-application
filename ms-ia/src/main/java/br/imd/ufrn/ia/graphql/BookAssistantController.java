@@ -27,10 +27,9 @@ public class BookAssistantController {
     public Map<String, String> askBookAssistant(
             @Argument String conversationId,
             @Argument String message) {
-        String reply = bookAssistantService.ask(conversationId, message);
+        String response = bookAssistantService.ask(conversationId, message);
         return Map.of(
                 "conversationId", conversationId,
-                "reply", reply
-        );
+                "response", response);
     }
 }

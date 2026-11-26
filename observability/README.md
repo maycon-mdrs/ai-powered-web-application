@@ -1,13 +1,15 @@
-# Observabilidade (aula)
+# Observabilidade
 
-```bash
-docker compose -f observability/docker-compose.yml up -d
-```
+Montada pelo **Compose raiz** (`docker-compose.yml`): Prometheus, Grafana e Zipkin.
 
-1. Prometheus: http://localhost:9090 — targets UP
-2. Grafana: http://localhost:3000 (`admin`/`admin`)
-   - Data source Prometheus → `http://prometheus:9090`
-   - Import dashboard Spring Boot (grafana.com) + painéis de `resilience4j_circuitbreaker_*`
-3. Zipkin: http://localhost:9411/zipkin
+| Serviço | URL |
+|---------|-----|
+| Prometheus | http://localhost:9090 |
+| Grafana | http://localhost:3000 (`admin`/`admin`) |
+| Zipkin | http://localhost:9411/zipkin |
 
-Apps devem expor `/actuator/prometheus` (já configurado nos módulos).
+- Scrapes: `observability/prometheus.yml` (jobs `api-gateway`, `ms-coordenador`, `ms-ia`)
+- Dashboard: `observability/grafana/dashboards/tp3-overview.json`
+- Provisioning: `observability/grafana/provisioning/`
+
+Apps expõem `/actuator/prometheus`. Não há Compose separado nesta pasta.

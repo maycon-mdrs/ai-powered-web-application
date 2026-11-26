@@ -16,8 +16,7 @@ Abra no browser do PC (Security Group precisa liberar a porta).
 | Zipkin (traces) | `http://<EIP>:9411` | Run Query após um chat |
 | Prometheus | `http://<EIP>:9090` | Targets / graph |
 | Vault UI | `http://<EIP>:8200` | Token `root` (lab `-dev`) |
-| Gateway (API) | `http://<EIP>:8080` | Só HTTP; use `curl` ou Postman |
-| Chat demo (HTML) | `http://<EIP>:8080/demo/` | UI simples no próprio Gateway |
+| Gateway (API) | `http://<EIP>:8080` | Só HTTP; use Postman ou `chat-demo/` (Javelit) |
 
 Chat e plano (sempre pelo Gateway) — endpoints separados:
 
@@ -33,7 +32,7 @@ curl -s -X POST http://<EIP>:8080/api/assistant/plano \
   -d '{"titulo":"Neuromancer","autor":"William Gibson","paginasEstimadas":271,"diasDisponiveis":14}'
 ```
 
-Na EC2 use `127.0.0.1` no lugar do EIP. Use a porta **8080** (`http://<EIP>:8080/demo/`).
+Na EC2 use `127.0.0.1` no lugar do EIP. UI: Postman (`postman/`) ou módulo `chat-demo/`.
 
 ---
 
@@ -49,7 +48,7 @@ Abra `:8082/graphiql` e rode:
 mutation {
   askBookAssistant(conversationId: "gql-demo", message: "Indique um livro de fantasia curto") {
     conversationId
-    reply
+    response
   }
 }
 ```
@@ -95,7 +94,7 @@ curl -s -X POST http://127.0.0.1:8080/api/assistant/chat -H 'Content-Type: appli
   -d '{"conversationId":"mem-1","message":"Indique so 1 titulo diferente e diga por que combina."}'
 ```
 
-Corpus RAG: `docs/corpus/`.
+Documentos RAG: `docs/documents/` (classpath `ms-ia` → `documents/`); tool `searchGenreDocuments` (embeddings no boot se `ai.stub=false`).
 
 ---
 

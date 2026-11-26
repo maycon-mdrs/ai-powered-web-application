@@ -27,8 +27,8 @@ public class AssistantController {
                 : body.conversationId();
         String message = body.message() == null ? "" : body.message();
 
-        String reply = orchestrator.askIa(conversationId, message);
-        return ResponseEntity.ok(new ChatResponse(conversationId, reply, "ms-ia", null));
+        String response = orchestrator.askIa(conversationId, message);
+        return ResponseEntity.ok(new ChatResponse(conversationId, response, "ms-ia"));
     }
 
     /** Plano de leitura via Lambda (MS3) — separado do chat com MS-IA. */

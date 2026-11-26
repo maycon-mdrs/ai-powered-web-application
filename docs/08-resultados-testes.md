@@ -64,7 +64,7 @@ jmeter -n -t jmeter\assistant-chat.jmx `
 | `GET :8080/actuator/health` | `UP` |
 | `GET :8081` / `:8083` / `:8082` health | `UP` |
 | Eureka apps | `API-GATEWAY:1`, `MS-COORDENADOR:2`, `EUREKA-SERVER:2`, `MS-IA:1` |
-| `POST /api/assistant/chat` (stub) | `200`, reply com `[stub/gemini]` |
+| `POST /api/assistant/chat` (stub) | `200`, response com `[stub/gemini]` |
 | `POST /api/assistant/plano` (Lambda) | `200`, plano Neuromancer |
 | GraphiQL / GraphQL | Disponível (`:8082`) |
 | Vault (perfil vault) | `UP` no health do `ms-ia` |
